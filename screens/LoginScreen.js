@@ -1,72 +1,81 @@
-//Third party imports
-import React from "react";
-import { StyleSheet, Image } from "react-native";
+import React from 'react';
+import {View, StyleSheet, Image} from 'react-native';
+import {useForm} from 'react-hook-form';
+import * as Yup from 'yup';
+import {yupResolver} from '@hookform/resolvers/yup';
 
-import * as Yup from "yup";
-//Local imports
-import AppButton from "../components/AppButton";
-import AppTextInput from "../components/AppTextInput";
-import ErrorMessage from "../components/forms/ErrorMessage";
-import Screen from "../components/Screen";
-import { AppForm, AppFormField, SubmitButton } from "../components/forms";
-import AppText from "../components/AppText";
+//Local Imports
+import AppInput from '../components/AppInput';
+import AppButton from '../components/AppButton';
+import AppText from '../components/AppText';
+import colors from '../config/colors';
 
-//Validation Schema for Form
 const validationSchema = Yup.object().shape({
-  email: Yup.string().required().email().label("Email"),
-  password: Yup.string().required().min(4).label("Password"),
+  email: Yup.string().required().email().label('Email'),
+  password: Yup.string().required().min(4).label('Password'),
 });
-function LoginScreen(props) {
+
+function LoginScreen() {
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm({
+    resolver: yupResolver(validationSchema),
+  });
+
+  const onSubmit = data => {
+    console.log(data);
+  };
+
   return (
-    <Screen style={styles.container}>
-      <Image source={require("../assets/logo.jpeg")} style={styles.logo} />
-      <AppForm
-        initialValues={{ email: "", password: "" }}
-        onSubmit={(values) => console.log(values)}
-        validationSchema={validationSchema}
-      >
-        <AppFormField
-          autoCapitalize="none"
-          autoCorrect={false}
-          icon="email"
-          keyboardType="email-address"
-          name="email"
-          placeholder="Email"
-          textContentType="emailAddress"
-        />
-        <AppFormField
-          autoCapitalize="none"
-          autoCorrect={false}
-          icon="lock"
-          name="password"
-          placeholder="Password"
-          secureTextEntry
-          textContentType="password"
-        />
-        <SubmitButton title="login" />
-      </AppForm>
-      <AppText style={styles.register}>
-        Don't have an account? Register here.
-      </AppText>
-    </Screen>
+    <View style={styles.container}>
+      <AppText style={styles.login}>Login</AppText>
+      <Image source={require('../assets/logo.jpeg')} style={styles.logo} />
+      <AppInput
+        name="email"
+        control={control}
+        icon="email"
+        rules={{required: true}}
+        placeholder="Email"
+        autoCapitalize="none"
+        keyboardType="email-address"
+        textContentType="emailAddress"
+      />
+      {errors.email && <AppText>{errors.email.message}</AppText>}
+
+      <AppInput
+        name="password"
+        control={control}
+        rules={{required: true}}
+        placeholder="Password"
+        icon="lock"
+        secureTextEntry
+        textContentType="password"
+      />
+      {errors.password && <AppText>{errors.password.message}</AppText>}
+
+      <AppButton title="Login" onPress={handleSubmit(onSubmit)} />
+    </View>
   );
 }
 
-//Stylesheet
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: "10%",
+    padding: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+  },
+  login: {
+    marginBottom: 10,
+    fontSize: 40,
+    color: colors.mediumGray,
   },
   logo: {
-    width: 350,
-    height: 350,
-    alignSelf: "center",
-    marginTop: 50,
-    marginBottom: 20,
-  },
-  register: {
-    marginTop: 20,
-    fontSize: 16,
+    width: 250,
+    height: 250,
   },
 });
+
 export default LoginScreen;

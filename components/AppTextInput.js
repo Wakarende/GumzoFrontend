@@ -1,12 +1,12 @@
 //Third-party imports
-import React from "react";
-import { View, StyleSheet, Platform } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { TextInput } from "react-native";
+import React from 'react';
+import {View, StyleSheet, Platform} from 'react-native';
+import {MaterialCommunityIcons} from '@expo/vector-icons';
+import {TextInput} from 'react-native';
 
 //Local imports
-import defaultStyles from "../config/styles";
-function AppTextInput({ icon, ...otherProps }) {
+import defaultStyles from '../config/styles';
+function AppTextInput({icon, ...otherProps}) {
   return (
     <View style={styles.container}>
       {icon && (
@@ -29,13 +29,13 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: defaultStyles.colors.white,
     borderRadius: 10,
-    flexDirection: "row",
-    width: "100%",
+    flexDirection: 'row',
+    width: '100%',
     padding: 15,
     marginVertical: 10,
     // marginHorizontal: "10%",
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   icon: {
     margin: 10,

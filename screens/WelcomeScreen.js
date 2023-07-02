@@ -1,17 +1,16 @@
-import React from "react";
-import { StyleSheet, Image } from "react-native";
+import React from 'react';
+import {StyleSheet, Image} from 'react-native';
 
 //Local imports
-import Screen from "../components/Screen";
-import AppButton from "../components/AppButton";
+import Screen from '../components/Screen';
+import AppButton from '../components/AppButton';
 
 function WelcomeScreen(props) {
   return (
     <Screen style={styles.container}>
       <Image
         style={styles.logo}
-        source={require("../assets/logo.jpeg")}
-      ></Image>
+        source={require('../assets/logo.jpeg')}></Image>
       <AppButton title="Get Started"></AppButton>
     </Screen>
   );
@@ -20,8 +19,8 @@ function WelcomeScreen(props) {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     flex: 1,
   },
   logo: {

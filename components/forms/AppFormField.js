@@ -1,20 +1,17 @@
-import React from "react";
+import React from 'react';
 //Import that lets you directly access and use the information and functions related to your form.
-import { useFormikContext } from "formik";
+import {useFormikContext} from 'formik';
 //Local Imports
-import AppTextInput from "../AppTextInput";
-import ErrorMessage from "./ErrorMessage";
+import AppTextInput from '../AppTextInput';
+import ErrorMessage from './ErrorMessage';
 
-function AppFormField({ name, ...otherProps }) {
-  const { setFieldTouched, handleChange, errors, touched } = useFormikContext();
+function AppFormField({name, register, errors, ...otherProps}) {
   return (
     <>
-      <AppTextInput
-        onChangeText={handleChange(name)}
-        onBlur={() => setFieldTouched(name)}
-        {...otherProps}
-      ></AppTextInput>
-      <ErrorMessage error={errors[name]} visible={touched[name]} />
+      <AppTextInput {...register(name)} {...otherProps} />
+      {errors && (
+        <ErrorMessage error={errors[name]?.message} visible={errors[name]} />
+      )}
     </>
   );
 }

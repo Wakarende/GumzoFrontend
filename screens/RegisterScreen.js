@@ -1,36 +1,44 @@
-import React from "react";
-import { StyleSheet, Image } from "react-native";
-import * as Yup from "yup";
+import React from 'react';
+import {StyleSheet, Image} from 'react-native';
+import * as Yup from 'yup';
 
 //Local imports
-import { AppForm, AppFormField } from "../components/forms";
-import Screen from "../components/Screen";
-import SubmitButton from "../components/forms/SubmitButton";
-import AppText from "../components/AppText";
+import {AppForm, AppFormField} from '../components/forms';
+import Screen from '../components/Screen';
+import SubmitButton from '../components/forms/SubmitButton';
+import AppText from '../components/AppText';
+import colors from '../config/colors';
 
 const validationSchema = Yup.object().shape({
-  username: Yup.string().required().min(3).label("username"),
-  email: Yup.string().required().email().label("Email"),
-  password: Yup.string().required().min(4).label("Password"),
+  firstName: Yup.string().required(),
+  lastName: Yup.string().required(),
+  email: Yup.string().required().email().label('Email'),
+  password: Yup.string().required().min(4).label('Password'),
 });
 function RegisterScreen(props) {
   return (
     <Screen style={styles.container}>
-      <Image source={require("../assets/logo.jpeg")} style={styles.logo} />
+      <Image source={require('../assets/logo.jpeg')} style={styles.logo} />
       <AppText style={styles.title}>Register</AppText>
       <AppForm
-        initialValues={{ username: "", email: "", password: "" }}
-        onSubmit={(values) => console.log(values)}
-        validationSchema={validationSchema}
-      >
+        initialValues={{firstName: '', lastName: '', email: '', password: ''}}
+        onSubmit={values => console.log(values)}
+        validationSchema={validationSchema}>
         <AppFormField
           autoCapitalize="none"
           autoCorrect={false}
-          icon="account"
           keyboardType="default"
-          name="username"
-          placeholder="Username"
-          textContentType="username"
+          name="firstName"
+          placeholder="First Name"
+          textContentType="givenName"
+        />
+        <AppFormField
+          autoCapitalize="none"
+          autoCorrect={false}
+          keyboardType="default"
+          name="lastName"
+          placeholder="Last Name"
+          textContentType="familyName"
         />
         <AppFormField
           autoCapitalize="none"
@@ -61,17 +69,18 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   logo: {
-    width: 150,
-    height: 150,
-    alignSelf: "center",
+    width: 100,
+    height: 100,
+    alignSelf: 'center',
     marginTop: 50,
-    marginBottom: 20,
+    // marginBottom: 20,
+    backgroundColor: colors.white,
   },
   title: {
     fontWeight: 100,
-    alignSelf: "center",
+    alignSelf: 'center',
     fontSize: 40,
-    marginBottom: 10,
+    // marginBottom: 10,
   },
 });
 export default RegisterScreen;
