@@ -58,7 +58,7 @@ export default function App() {
   if (!fontLoaded) {
     return null;
   }
-  return <LoginScreen />;
+  return <RegisterScreen />;
 }
 
 const styles = StyleSheet.create({
