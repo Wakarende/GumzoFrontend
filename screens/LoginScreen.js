@@ -9,6 +9,7 @@ import AppInput from '../components/AppInput';
 import AppButton from '../components/AppButton';
 import AppText from '../components/AppText';
 import colors from '../config/colors';
+import Screen from '../components/Screen';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label('Email'),
@@ -29,7 +30,7 @@ function LoginScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <Screen style={styles.container}>
       <AppText style={styles.login}>Login</AppText>
       <Image source={require('../assets/logo.jpeg')} style={styles.logo} />
       <AppInput
@@ -56,7 +57,7 @@ function LoginScreen() {
       {errors.password && <AppText>{errors.password.message}</AppText>}
 
       <AppButton title="Login" onPress={handleSubmit(onSubmit)} />
-    </View>
+    </Screen>
   );
 }
 

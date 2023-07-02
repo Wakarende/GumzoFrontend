@@ -13,8 +13,7 @@ import AppButton from '../components/AppButton';
 
 //Define validation rules using Yup
 const validationSchema = Yup.object().shape({
-  firstName: Yup.string().required(),
-  lastName: Yup.string().required(),
+  username: Yup.string().required(),
   email: Yup.string().required().email().label('Email'),
   password: Yup.string().required().min(4).label('Password'),
   passwordConfirmation: Yup.string().oneOf(
@@ -34,6 +33,7 @@ function RegisterScreen(props) {
 
   //function to handle form submit
   const onSubmit = data => {
+    console.log('onSubmit triggered');
     console.log(data);
   };
   return (
@@ -47,6 +47,7 @@ function RegisterScreen(props) {
         placeholder="Username"
         autoCapitalize="none"
         autoCorrect={false}
+        textContentType="username"
       />
       {/* Display error message if validation failed for 'username' */}
       {errors.username && <AppText>{errors.username.message}</AppText>}
