@@ -1,6 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
-
+apply plugin: 'com.android.application'
 /**
  * This is the configuration block to customize your React Native Android app.
  * By default you don't need to apply any configuration, just uncomment the lines you need.
@@ -118,6 +118,19 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+
+     // Import the Firebase BoM
+  implementation(platform("com.google.firebase:firebase-bom:32.1.1"))
+
+  // When using the BoM, you don't specify versions in Firebase library dependencies
+  // Add the dependency for the Firebase SDK for Google Analytics
+  implementation("com.google.firebase:firebase-analytics")
+  
+  // Add the dependencies for Firebase Authentication and Cloud Firestore
+  implementation("com.google.firebase:firebase-auth")
+  implementation("com.google.firebase:firebase-firestore")
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+
+apply plugin: 'com.google.gms.google-services'
