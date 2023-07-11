@@ -5,13 +5,13 @@ import {StyleSheet, Image} from 'react-native';
 import Screen from '../components/Screen';
 import AppButton from '../components/AppButton';
 
-function WelcomeScreen(props) {
+function WelcomeScreen({navigation}) {
   return (
     <Screen style={styles.container}>
-      <Image
-        style={styles.logo}
-        source={require('../assets/logo.jpeg')}></Image>
-      <AppButton title="Get Started"></AppButton>
+      <Image style={styles.logo} source={require('../assets/Logo.png')}></Image>
+      <AppButton
+        title="Get Started"
+        onPress={() => navigation.navigate('Login')}></AppButton>
     </Screen>
   );
 }

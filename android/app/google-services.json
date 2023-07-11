@@ -1,41 +1,33 @@
 {
   "project_info": {
-    "project_number": "365532826746",
-    "project_id": "gumzo-13ac9",
-    "storage_bucket": "gumzo-13ac9.appspot.com"
+    "project_number": "55943862298",
+    "project_id": "gumzo-490d6",
+    "storage_bucket": "gumzo-490d6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:365532826746:android:cad8db01b3699a09a2ffc3",
+        "mobilesdk_app_id": "1:55943862298:android:9bd537d59ed13c529559a3",
         "android_client_info": {
           "package_name": "com.gumzofrontend"
         }
       },
       "oauth_client": [
         {
-          "client_id": "365532826746-gjur6qv30ucujqiujeca3r5umrl69pfg.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.gumzofrontend",
-            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
-          }
-        },
-        {
-          "client_id": "365532826746-ai83sv9l12ecg80egfssf5juohpsmaiv.apps.googleusercontent.com",
+          "client_id": "55943862298-jsvlnasvnp6l19mqclujj6tcnqq06lv1.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDRh6iWFT7Zmwt4cEEHc_eZMZQNcG3Ebm0"
+          "current_key": "AIzaSyCWKpNvmOn-CC2nF5GfmB5O6ehjImR3ev4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "365532826746-ai83sv9l12ecg80egfssf5juohpsmaiv.apps.googleusercontent.com",
+              "client_id": "55943862298-jsvlnasvnp6l19mqclujj6tcnqq06lv1.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

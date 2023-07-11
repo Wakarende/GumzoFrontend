@@ -3,6 +3,11 @@ import {View, StyleSheet, Image} from 'react-native';
 import {useForm} from 'react-hook-form';
 import * as Yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
+import {Link} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+
+import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
+import {Alert} from 'react-native';
 
 //Local Imports
 import AppInput from '../components/AppInput';
@@ -25,7 +30,24 @@ function LoginScreen() {
     resolver: yupResolver(validationSchema),
   });
 
+  const navigation = useNavigation();
+
   const onSubmit = data => {
+    const {email, password} = data;
+
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, email, password)
+      .then(userCredential => {
+        // Signed in
+        const user = userCredential.user;
+
+        navigation.navigate('Dashboard');
+      })
+
+      .catch(error => {
+        console.log(error);
+        Alert.alert('Login failed', error.message);
+      });
     console.log(data);
   };
 
@@ -57,6 +79,9 @@ function LoginScreen() {
       {errors.password && <AppText>{errors.password.message}</AppText>}
 
       <AppButton title="Login" onPress={handleSubmit(onSubmit)} />
+      <AppText>
+        Don't have an account? Register <Link to="/RegisterScreen">here.</Link>
+      </AppText>
     </Screen>
   );
 }
