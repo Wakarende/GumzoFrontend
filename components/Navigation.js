@@ -1,18 +1,19 @@
-import React from "react";
-import { StyleSheet } from "react-native";
-import Screen from "./Screen";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import React from 'react';
+import {createStackNavigator} from '@react-navigation/stack';
+
+//Local imports
+import WelcomeScreen from '../screens/WelcomeScreen';
+import LoginScreen from '../screens/LoginScreen';
+import RegisterScreen from '../screens/RegisterScreen';
+const Stack = createStackNavigator();
 
 function Navigation(props) {
   return (
-    <Screen>
-      <MaterialCommunityIcons name="home-outline" size={30} />
-      <MaterialCommunityIcons name="chat-outline" size={30} />
-      <MaterialCommunityIcons name="handshake-outline" size={30} />
-      <MaterialCommunityIcons name="account-outline" size={30} />
-    </Screen>
+    <Stack.Navigator>
+      <Stack.Screen name="Welcome" component={WelcomeScreen} />
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Register" component={RegisterScreen} />
+    </Stack.Navigator>
   );
 }
-
-const styles = StyleSheet.create({});
 export default Navigation;

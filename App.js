@@ -6,8 +6,9 @@ import AppButton from './components/AppButton';
 import AppLoading from 'expo-app-loading';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
 //Local imports
+import AuthNavigator from './navigation/AuthNavigator';
 import Screen from './components/Screen';
 import AppText from './components/AppText';
 import AppTextInput from './components/AppTextInput';
@@ -20,6 +21,8 @@ import ProfileListItem from './components/ProfileListItem';
 import AccountScreen from './screens/AccountScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import DashboardScreen from './screens/DashboardScreen';
+import NavigationTheme from './navigation/NavigationTheme';
+import NavigationBar from './components/NavigationBar';
 //Function that will return a Promise for loading the fonts
 const fetchFonts = () => {
   // Call Font.loadAsync and pass it an object.
@@ -31,7 +34,7 @@ const fetchFonts = () => {
   });
 };
 
-const Stack = createNativeStackNavigator();
+// const Stack = createNativeStackNavigator();
 
 export default function App() {
   // Create a state variable to track whether the fonts are loaded
@@ -64,28 +67,31 @@ export default function App() {
     return null;
   }
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false, // This line hides the header
-        }}>
-        <Stack.Screen
-          name="Welcome"
-          component={WelcomeScreen}
-          options={{title: 'Welcome'}}
-        />
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{title: 'Login'}}
-        />
-        <Stack.Screen
-          name="Dashboard"
-          component={DashboardScreen}
-          options={{title: 'Dashboard'}}
-        />
-      </Stack.Navigator>
+    <NavigationContainer theme={NavigationTheme}>
+      <AuthNavigator />
     </NavigationContainer>
+    // <NavigationContainer>
+    //   <Stack.Navigator
+    //     screenOptions={{
+    //       headerShown: false, // This line hides the header
+    //     }}>
+    //     <Stack.Screen
+    //       name="Welcome"
+    //       component={WelcomeScreen}
+    //       options={{title: 'Welcome'}}
+    //     />
+    //     <Stack.Screen
+    //       name="Login"
+    //       component={LoginScreen}
+    //       options={{title: 'Login'}}
+    //     />
+    //     <Stack.Screen
+    //       name="Dashboard"
+    //       component={DashboardScreen}
+    //       options={{title: 'Dashboard'}}
+    //     />
+    //   </Stack.Navigator>
+    // </NavigationContainer>
   );
 }
 

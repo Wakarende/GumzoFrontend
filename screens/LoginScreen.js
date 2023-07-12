@@ -54,7 +54,7 @@ function LoginScreen() {
   return (
     <Screen style={styles.container}>
       <AppText style={styles.login}>Login</AppText>
-      <Image source={require('../assets/logo.jpeg')} style={styles.logo} />
+      <Image source={require('../assets/Logo.png')} style={styles.logo} />
       <AppInput
         name="email"
         control={control}

@@ -8,10 +8,11 @@ import AppButton from '../components/AppButton';
 function WelcomeScreen({navigation}) {
   return (
     <Screen style={styles.container}>
-      <Image style={styles.logo} source={require('../assets/Logo.png')}></Image>
+      <Image style={styles.logo} source={require('../assets/Logo.png')} />
       <AppButton
         title="Get Started"
-        onPress={() => navigation.navigate('Login')}></AppButton>
+        onPress={() => navigation.navigate('Login')}
+      />
     </Screen>
   );
 }

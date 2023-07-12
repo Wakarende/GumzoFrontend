@@ -1,16 +1,13 @@
-import React from "react";
-import { View, StyleSheet, Image, TouchableHighlight } from "react-native";
-import {
-  GestureHandlerRootView,
-  Swipeable,
-} from "react-native-gesture-handler";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import React from 'react';
+import {View, StyleSheet, Image, TouchableHighlight} from 'react-native';
+import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler';
+import {MaterialCommunityIcons} from '@expo/vector-icons';
 
 //local imports
-import AppText from "./AppText";
-import colors from "../config/colors";
-import Screen from "./Screen";
-function ProfileListItem({ title, subTitle, image, ImageComponent, onPress }) {
+import AppText from './AppText';
+import colors from '../config/colors';
+import Screen from './Screen';
+function ProfileListItem({title, subTitle, image, ImageComponent, onPress}) {
   return (
     <Screen>
       <TouchableHighlight underlayColor={colors.lightGrey} onPress={onPress}>
@@ -34,11 +31,11 @@ const styles = StyleSheet.create({
     padding: 15,
     marginTop: 20,
     // backgroundColor: colors.white,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   detailsContainer: {
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   image: {
     width: 200,
@@ -46,8 +43,8 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   profileTitle: {
-    fontWeight: "bold",
-    alignSelf: "center",
+    fontWeight: 'bold',
+    alignSelf: 'center',
     letterSpacing: 1.5,
   },
   subTitle: {
