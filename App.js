@@ -22,7 +22,7 @@ import AccountScreen from './screens/AccountScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import DashboardScreen from './screens/DashboardScreen';
 import NavigationTheme from './navigation/NavigationTheme';
-import NavigationBar from './components/NavigationBar';
+import NavigationBar from './navigation/NavigationBar';
 //Function that will return a Promise for loading the fonts
 const fetchFonts = () => {
   // Call Font.loadAsync and pass it an object.

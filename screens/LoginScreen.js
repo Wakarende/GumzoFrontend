@@ -21,7 +21,7 @@ const validationSchema = Yup.object().shape({
   password: Yup.string().required().min(4).label('Password'),
 });
 
-function LoginScreen() {
+function LoginScreen({navigation}) {
   const {
     control,
     handleSubmit,
@@ -30,7 +30,7 @@ function LoginScreen() {
     resolver: yupResolver(validationSchema),
   });
 
-  const navigation = useNavigation();
+  // const navigation = useNavigation();
 
   const onSubmit = data => {
     const {email, password} = data;
@@ -80,7 +80,10 @@ function LoginScreen() {
 
       <AppButton title="Login" onPress={handleSubmit(onSubmit)} />
       <AppText>
-        Don't have an account? Register <Link to="/RegisterScreen">here.</Link>
+        Don't have an account?
+        <AppText onPress={() => navigation.navigate('Register')}>
+          Register here.
+        </AppText>
       </AppText>
     </Screen>
   );
