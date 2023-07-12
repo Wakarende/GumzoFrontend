@@ -27,10 +27,8 @@ function ProfileListItem({title, subTitle, image, ImageComponent, onPress}) {
 
 const styles = StyleSheet.create({
   container: {
-    // flexDirection: "row",
     padding: 15,
     marginTop: 20,
-    // backgroundColor: colors.white,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -38,8 +36,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   image: {
-    width: 200,
-    height: 200,
+    width: 150,
+    height: 150,
     borderRadius: 100,
   },
   profileTitle: {

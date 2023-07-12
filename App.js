@@ -6,7 +6,8 @@ import AppButton from './components/AppButton';
 import AppLoading from 'expo-app-loading';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
-
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import 'react-native-gesture-handler';
 //Local imports
 import AuthNavigator from './navigation/AuthNavigator';
 import Screen from './components/Screen';
@@ -16,7 +17,7 @@ import firebaseApp from './firebaseConfig';
 import LoginScreen from './screens/LoginScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
 import RegisterScreen from './screens/RegisterScreen';
-import ListItem from './components/ListItem';
+import ListItem from './components/lists/ListItem';
 import ProfileListItem from './components/ProfileListItem';
 import AccountScreen from './screens/AccountScreen';
 import {NavigationContainer} from '@react-navigation/native';
@@ -67,31 +68,15 @@ export default function App() {
     return null;
   }
   return (
-    <NavigationContainer theme={NavigationTheme}>
-      <AuthNavigator />
+    <NavigationContainer>
+      <NavigationBar />
     </NavigationContainer>
-    // <NavigationContainer>
-    //   <Stack.Navigator
-    //     screenOptions={{
-    //       headerShown: false, // This line hides the header
-    //     }}>
-    //     <Stack.Screen
-    //       name="Welcome"
-    //       component={WelcomeScreen}
-    //       options={{title: 'Welcome'}}
-    //     />
-    //     <Stack.Screen
-    //       name="Login"
-    //       component={LoginScreen}
-    //       options={{title: 'Login'}}
-    //     />
-    //     <Stack.Screen
-    //       name="Dashboard"
-    //       component={DashboardScreen}
-    //       options={{title: 'Dashboard'}}
-    //     />
-    //   </Stack.Navigator>
-    // </NavigationContainer>
+
+    // <GestureHandlerRootView>
+    //   <NavigationContainer>
+    //     <NavigationBar />
+    //   </NavigationContainer>
+    // </GestureHandlerRootView>
   );
 }
 

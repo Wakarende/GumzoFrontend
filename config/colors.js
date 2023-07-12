@@ -1,5 +1,5 @@
 export default {
-  white: '#eeeeee',
+  white: '#ffff',
   darkGray: '#3e3e40',
   mantis: '#86d079',
   pastelGreen: '#7cd36c',

@@ -1,45 +1,81 @@
 import React from 'react';
-import {StyleSheet, Image, View} from 'react-native';
-import {MaterialCommunityIcons} from '@expo/vector-icons';
+import {StyleSheet, View, FlatList} from 'react-native';
 
-//Local imports
-import AppText from '../components/AppText';
-import ListItem from '../components/ListItem';
-import ProfileListItem from '../components/ProfileListItem';
-import AppButton from '../components/AppButton';
-import Screen from '../components/Screen';
+//local imports
 import colors from '../config/colors';
-function AccountScreen(props) {
+import Icon from '../components/Icon';
+import ListItem from '../components/lists/ListItem';
+import ListItemSeparator from '../components/lists/ListItemSeparator';
+import ProfileListItem from '../components/ProfileListItem';
+import Screen from '../components/Screen';
+
+const menuItems = [
+  {
+    title: 'Account Settings',
+    icon: {
+      name: 'format-list-bulleted',
+      backgroundColor: colors.pastelGreen,
+    },
+  },
+  {
+    title: 'My Messages',
+    icon: {
+      name: 'email',
+      backgroundColor: colors.pastelGreen,
+    },
+    // targetScreen: routes.MESSAGES,
+  },
+  {
+    title: 'Log Out',
+    icon: {
+      name: 'logout',
+      backgroundColor: colors.pastelGreen,
+    },
+  },
+];
+
+function AccountScreen({navigation}) {
   return (
-    <Screen style={styles.container}>
-      <ProfileListItem
-        title="JKjk"
-        image={require('../assets/profile.jpg')}
-        style={styles.profile}
-      />
-      <View style={styles.content}>
-        <ListItem
-          title="Account Details"
-          IconComponent={
-            <MaterialCommunityIcons
-              name="account-circle-outline"
-              size={30}
-              color={colors.mediumGray}
-            />
-          }
+    <Screen style={styles.screen}>
+      <View style={styles.container}>
+        <ProfileListItem
+          title="JKjk"
+          image={require('../assets/Profile.png')}
+          style={styles.profile}
         />
-        <AppButton title="logout" />
+      </View>
+      <View style={styles.container}>
+        <FlatList
+          data={menuItems}
+          keyExtractor={menuItem => menuItem.title}
+          ItemSeparatorComponent={ListItemSeparator}
+          renderItem={({item}) => (
+            <ListItem
+              title={item.title}
+              IconComponent={
+                <Icon
+                  name={item.icon.name}
+                  backgroundColor={item.icon.backgroundColor}
+                />
+              }
+              //onPress={() => navigation.navigate(item.targetScreen)}
+            />
+          )}
+        />
       </View>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 20,
+  screen: {
+    backgroundColor: colors.light,
     flex: 1,
   },
-  content: {flex: 1},
-  icon: {},
+  container: {
+    marginVertical: 20,
+    flex: 1,
+  },
 });
+
 export default AccountScreen;
