@@ -12,9 +12,15 @@ function Paginator({data, scrollx}) {
           outputRange: [10, 20, 10],
           extrapolate: 'clamp',
         });
+
+        const opacity = scrollx.interpolate({
+          inputRange,
+          outputRange: [0.3, 1, 0.3],
+          extrapolate: 'clamp',
+        });
         return (
           <Animated.View
-            style={[styles.dot, {width: dotWidth}]}
+            style={[styles.dot, {width: dotWidth, opacity}]}
             key={i.toString()}
           />
         );
