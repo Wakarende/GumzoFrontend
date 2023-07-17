@@ -5,14 +5,14 @@ import {View, useWindowDimensions, StyleSheet, Image} from 'react-native';
 import AppText from './AppText';
 import colors from '../config/colors';
 function OnboardingItem({item}) {
-  const {width, height} = useWindowDimensions();
+  const {width} = useWindowDimensions();
   return (
-    <View style={[styles.container, {width, height}]}>
+    <View style={[styles.container, {width}]}>
       <Image
         source={item.image}
         style={[
           styles.image,
-          {width, height: height * 0.7, resizeMode: 'contain'},
+          {width, height: width * 0.7, resizeMode: 'contain'},
         ]}
       />
       <View style={{flex: 0.3}}>
