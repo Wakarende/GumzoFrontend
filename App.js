@@ -24,6 +24,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import DashboardScreen from './screens/DashboardScreen';
 import NavigationTheme from './navigation/NavigationTheme';
 import NavigationBar from './navigation/NavigationBar';
+
+import Onboarding from './components/Onboarding';
 //Function that will return a Promise for loading the fonts
 const fetchFonts = () => {
   // Call Font.loadAsync and pass it an object.
@@ -68,15 +70,13 @@ export default function App() {
     return null;
   }
   return (
-    <NavigationContainer>
-      <NavigationBar />
-    </NavigationContainer>
+    <GestureHandlerRootView>
+      <Onboarding />
+    </GestureHandlerRootView>
 
-    // <GestureHandlerRootView>
-    //   <NavigationContainer>
-    //     <NavigationBar />
-    //   </NavigationContainer>
-    // </GestureHandlerRootView>
+    // <NavigationContainer theme={NavigationTheme}>
+    //   <AuthNavigator />
+    // </NavigationContainer>
   );
 }
 

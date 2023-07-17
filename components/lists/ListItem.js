@@ -24,13 +24,13 @@ function ListItem({
             {title}
           </AppText>
           {subTitle && (
-            <AppText style={styles.subTitle} numberOfLines={2}>
+            <AppText style={styles.subTitle} numberOfLines={4}>
               {subTitle}
             </AppText>
           )}
         </View>
         <MaterialCommunityIcons
-          color={colors.medium}
+          color={colors.grannySmithApple}
           name="chevron-right"
           size={25}
         />

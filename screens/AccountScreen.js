@@ -38,10 +38,9 @@ function AccountScreen({navigation}) {
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
-        <ProfileListItem
-          title="JKjk"
+        <ListItem
+          title="Mosh Hamedani"
           image={require('../assets/Profile.png')}
-          style={styles.profile}
         />
       </View>
       <View style={styles.container}>
@@ -69,13 +68,12 @@ function AccountScreen({navigation}) {
 
 const styles = StyleSheet.create({
   screen: {
-    backgroundColor: colors.light,
     flex: 1,
   },
   container: {
-    marginVertical: 20,
-    flex: 1,
+    marginVertical: 10,
   },
 });
 
 export default AccountScreen;
+  
