@@ -1,13 +1,10 @@
 import React, {useState, useRef} from 'react';
-import {Screen} from './Screen';
-import AppText from './AppText';
-// import {FlatList} from 'react-native-gesture-handler';
-import {View, Animated, FlatList} from 'react-native';
+import {View, Animated, FlatList, StyleSheet} from 'react-native';
 
 //local imports
 import slides from '../slides';
 import OnboardingItem from './OnboardingItem';
-import {forHorizontalIOS} from '@react-navigation/stack/lib/typescript/src/TransitionConfigs/CardStyleInterpolators';
+import Paginator from './Paginator';
 
 function Onboarding(props) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -19,7 +16,7 @@ function Onboarding(props) {
   const slidesRef = useRef(null);
   const viewConfig = useRef({viewAreaCoveragePercentThreshold: 50}).current;
   return (
-    <View>
+    <View style={styles.container}>
       <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -37,8 +34,22 @@ function Onboarding(props) {
         ref={slidesRef}
         renderItem={({item}) => <OnboardingItem item={item} />}
       />
+
+      <View style={styles.paginatorContainer}>
+        <Paginator data={slides} scrollx={scrollx} />
+      </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  paginatorContainer: {
+    position: 'absolute',
+    bottom: 50,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default Onboarding;
