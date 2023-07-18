@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {StatusBar} from 'expo-status-bar';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, Image, useColorScheme} from 'react-native';
 import colors from './config/colors';
 import AppButton from './components/AppButton';
 import AppLoading from 'expo-app-loading';
@@ -25,7 +25,15 @@ import DashboardScreen from './screens/DashboardScreen';
 import NavigationTheme from './navigation/NavigationTheme';
 import NavigationBar from './navigation/NavigationBar';
 
-import Onboarding from './components/Onboarding';
+import {DarkTheme, DefaultTheme, Theme} from '@react-navigation/native';
+import RootNavigator from './src/navigators/RootNavigator';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {useMemo} from 'react';
+
+// import Onboarding from './components/Onboarding';
+import OnboardingScreen from './components/OnboardingScreen';
+import Onboarding from 'react-native-onboarding-swiper';
+
 //Function that will return a Promise for loading the fonts
 const fetchFonts = () => {
   // Call Font.loadAsync and pass it an object.
@@ -40,6 +48,26 @@ const fetchFonts = () => {
 // const Stack = createNativeStackNavigator();
 
 export default function App() {
+  const colorScheme = useColorScheme();
+  const theme = useMemo(
+    () =>
+      colorScheme === 'dark'
+        ? {
+            ...DarkTheme,
+            colors: {
+              ...DarkTheme.colors,
+              primary: '#fff',
+            },
+          }
+        : {
+            ...DefaultTheme,
+            colors: {
+              ...DefaultTheme.colors,
+              primary: '#000',
+            },
+          },
+    [colorScheme],
+  );
   // Create a state variable to track whether the fonts are loaded
   const [fontLoaded, setFontLoaded] = useState(false);
 
@@ -69,10 +97,57 @@ export default function App() {
   if (!fontLoaded) {
     return null;
   }
+
   return (
-    <GestureHandlerRootView>
-      <Onboarding />
-    </GestureHandlerRootView>
+    <SafeAreaProvider style={styles.container}>
+      <NavigationContainer theme={theme}>
+        <RootNavigator />
+      </NavigationContainer>
+      <StatusBar style="auto" />
+    </SafeAreaProvider>
+    // <GestureHandlerRootView>
+    //   <OnboardingScreen />
+    // </GestureHandlerRootView>
+    // <GestureHandlerRootView>
+    //   <Onboarding
+    //     style={styles.container}
+    //     pages={[
+    //       {
+    //         backgroundColor: '#fff',
+    //         image: (
+    //           <Image
+    //             style={styles.image}
+    //             source={require('./assets/welcome1.png')}
+    //           />
+    //         ),
+    //         title: 'Onboarding',
+    //         subtitle: 'Done with React Native Onboarding Swiper',
+    //       },
+    //       {
+    //         backgroundColor: '#fff',
+    //         image: (
+    //           <Image
+    //             style={styles.image}
+    //             source={require('./assets/Logo.png')}
+    //           />
+    //         ),
+    //         title: 'Onboarding',
+    //         subtitle: 'Done with React Native Onboarding Swiper',
+    //       },
+    //       {
+    //         backgroundColor: '#fff',
+    //         image: (
+    //           <Image
+    //             style={styles.image}
+    //             source={require('./assets/Logo.png')}
+    //           />
+    //         ),
+    //         title: 'Onboarding',
+    //         subtitle: 'Done with React Native Onboarding Swiper',
+    //       },
+    //     ]}
+    //   />
+    // </GestureHandlerRootView>
 
     // <NavigationContainer theme={NavigationTheme}>
     //   <AuthNavigator />
@@ -83,10 +158,14 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: 10,
-    marginHorizontal: 10,
+    // backgroundColor: colors.white,
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    // marginVertical: 10,
+    // marginHorizontal: 10,
+  },
+  image: {
+    width: 200,
+    height: 200,
   },
 });

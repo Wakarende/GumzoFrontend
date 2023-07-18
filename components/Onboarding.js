@@ -1,136 +1,92 @@
-// import React, {useState, useRef} from 'react';
-// import {View, Animated, FlatList, StyleSheet} from 'react-native';
+import React from 'react';
+import {View, StyleSheet, Text, Image, useWindowDimensions} from 'react-native';
+import slides from '../slides';
+import {MaterialCommunityIcons} from '@expo/vector-icons';
+import AppIntroSlider from 'react-native-app-intro-slider';
 
-// //local imports
-// import slides from '../slides';
-// import OnboardingItem from './OnboardingItem';
-// import Paginator from './Paginator';
-// import NextButton from './NextButton';
+// const Onboarding = () => {
+//   // Use the useWindowDimensions hook
+//   const {width, height} = useWindowDimensions();
 
-// function Onboarding(props) {
-//   const [currentIndex, setCurrentIndex] = useState(0);
+//   const _renderItem = ({item}) => {
+//     return (
+//       <View style={styles.slide}>
+//         <Text style={styles.title}>{item.title}</Text>
+//         <Image
+//           source={item.image}
+//           style={{width, height: height * 0.6, resizeMode: 'contain'}}
+//         />
+//         <Text style={styles.text}>{item.description}</Text>
+//       </View>
+//     );
+//   };
 
-//   const scrollx = useRef(new Animated.Value(0)).current;
-//   const viewableItemsChanged = useRef(({viewableItems}) => {
-//     setCurrentIndex(viewableItems[0].index);
-//   }).current;
-//   const slidesRef = useRef(null);
-//   const viewConfig = useRef({viewAreaCoveragePercentThreshold: 50}).current;
-//   return (
-//     <View style={styles.container}>
-//       <View style={{flex: 0.75}}>
-//         <FlatList
-//           horizontal
-//           showsHorizontalScrollIndicator={false}
-//           pagingEnabled
-//           bounces={false}
-//           data={slides}
-//           keyExtractor={item => item.id}
-//           onScroll={Animated.event(
-//             [{nativeEvent: {contentOffset: {x: scrollx}}}],
-//             {useNativeDriver: false},
-//           )}
-//           onViewableItemsChanged={viewableItemsChanged}
-//           viewabilityConfig={viewConfig}
-//           scrollEventThrottle={32}
-//           style={styles.listContainer}
-//           ref={slidesRef}
-//           renderItem={({item}) => <OnboardingItem item={item} />}
+//   const _renderNextButton = () => {
+//     return (
+//       <View style={styles.buttonCircle}>
+//         <MaterialCommunityIcons
+//           name="chevron-right"
+//           color="rgba(255, 255, 255, .9)"
+//           size={24}
 //         />
 //       </View>
-//       <View style={styles.paginatorContainer}>
-//         <Paginator data={slides} scrollx={scrollx} />
-//       </View>
+//     );
+//   };
 
-//       <View style={styles.buttonContainer}>
-//         <NextButton />
+//   const _renderDoneButton = () => {
+//     return (
+//       <View style={styles.buttonCircle}>
+//         <MaterialCommunityIcons
+//           name="checkbox-marked-circle-outline"
+//           color="rgba(255, 255, 255, .9)"
+//           size={24}
+//         />
 //       </View>
-//     </View>
+//     );
+//   };
+
+//   return (
+//     <AppIntroSlider
+//       data={slides}
+//       renderItem={_renderItem}
+//       renderDoneButton={_renderDoneButton}
+//       renderNextButton={_renderNextButton}
+//     />
 //   );
-// }
+// };
 
 // const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//   },
-//   paginatorContainer: {
-//     // position: 'absolute',
-//     // bottom: 50,
-//     width: '100%',
+//   buttonCircle: {
+//     width: 40,
+//     height: 40,
+//     backgroundColor: 'rgba(0, 0, 0, .2)',
+//     borderRadius: 20,
 //     justifyContent: 'center',
 //     alignItems: 'center',
-//     flex: 0.1,
 //   },
-//   //   listContainer: {
-//   //     flex: 0.8,
-//   //   },
-//   buttonContainer: {
-//     padding: 16,
-//     flex: 0.15,
-//     justifyContent: 'flex-end',
-//     marginBottom: 36,
+//   slide: {
+//     flex: 1,
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     backgroundColor: 'red',
 //   },
 // });
 
 // export default Onboarding;
-import React, {useState, useRef} from 'react';
-import {View, Animated, FlatList, StyleSheet, Dimensions} from 'react-native';
 
-//local imports
-import slides from '../slides';
-import OnboardingItem from './OnboardingItem';
-import Paginator from './Paginator';
+// import React from 'react';
 
 function Onboarding(props) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const scrollx = useRef(new Animated.Value(0)).current;
-  const viewableItemsChanged = useRef(({viewableItems}) => {
-    setCurrentIndex(viewableItems[0].index);
-  }).current;
-  const slidesRef = useRef(null);
-  const viewConfig = useRef({viewAreaCoveragePercentThreshold: 50}).current;
-
   return (
-    <View style={styles.container}>
-      <View style={styles.listContainer}>
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled
-          bounces={false}
-          data={slides}
-          keyExtractor={item => item.id}
-          onScroll={Animated.event(
-            [{nativeEvent: {contentOffset: {x: scrollx}}}],
-            {useNativeDriver: false},
-          )}
-          onViewableItemsChanged={viewableItemsChanged}
-          viewabilityConfig={viewConfig}
-          scrollEventThrottle={32}
-          ref={slidesRef}
-          renderItem={({item}) => <OnboardingItem item={item} />}
-        />
-      </View>
-      <View style={styles.paginatorContainer}>
-        <Paginator data={slides} scrollx={scrollx} />
-      </View>
-    </View>
+    <AppIntroSlider
+      data={slides}
+      renderItem={({item}) => (
+        <View>
+          <Text>{item.title}</Text>
+        </View>
+      )}
+    />
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  listContainer: {
-    height: Dimensions.get('window').height * 0.75, // 75% of the screen height
-  },
-  paginatorContainer: {
-    height: Dimensions.get('window').height * 0.25, // 25% of the screen height
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 
 export default Onboarding;
