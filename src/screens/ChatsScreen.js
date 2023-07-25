@@ -16,7 +16,7 @@ const chats = [
     image: require('../../assets/Profile.png'),
   },
   {
-    title: 'My John Doe',
+    title: 'My John Do',
     image: require('../../assets/Profile.png'),
   },
 ];

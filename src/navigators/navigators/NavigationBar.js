@@ -30,7 +30,7 @@ function NavigationBar(props) {
         component={ChatsScreen}
         options={{
           tabBarIcon: ({color, size}) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
+            <MaterialCommunityIcons name="chat" color={color} size={size} />
           ),
         }}
       />

@@ -12,7 +12,8 @@ import {SafeAreaView, StyleSheet, useColorScheme} from 'react-native';
 
 // local imports
 import RootNavigator from './src/navigators/navigators/RootNavigator';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
+import colors from './src/config/colors';
 
 // type SectionProps = PropsWithChildren<{
 //   title: string;
@@ -44,6 +45,15 @@ import {NavigationContainer} from '@react-navigation/native';
 //   );
 // }
 
+//Theme colour
+const MyTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: colors.white,
+  },
+};
+
 function App(): JSX.Element {
   // const isDarkMode = useColorScheme() === 'dark';
 
@@ -53,7 +63,7 @@ function App(): JSX.Element {
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <NavigationContainer>
+      <NavigationContainer theme={MyTheme}>
         <RootNavigator />
       </NavigationContainer>
     </SafeAreaView>
