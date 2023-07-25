@@ -18,11 +18,10 @@ import * as Yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 import firebaseApp from '../../firebaseConfig';
-// import auth from '@react-native-firebase/auth';
-
 import {useForm} from 'react-hook-form';
-
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+//Local imports
 import AppText from '../components/AppText';
 import AppInput from '../components/AppInput';
 import colors from '../config/colors';
