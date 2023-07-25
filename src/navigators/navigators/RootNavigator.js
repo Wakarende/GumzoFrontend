@@ -8,7 +8,7 @@ import DashboardScreen from '../../screens/IntroScreen';
 import NavigationBar from './NavigationBar';
 import TabNavigators from './TabNavigators';
 import RegisterScreen from '../../screens/RegisterScreen';
-
+import CreateProfileScreen from '../../screens/profilesetup/CreateProfileScreen';
 const RootStack = createNativeStackNavigator();
 
 const RootNavigator = () => {
@@ -25,6 +25,10 @@ const RootNavigator = () => {
         <RootStack.Screen name="LogInScreen" component={LogInScreen} />
         <RootStack.Screen name="DashboardScreen" component={NavigationBar} />
         <RootStack.Screen name="Register" component={RegisterScreen} />
+        <RootStack.Screen
+          name="CreateProfile"
+          component={CreateProfileScreen}
+        />
       </RootStack.Group>
     </RootStack.Navigator>
   );

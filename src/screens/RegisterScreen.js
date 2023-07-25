@@ -23,7 +23,7 @@ const validationSchema = Yup.object().shape({
     'Passwords must match',
   ),
 });
-function RegisterScreen(props) {
+function RegisterScreen({navigation}) {
   //Initialize useForm with yupResolver and validation schema
   const {
     control, //control object to control form events
@@ -47,6 +47,9 @@ function RegisterScreen(props) {
         data.password,
       );
       console.log('User account created & signed in!', response);
+
+      //navigate to createprofile screen
+      navigation.navigate('CreateProfile');
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
         console.log('That email address is already in use!');
