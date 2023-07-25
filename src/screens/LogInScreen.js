@@ -16,8 +16,9 @@ import PrimaryButton from '../components/PrimaryButton';
 import Animated, {FadeInDown, FadeInUp} from 'react-native-reanimated';
 import * as Yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
-// import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
-import auth from '@react-native-firebase/auth';
+import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
+import firebaseApp from '../../firebaseConfig';
+// import auth from '@react-native-firebase/auth';
 
 import {useForm} from 'react-hook-form';
 
@@ -46,9 +47,8 @@ const LogInScreen = ({navigation}) => {
   const handleLogin = data => {
     const {email, password} = data;
 
-    const authInstance = auth();
-    authInstance
-      .signInWithEmailAndPassword(authInstance, email, password)
+    const authInstance = getAuth(firebaseApp);
+    signInWithEmailAndPassword(authInstance, email, password)
       .then(userCredential => {
         const user = userCredential.user;
         navigation.navigate('DashboardScreen');

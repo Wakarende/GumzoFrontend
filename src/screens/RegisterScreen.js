@@ -3,7 +3,9 @@ import {StyleSheet, Image} from 'react-native';
 import * as Yup from 'yup';
 import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
-import auth from '@react-native-firebase/auth';
+// import auth from '@react-native-firebase/auth';
+import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth';
+import firebaseApp from '../../firebaseConfig';
 //Local imports
 import AppInput from '../components/AppInput';
 import AppText from '../components/AppText';
@@ -38,7 +40,9 @@ function RegisterScreen(props) {
 
     //Firebase Authentication
     try {
-      const response = await auth().createUserWithEmailAndPassword(
+      const auth = getAuth(firebaseApp);
+      const response = await createUserWithEmailAndPassword(
+        auth,
         data.email,
         data.password,
       );
