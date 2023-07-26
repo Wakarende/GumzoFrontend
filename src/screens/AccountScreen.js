@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, FlatList} from 'react-native';
+import auth from '@react-native-firebase/auth';
 
 //local imports
 import colors from '../config/colors';
@@ -9,6 +10,7 @@ import ListItemSeparator from '../components/lists/ListItemSeparator';
 import ProfileListItem from '../components/ProfileListItem';
 import Screen from '../components/Screen';
 
+//Data displayed on flatlist
 const menuItems = [
   {
     title: 'Account Settings',
@@ -35,11 +37,20 @@ const menuItems = [
 ];
 
 function AccountScreen({navigation}) {
+  // //initializing the state variable for the user
+  // const [user, setUser] = useState();
+
+  // // Using the useEffect hook to set the state variable when the component mounts
+  // useEffect(() => {
+  //   // Firebase function to get the currently authenticated user
+  //   setUser(auth().currentUser);
+  // }, []); // Empty dependency array means this effect will only run once, when the component mounts
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
         <ListItem
-          title="Mosh Hamedani"
+          title={'Joy Kirii'}
+          // title={user ? user.displayName : ''}
           image={require('../../assets/Profile.png')}
         />
       </View>

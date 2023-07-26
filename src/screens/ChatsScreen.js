@@ -32,7 +32,7 @@ const chats = [
   },
 ];
 
-function ChatsScreen(props) {
+function ChatsScreen({navigation}) {
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <Screen style={styles.screen}>
@@ -48,52 +48,22 @@ function ChatsScreen(props) {
               />
             </TouchableOpacity>
           </View>
-          <FlatList
-            data={chats}
-            keyExtractor={chat => chat.title}
-            ItemSeparatorComponent={ListItemSeparator}
-            renderItem={({item}) => (
-              <ListItem title={item.title} image={item.image} />
-            )}
-          />
+          <TouchableOpacity
+            onPress={() => navigation.navigate('SingleChatScreen')}>
+            <FlatList
+              data={chats}
+              keyExtractor={chat => chat.title}
+              ItemSeparatorComponent={ListItemSeparator}
+              renderItem={({item}) => (
+                <ListItem title={item.title} image={item.image} />
+              )}
+            />
+          </TouchableOpacity>
         </View>
       </Screen>
     </GestureHandlerRootView>
   );
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     paddingHorizontal: 10,
-//   },
-//   searchBarContainer: {
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     flexDirection: 'row',
-//     marginBottom: 20,
-//     overflow: 'hidden',
-//   },
-//   searchBar: {
-//     borderWidth: 1,
-//     borderColor: colors.lightGray,
-//     paddingLeft: 20,
-//     paddingTop: 20,
-//     paddingBottom: 20,
-//     paddingRight: 50,
-//     marginBottom: 10,
-//     borderRadius: 5,
-//     width: '90%',
-//     // flex: 1,
-//   },
-//   searchIcon: {
-//     position: 'absolute',
-//     right: 15,
-//     top: 1,
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-// });
 
 const styles = StyleSheet.create({
   container: {
@@ -114,7 +84,6 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingRight: 60,
     width: '90%',
-    // height: 40,
   },
   iconContainer: {
     position: 'absolute',

@@ -3,7 +3,7 @@ import {StyleSheet, Image} from 'react-native';
 import * as Yup from 'yup';
 import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
-// import auth from '@react-native-firebase/auth';
+import {getFirestore, collection, addDoc} from 'firebase/firestore';
 import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth';
 import firebaseApp from '../../firebaseConfig';
 //Local imports
@@ -47,6 +47,15 @@ function RegisterScreen({navigation}) {
         data.password,
       );
       console.log('User account created & signed in!', response);
+
+      // Add a new document to the "users" collection with the user's uid as the document ID
+      const db = getFirestore(firebaseApp);
+      const docRef = await addDoc(collection(db, 'users'), {
+        uid: response.user.uid,
+        email: data.email,
+        // Add any additional user data you want to store
+      });
+      console.log('User added to Firestore with ID: ', docRef.id);
 
       //navigate to createprofile screen
       navigation.navigate('CreateProfile');
