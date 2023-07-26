@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {StyleSheet, View, FlatList} from 'react-native';
-import auth from '@react-native-firebase/auth';
-
+import {getAuth} from 'firebase/auth';
+import firebaseApp from '../../firebaseConfig';
+import {getFirestore, doc, getDoc} from 'firebase/firestore';
 //local imports
 import colors from '../config/colors';
 import Icon from '../components/Icon';
@@ -37,20 +38,73 @@ const menuItems = [
 ];
 
 function AccountScreen({navigation}) {
-  // //initializing the state variable for the user
-  // const [user, setUser] = useState();
+  // initializing state variable, this will be used to track if Firebase
+  // is done checking if a user session exists
+  const [initializing, setInitializing] = useState(true);
 
-  // // Using the useEffect hook to set the state variable when the component mounts
+  const [user, setUser] = useState(null);
+
+  // Handle user state changes
+  const onAuthStateChanged = useCallback(
+    user => {
+      setUser(user);
+      if (initializing) setInitializing(false);
+    },
+    [initializing],
+  );
+
+  useEffect(() => {
+    const auth = getAuth(firebaseApp);
+    const subscriber = auth.onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, [onAuthStateChanged]);
+
+  useEffect(() => {
+    if (user) {
+      const fetchUser = async () => {
+        // Fetch user document from Firestore
+        const db = getFirestore(firebaseApp);
+        const docRef = doc(db, 'users', user.uid);
+        const docSnap = await getDoc(docRef);
+
+        // If the document exists, set the data to the user state
+        if (docSnap.exists()) {
+          setUser(docSnap.data());
+        } else {
+          console.log('No such document!');
+        }
+      };
+
+      fetchUser();
+    }
+  }, [user]);
   // useEffect(() => {
-  //   // Firebase function to get the currently authenticated user
-  //   setUser(auth().currentUser);
-  // }, []); // Empty dependency array means this effect will only run once, when the component mounts
+  //   const fetchUser = async () => {
+  //     // Fetch the current user's uid
+  //     const auth = getAuth(firebaseApp);
+  //     const uid = auth.currentUser.uid;
+
+  //     // Fetch user document from Firestore
+  //     const db = getFirestore(firebaseApp);
+  //     const docRef = doc(db, 'users', uid);
+  //     const docSnap = await getDoc(docRef);
+
+  //     // If the document exists, set the data to the user state
+  //     if (docSnap.exists()) {
+  //       setUser(docSnap.data());
+  //     } else {
+  //       console.log('No such document!');
+  //     }
+  //   };
+
+  //   fetchUser();
+  // }, []);
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>
         <ListItem
-          title={'Joy Kirii'}
-          // title={user ? user.displayName : ''}
+          // title={'Joy Kirii'}
+          title={user ? user.username : ''}
           image={require('../../assets/Profile.png')}
         />
       </View>

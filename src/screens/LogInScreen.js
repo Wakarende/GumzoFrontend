@@ -18,6 +18,13 @@ import * as Yup from 'yup';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 import firebaseApp from '../../firebaseConfig';
+import {
+  getFirestore,
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+} from 'firebase/firestore';
 import {useForm} from 'react-hook-form';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -26,6 +33,7 @@ import AppText from '../components/AppText';
 import AppInput from '../components/AppInput';
 import colors from '../config/colors';
 
+//Validation Schema
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label('Email'),
   password: Yup.string().required().min(4).label('Password'),
@@ -48,10 +56,24 @@ const LogInScreen = ({navigation}) => {
 
     const authInstance = getAuth(firebaseApp);
     signInWithEmailAndPassword(authInstance, email, password)
-      .then(userCredential => {
+      .then(async userCredential => {
         const user = userCredential.user;
+        // Fetch additional user details from Firestore
+        const db = getFirestore(firebaseApp);
+        try {
+          const docRef = doc(db, 'users', user.uid);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            console.log('Document data:', docSnap.data());
+            Alert.alert(`Welcome ${docSnap.data().username}`);
+          } else {
+            console.log('No such document!');
+          }
+        } catch (error) {
+          console.log('Error getting document:', error);
+        }
         navigation.navigate('DashboardScreen');
-        Alert.alert(`Welcome ${user.email}`);
+        // Alert.alert(`Welcome ${user.username}`);
       })
       .catch(error => {
         console.log(error);

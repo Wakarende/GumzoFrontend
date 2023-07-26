@@ -1,11 +1,18 @@
 import React from 'react';
-import {StyleSheet, Image} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import * as Yup from 'yup';
 import {useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {getFirestore, collection, addDoc} from 'firebase/firestore';
+import {
+  getFirestore,
+  doc,
+  getDocs,
+  setDoc,
+  collection,
+} from 'firebase/firestore';
 import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth';
 import firebaseApp from '../../firebaseConfig';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 //Local imports
 import AppInput from '../components/AppInput';
 import AppText from '../components/AppText';
@@ -15,7 +22,11 @@ import AppButton from '../components/AppButton';
 
 //Define validation rules using Yup
 const validationSchema = Yup.object().shape({
-  // username: Yup.string().required(),
+  username: Yup.string()
+    .required()
+    .min(2, 'Name must have at least 2 characters')
+    .max(30, 'Max number of characters is 30')
+    .label('Username'),
   email: Yup.string().required().email().label('Email'),
   password: Yup.string().required().min(4).label('Password'),
   passwordConfirmation: Yup.string().oneOf(
@@ -40,6 +51,22 @@ function RegisterScreen({navigation}) {
 
     //Firebase Authentication
     try {
+      //check if username exists
+      const db = getFirestore(firebaseApp);
+      const querySnapshot = await getDocs(collection(db, 'users'));
+      let usernameExists = false;
+      querySnapshot.forEach(doc => {
+        if (doc.data().username === data.username) {
+          usernameExists = true;
+        }
+      });
+
+      if (usernameExists) {
+        console.log('Username is already taken');
+        return;
+      }
+
+      //Register new user
       const auth = getAuth(firebaseApp);
       const response = await createUserWithEmailAndPassword(
         auth,
@@ -49,10 +76,11 @@ function RegisterScreen({navigation}) {
       console.log('User account created & signed in!', response);
 
       // Add a new document to the "users" collection with the user's uid as the document ID
-      const db = getFirestore(firebaseApp);
-      const docRef = await addDoc(collection(db, 'users'), {
+      const docRef = doc(db, 'users', response.user.uid);
+      await setDoc(docRef, {
         uid: response.user.uid,
         email: data.email,
+        username: data.username,
         // Add any additional user data you want to store
       });
       console.log('User added to Firestore with ID: ', docRef.id);
@@ -72,7 +100,26 @@ function RegisterScreen({navigation}) {
   };
   return (
     <Screen style={styles.container}>
+      <TouchableOpacity onPress={() => navigation.replace('LogInScreen')}>
+        <MaterialCommunityIcons
+          name="arrow-left"
+          size={24}
+          color={colors.lightGray}
+        />
+      </TouchableOpacity>
       <AppText style={styles.title}>Register</AppText>
+      <AppInput
+        name="username"
+        control={control}
+        icon="account"
+        rules={{required: true}}
+        placeholder="Username"
+        autoCapitalize="none"
+        textContentType="username"
+      />
+      {/* Display error message if validation failed for 'username' */}
+      {errors.username && <AppText>{errors.username.message}</AppText>}
+
       {/* Create a controlled input for 'email', with validation rules and icon */}
       <AppInput
         name="email"

@@ -14,38 +14,9 @@ import {SafeAreaView, StyleSheet, useColorScheme} from 'react-native';
 import RootNavigator from './src/navigators/navigators/RootNavigator';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import colors from './src/config/colors';
+import CreateProfileScreen from './src/screens/profilesetup/CreateProfileScreen';
 
-// type SectionProps = PropsWithChildren<{
-//   title: string;
-// }>;
-
-// function Section({children, title}: SectionProps): JSX.Element {
-//   const isDarkMode = useColorScheme() === 'dark';
-//   return (
-//     <View style={styles.sectionContainer}>
-//       <Text
-//         style={[
-//           styles.sectionTitle,
-//           {
-//             color: isDarkMode ? Colors.white : Colors.black,
-//           },
-//         ]}>
-//         {title}
-//       </Text>
-//       <Text
-//         style={[
-//           styles.sectionDescription,
-//           {
-//             color: isDarkMode ? Colors.light : Colors.dark,
-//           },
-//         ]}>
-//         {children}
-//       </Text>
-//     </View>
-//   );
-// }
-
-//Theme colour
+//Remove default theme colour of react native navigation
 const MyTheme = {
   ...DefaultTheme,
   colors: {
@@ -55,14 +26,9 @@ const MyTheme = {
 };
 
 function App(): JSX.Element {
-  // const isDarkMode = useColorScheme() === 'dark';
-
-  // const backgroundStyle = {
-  //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  // };
-
   return (
-    <SafeAreaView style={{flex: 1}}>
+    // <CreateProfileScreen />
+    <SafeAreaView style={styles.container}>
       <NavigationContainer theme={MyTheme}>
         <RootNavigator />
       </NavigationContainer>
@@ -71,6 +37,9 @@ function App(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   sectionContainer: {
     marginTop: 32,
     paddingHorizontal: 24,
