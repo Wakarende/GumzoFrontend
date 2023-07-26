@@ -6,14 +6,29 @@ import {useTheme} from '@react-navigation/native';
 import ScreenIndicators from '../components/ScreenIndicators';
 import PrimaryButton from '../components/PrimaryButton';
 import Animated, {FadeInDown, FadeInUp} from 'react-native-reanimated';
-import {INTRO_SCREEN_01} from '../utils/constants';
+
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+//Local imports
 import colors from '../config/colors';
+import {INTRO_SCREEN_01} from '../utils/constants';
 
 const IntroScreen01 = ({navigation}) => {
   const theme = useTheme();
   return (
     <SafeAreaView
       style={[styles.safeArea, {backgroundColor: theme.colors.card}]}>
+      <Animated.View
+        entering={FadeInUp.duration(1000).springify()}
+        style={styles.rowView}>
+        <TouchableOpacity onPress={() => navigation.replace('IntroScreen')}>
+          <MaterialCommunityIcons
+            name="arrow-left"
+            size={24}
+            color={theme.colors.text}
+          />
+        </TouchableOpacity>
+      </Animated.View>
       <Animated.View
         entering={FadeInUp.duration(1000).springify()}
         style={styles.animatedView}>
@@ -32,7 +47,7 @@ const IntroScreen01 = ({navigation}) => {
         </Animated.Text>
         <Animated.View
           entering={FadeInDown.delay(200).duration(1000).springify()}>
-          <ScreenIndicators count={2} activeIndex={0} />
+          <ScreenIndicators count={3} activeIndex={1} />
         </Animated.View>
         <Animated.View
           entering={FadeInDown.delay(400).duration(1000).springify()}

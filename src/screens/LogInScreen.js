@@ -181,7 +181,9 @@ const LogInScreen = ({navigation}) => {
               {/* Register Link */}
               <AppText>
                 Don't have an account?
-                <AppText onPress={() => navigation.navigate('Register')}>
+                <AppText
+                  onPress={() => navigation.navigate('Register')}
+                  style={styles.registerLink}>
                   Register here.
                 </AppText>
               </AppText>
@@ -229,6 +231,9 @@ const styles = StyleSheet.create({
     left: 12,
     top: 12,
     opacity: 0.5,
+  },
+  registerLink: {
+    color: colors.grannySmithApple,
   },
 });
 export default LogInScreen;

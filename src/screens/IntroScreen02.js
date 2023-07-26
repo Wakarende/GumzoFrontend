@@ -44,7 +44,11 @@ const IntroScreen02 = ({navigation}) => {
         </Animated.Text>
         <Animated.View
           entering={FadeInDown.delay(200).duration(1000).springify()}>
-          <ScreenIndicators count={2} activeIndex={1} />
+          <ScreenIndicators
+            count={3}
+            activeIndex={2}
+            style={styles.screenIndicators}
+          />
         </Animated.View>
 
         <Animated.View
@@ -88,6 +92,9 @@ const styles = StyleSheet.create({
     marginTop: 16,
     fontSize: 16,
     color: colors.lightGray,
+  },
+  screenIndicators: {
+    backgroundColor: colors.grannySmithApple,
   },
 });
 

@@ -1,16 +1,16 @@
 export const INTRO_SCREEN = {
   title: 'Gumzo',
-  description: 'Swahili learning app',
+  description: 'Welcome to Gumzo',
 };
 export const INTRO_SCREEN_01 = {
-  title: 'Connect With Creators Easily',
-  description: 'Thank you for choosing us, we can save your lovely time.',
+  title: 'Prepare To Speak Confidently',
+  description: 'Connect with native speakers',
 };
 export const INTRO_SCREEN_02 = {
-  title: 'Get Inspiration From Creators',
-  description: 'Find your favorite creators and get insperation from them',
+  title: 'Learn From Native Speakers',
+  description: 'View others profiles and choose your perfect practice partner',
 };
 export const LOG_IN_SCREEN = {
-  title: "Let's\nGet Started",
-  description: 'To register for an account, kindly enter your details',
+  title: 'Log In',
+  description: 'Log In',
 };

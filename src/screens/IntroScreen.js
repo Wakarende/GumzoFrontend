@@ -32,7 +32,7 @@ const IntroScreen = ({navigation}) => {
         </Animated.Text>
         <Animated.View
           entering={FadeInDown.delay(200).duration(1000).springify()}>
-          <ScreenIndicators count={2} activeIndex={0} />
+          <ScreenIndicators count={3} activeIndex={0} />
         </Animated.View>
         <Animated.View
           entering={FadeInDown.delay(400).duration(1000).springify()}
