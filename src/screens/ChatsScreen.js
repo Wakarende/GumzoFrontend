@@ -48,17 +48,21 @@ function ChatsScreen({navigation}) {
               />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('SingleChatScreen')}>
-            <FlatList
-              data={chats}
-              keyExtractor={chat => chat.title}
-              ItemSeparatorComponent={ListItemSeparator}
-              renderItem={({item}) => (
-                <ListItem title={item.title} image={item.image} />
-              )}
-            />
-          </TouchableOpacity>
+
+          <FlatList
+            data={chats}
+            keyExtractor={chat => chat.title}
+            ItemSeparatorComponent={ListItemSeparator}
+            renderItem={({item}) => (
+              <ListItem
+                title={item.title}
+                image={item.image}
+                onPress={() => {
+                  navigation.navigate('SingleChat');
+                }}
+              />
+            )}
+          />
         </View>
       </Screen>
     </GestureHandlerRootView>

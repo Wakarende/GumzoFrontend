@@ -33,7 +33,7 @@ import AppText from '../components/AppText';
 import AppInput from '../components/AppInput';
 import colors from '../config/colors';
 
-//Validation Schema
+//Validation Schema for login form, validates email and password
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label('Email'),
   password: Yup.string().required().min(4).label('Password'),
@@ -43,6 +43,7 @@ const LogInScreen = ({navigation}) => {
   const theme = useTheme();
   const dimensions = useWindowDimensions();
 
+  //Using the useForm hook for form opeations and validation
   const {
     control,
     handleSubmit,
@@ -51,18 +52,28 @@ const LogInScreen = ({navigation}) => {
     resolver: yupResolver(validationSchema),
   });
 
+  //Login handler function using Firebase Authentication
   const handleLogin = data => {
     const {email, password} = data;
 
+    //Initialize an instance of Firebase authentication
     const authInstance = getAuth(firebaseApp);
+
+    //sign in user with email and password using the signInWithEmailandPassword function from Firebase
     signInWithEmailAndPassword(authInstance, email, password)
       .then(async userCredential => {
+        //userCredential is the object returned on successful sign in
         const user = userCredential.user;
         // Fetch additional user details from Firestore
         const db = getFirestore(firebaseApp);
         try {
+          //construct reference to document in 'users' collection where the document ID is the user's UID
           const docRef = doc(db, 'users', user.uid);
+
+          //Fetch the document from Firestore
           const docSnap = await getDoc(docRef);
+
+          //If document exists, log the document data and welcome user
           if (docSnap.exists()) {
             console.log('Document data:', docSnap.data());
             Alert.alert(`Welcome ${docSnap.data().username}`);
@@ -82,6 +93,7 @@ const LogInScreen = ({navigation}) => {
   };
 
   return (
+    //Avoids the keyboard from covering inputs or buttons
     <KeyboardAvoidingView behavior="position" style={{flex: 1}}>
       <SafeAreaView
         style={{
@@ -195,6 +207,7 @@ const LogInScreen = ({navigation}) => {
   );
 };
 
+//Stylesheet
 const styles = StyleSheet.create({
   animatedViewPassword: {
     position: 'relative',
