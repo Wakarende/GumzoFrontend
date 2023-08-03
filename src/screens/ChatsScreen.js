@@ -12,7 +12,7 @@ import {
 } from 'react-native-gesture-handler';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {GestureHandlerRefContext} from '@react-navigation/stack';
+// import {GestureHandlerRefContext} from '@react-navigation/stack';
 
 //local imports
 import colors from '../config/colors';
