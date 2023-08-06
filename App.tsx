@@ -16,6 +16,7 @@ import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import colors from './src/config/colors';
 import CreateProfileScreen from './src/screens/profilesetup/CreateProfileScreen';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import ProfileSetupNavigators from './src/navigators/ProfileSetupNavigators';
 //Remove default theme colour of react native navigation
 const MyTheme = {
   ...DefaultTheme,
@@ -27,10 +28,9 @@ const MyTheme = {
 
 function App(): JSX.Element {
   return (
-    // <CreateProfileScreen />
     <GestureHandlerRootView style={styles.container}>
       <NavigationContainer theme={MyTheme}>
-        <RootNavigator />
+        <ProfileSetupNavigators />
       </NavigationContainer>
     </GestureHandlerRootView>
   );

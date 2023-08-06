@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  TouchableHighlight,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   FlatList,
   GestureHandlerRootView,
@@ -12,7 +7,6 @@ import {
 } from 'react-native-gesture-handler';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-// import {GestureHandlerRefContext} from '@react-navigation/stack';
 
 //local imports
 import colors from '../config/colors';
@@ -34,7 +28,7 @@ const chats = [
 
 function ChatsScreen({navigation}) {
   return (
-    <GestureHandlerRootView style={{flex: 1}}>
+    <GestureHandlerRootView style={styles.rootView}>
       <Screen style={styles.screen}>
         <View style={styles.container}>
           <View style={styles.searchBarContainer}>
@@ -69,7 +63,11 @@ function ChatsScreen({navigation}) {
   );
 }
 
+//Stylesheet
 const styles = StyleSheet.create({
+  rootView: {
+    flex: 1,
+  },
   container: {
     paddingHorizontal: 10,
   },

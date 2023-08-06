@@ -78,27 +78,6 @@ function AccountScreen({navigation}) {
       fetchUser();
     }
   }, [user]);
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     // Fetch the current user's uid
-  //     const auth = getAuth(firebaseApp);
-  //     const uid = auth.currentUser.uid;
-
-  //     // Fetch user document from Firestore
-  //     const db = getFirestore(firebaseApp);
-  //     const docRef = doc(db, 'users', uid);
-  //     const docSnap = await getDoc(docRef);
-
-  //     // If the document exists, set the data to the user state
-  //     if (docSnap.exists()) {
-  //       setUser(docSnap.data());
-  //     } else {
-  //       console.log('No such document!');
-  //     }
-  //   };
-
-  //   fetchUser();
-  // }, []);
   return (
     <Screen style={styles.screen}>
       <View style={styles.container}>

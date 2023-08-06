@@ -1,4 +1,4 @@
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import React from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Artwork01 from '../components/artworks/Artwork01';
@@ -47,6 +47,7 @@ const IntroScreen = ({navigation}) => {
   );
 };
 
+//Stylesheet
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,

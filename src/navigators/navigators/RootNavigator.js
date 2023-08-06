@@ -17,6 +17,7 @@ import CreateProfileScreen from '../../screens/profilesetup/CreateProfileScreen'
 import SingleChatScreen from '../../screens/SingleChatScreen';
 import ChatsScreen from '../../screens/ChatsScreen';
 import MatchScreen from '../../screens/MatchScreen';
+import UserInfoScreen from '../../screens/profilesetup/UserInfoScreen';
 
 const RootStack = createNativeStackNavigator();
 
@@ -35,10 +36,6 @@ const RootNavigator = () => {
         <RootStack.Screen name="DashboardScreen" component={NavigationBar} />
         <RootStack.Screen name="Register" component={RegisterScreen} />
         <RootStack.Screen name="SingleChat" component={SingleChatScreen} />
-        <RootStack.Screen
-          name="CreateProfile"
-          component={CreateProfileScreen}
-        />
       </RootStack.Group>
     </RootStack.Navigator>
   );

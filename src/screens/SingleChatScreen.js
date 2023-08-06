@@ -1,10 +1,12 @@
 import React, {useState, useCallback, useEffect} from 'react';
-import {GiftedChat, InputToolbar} from 'react-native-gifted-chat';
-import {Platform, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {GiftedChat} from 'react-native-gifted-chat';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '../config/colors';
 import {Audio} from 'expo-av';
 import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
+// import * as firebase from 'firebase';
+// import 'firebase/storage';
 
 //local imports
 import customInputToolbar from '../components/customInputToolbar';
@@ -139,6 +141,7 @@ function SingleChatScreen({navigation}) {
   );
 }
 
+//Stylesheet
 const styles = StyleSheet.create({
   container: {
     flex: 1,
