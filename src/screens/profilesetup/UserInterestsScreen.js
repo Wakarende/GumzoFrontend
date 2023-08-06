@@ -22,6 +22,7 @@ const InterestCard = ({interest, iconName, onPress, isSelected}) => (
     </View>
   </TouchableOpacity>
 );
+
 function UserInterestsScreen({navigation}) {
   const [selectedInterests, setSelectedInterests] = useState([]);
   useEffect(() => {
@@ -78,7 +79,10 @@ function UserInterestsScreen({navigation}) {
         ))}
       </View>
       <View style={styles.buttonContainer}>
-        <PrimaryButton label="Continue" />
+        <PrimaryButton
+          label="Continue"
+          onPress={() => navigation.navigate('LanguageProficiency')}
+        />
       </View>
     </SafeAreaView>
   );
@@ -94,9 +98,9 @@ const styles = StyleSheet.create({
   },
   text: {},
   card: {
-    width: 147,
+    width: 127,
     height: 50,
-    margin: '1%',
+    // margin: '1%',
     alignItems: 'center',
     borderWidth: 1,
     paddingTop: 12,
@@ -105,7 +109,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     borderColor: colors.grannySmithApple,
     borderRadius: 15,
-    marginBottom: 11,
+    marginBottom: 10,
     marginTop: 32,
   },
   cardContainer: {
@@ -118,7 +122,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     columnGap: 9,
   },
-  buttonContainer: {marginTop: 87},
+  buttonContainer: {marginTop: 40},
   cardSelected: {
     backgroundColor: colors.pastelGreen,
   },

@@ -8,13 +8,14 @@ import AppButton from '../../components/AppButton';
 import ProfileBackground from '../../components/artworks/ProfileBackground';
 import PrimaryButton from '../../components/PrimaryButton';
 import colors from '../../config/colors';
+
 function CreateProfileScreen({navigation}) {
   console.log(navigation);
   return (
     <SafeAreaView style={styles.container}>
       <ProfileBackground />
       <View style={styles.profileContainer}>
-        <CreateProfile width={300} height={300} />
+        <CreateProfile width={200} height={200} />
       </View>
       <View style={styles.textContainer}>
         <AppText style={styles.title}>Create Profile</AppText>
@@ -44,10 +45,10 @@ const styles = StyleSheet.create({
     marginLeft: -150,
   },
   textContainer: {
-    marginTop: 60,
+    marginTop: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 33,
+    marginBottom: 20,
   },
   buttonContainer: {
     justifyContent: 'center',

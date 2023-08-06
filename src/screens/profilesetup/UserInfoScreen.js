@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 100,
+    margin: 50,
   },
   profilePicture: {
     width: 200,

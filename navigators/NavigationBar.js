@@ -4,11 +4,11 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 //local imports
-import AccountScreen from '../../screens/AccountScreen';
-import ChatsScreen from '../../screens/ChatsScreen';
-import DashboardScreen from '../../screens/DashboardScreen';
-import MatchScreen from '../../screens/MatchScreen';
-import colors from '../../config/colors';
+import AccountScreen from '../src/screens/AccountScreen';
+import ChatsScreen from '../src/screens/ChatsScreen';
+import DashboardScreen from '../src/screens/DashboardScreen';
+import MatchScreen from '../src/screens/MatchScreen';
+import colors from '../src/config/colors';
 import {StyleSheet} from 'react-native';
 
 const Tab = createBottomTabNavigator();

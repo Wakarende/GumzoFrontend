@@ -11,12 +11,12 @@ import React from 'react';
 import {SafeAreaView, StyleSheet, useColorScheme} from 'react-native';
 
 // local imports
-import RootNavigator from './src/navigators/navigators/RootNavigator';
+import RootNavigator from './navigators/RootNavigator';
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native';
 import colors from './src/config/colors';
 import CreateProfileScreen from './src/screens/profilesetup/CreateProfileScreen';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import ProfileSetupNavigators from './src/navigators/ProfileSetupNavigators';
+import ProfileSetupNavigators from './navigators/ProfileSetupNavigators';
 //Remove default theme colour of react native navigation
 const MyTheme = {
   ...DefaultTheme,

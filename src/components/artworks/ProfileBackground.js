@@ -8,7 +8,7 @@ function ProfileBackground(props) {
       viewBox="0 0 430 477"
       fill="none"
       xmlns="http://www.w3.org/2000/svg">
-      <Ellipse cx="242.5" cy="117.5" rx="398.5" ry="359.5" fill="#ACE7A3" />
+      <Ellipse cx="242.5" cy="97.5" rx="398.5" ry="349.5" fill="#ACE7A3" />
     </Svg>
   );
 }
