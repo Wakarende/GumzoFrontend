@@ -6,9 +6,10 @@
  * @format
  */
 
-import React from 'react';
-
+import React, {useState} from 'react';
+import {Button, View, Text, Image} from 'react-native';
 import {SafeAreaView, StyleSheet, useColorScheme} from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
 // local imports
 import RootNavigator from './navigators/RootNavigator';
@@ -17,6 +18,9 @@ import colors from './src/config/colors';
 import CreateProfileScreen from './src/screens/profilesetup/CreateProfileScreen';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import ProfileSetupNavigators from './navigators/ProfileSetupNavigators';
+import DatePicker from 'react-native-date-picker';
+import {Picker} from 'react-native-wheel-pick';
+
 //Remove default theme colour of react native navigation
 const MyTheme = {
   ...DefaultTheme,
@@ -27,15 +31,88 @@ const MyTheme = {
 };
 
 function App(): JSX.Element {
+  const [image, setImage] = useState<string | null>(null);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+  const [date, setDate] = useState(new Date('09-10-2021'));
+  const [open, setOpen] = useState(false);
   return (
+    // <SafeAreaView style={styles.container}>
+    //   <View style={styles.container}>
+    //     <Text style={styles.text}>Birth Date :</Text>
+    //     <DatePicker
+    //       style={styles.datePickerStyle}
+    //       date={date}
+    //       mode="date"
+    //       onDateChange={date => {
+    //         setDate(date);
+    //       }}
+    //     />
+    //   </View>
+    // </SafeAreaView>
     <GestureHandlerRootView style={styles.container}>
       <NavigationContainer theme={MyTheme}>
         <ProfileSetupNavigators />
       </NavigationContainer>
     </GestureHandlerRootView>
+    // <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+    //   <Button title="Pick an image from camera roll" onPress={pickImage} />
+    //   {image && (
+    //     <Image source={{uri: image}} style={{width: 200, height: 200}} />
+    //   )}
+    // </View>
   );
 }
 
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+
+//     padding: 10,
+
+//     justifyContent: 'center',
+
+//     alignItems: 'center',
+
+//     backgroundColor: '#A8E9CA',
+//   },
+
+//   title: {
+//     textAlign: 'left',
+
+//     fontSize: 20,
+
+//     fontWeight: 'bold',
+//   },
+
+//   datePickerStyle: {
+//     width: 230,
+//   },
+
+//   text: {
+//     textAlign: 'left',
+
+//     width: 230,
+
+//     fontSize: 16,
+
+//     color: '#000',
+//   },
+// });
 const styles = StyleSheet.create({
   container: {
     flex: 1,
