@@ -1,11 +1,55 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {getFirestore, doc, setDoc} from 'firebase/firestore';
+//local imports
 import AppText from '../../components/AppText';
 import {TextInput} from 'react-native-gesture-handler';
 import PrimaryButton from '../../components/PrimaryButton';
+import {FormContext} from '../../components/FormContext';
+import firebaseApp from '../../../firebaseConfig';
 
-function UserBioScreen(props) {
+function UserBioScreen({navigation, route}) {
+  const {state, dispatch} = useContext(FormContext);
+  //user id
+  const {uid} = route.params;
+  console.log('UID:', uid);
+  const handleBioChange = text => {
+    dispatch({
+      type: 'UPDATE_FIELD',
+      payload: {field: 'bio', value: text},
+    });
+  };
+
+  //handle form submission to firebase
+  const handleSubmit = async () => {
+    console.log('handleSubmit called');
+    try {
+      const db = getFirestore(firebaseApp);
+      //update the user document with uid
+      const userRef = doc(db, 'users', uid);
+      const userProfile = {
+        firstName: state.firstName,
+        lastName: state.lastName,
+        dob: state.dob,
+        selectedImage: state.selectedImage,
+        selectedInterests: state.selectedInterests,
+        selectedProficiency: state.selectedProficiency,
+        bio: state.bio,
+      };
+
+      console.log('User Profile:', userProfile);
+
+      await setDoc(userRef, userProfile, {merge: true});
+
+      console.log('Form Submitted:', userProfile);
+
+      navigation.navigate('DashboardScreen');
+    } catch (error) {
+      console.error('Error updating user bio: ', error.message);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <AppText style={styles.title}>Bio</AppText>
@@ -14,10 +58,14 @@ function UserBioScreen(props) {
         Anything you feel is important for us to know about you!
       </AppText>
       <View>
-        <TextInput placeholder="Bio" style={styles.input} />
+        <TextInput
+          placeholder="Bio"
+          style={styles.input}
+          onChangeText={handleBioChange}
+        />
       </View>
       <View style={styles.buttonContainer}>
-        <PrimaryButton label="Submit" />
+        <PrimaryButton label="Submit" onPress={handleSubmit} />
       </View>
     </SafeAreaView>
   );

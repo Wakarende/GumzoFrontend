@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext} from 'react';
 import {
   View,
   StyleSheet,
@@ -19,6 +19,7 @@ import AppInput from '../../components/AppInput';
 import AppText from '../../components/AppText';
 import colors from '../../config/colors';
 import PrimaryButton from '../../components/PrimaryButton';
+import {FormContext} from '../../components/FormContext';
 
 //Validation Schema for login form, validates first name, last name and date of birth
 const validationSchema = Yup.object().shape({
@@ -34,19 +35,44 @@ const validationSchema = Yup.object().shape({
 });
 
 //Using the useForm hook for form opeations and validation
-function UserInfoScreen({navigation}) {
+function UserInfoScreen({navigation, route}) {
+  //user id is extracted from navigation parameters
+  const {uid} = route.params;
+
+  //Using FormContext to handle form state
+  const {state, dispatch} = useContext(FormContext);
+
+  //Setting up the form validation using react-hook-form
   const {
     control,
-    handleSubmit,
+    watch,
     formState: {errors},
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
 
+  // Watch the values of firstName and lastName fields
+  const firstName = watch('firstName');
+  const lastName = watch('lastName');
+
+  // Function to update context state and navigate to the next screen
+  const handleContinue = () => {
+    dispatch({
+      type: 'UPDATE_FIELD',
+      payload: {field: 'firstName', value: firstName},
+    });
+    dispatch({
+      type: 'UPDATE_FIELD',
+      payload: {field: 'lastName', value: lastName},
+    });
+    navigation.navigate('UserInterests', {uid});
+  };
+
+  //Placeholder image path
   const placeholderImage = require('../../../assets/profileBackground.png');
 
-  //State to manage the selected image for the profile picture
-  const [selectedImage, setSelectedImage] = useState(null);
+  //Retrieving the selected image from the context state
+  const selectedImage = state.selectedImage;
 
   //Function to launch image picker and select an image
   const pickImage = async () => {
@@ -60,7 +86,10 @@ function UserInfoScreen({navigation}) {
     console.log(result);
 
     if (!result.canceled) {
-      setSelectedImage(result.assets[0].uri);
+      dispatch({
+        type: 'UPDATE_FIELD',
+        payload: {field: 'selectedImage', value: result.assets[0].uri},
+      });
     }
   };
   return (
@@ -119,10 +148,7 @@ function UserInfoScreen({navigation}) {
           {errors.lastName && <AppText>{errors.lastName.message}</AppText>}
         </View>
         <View style={styles.button}>
-          <PrimaryButton
-            label="Continue"
-            onPress={() => navigation.navigate('UserInterests')}
-          />
+          <PrimaryButton label="Continue" onPress={handleContinue} />
         </View>
       </SafeAreaView>
     </KeyboardAvoidingView>

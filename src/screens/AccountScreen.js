@@ -10,6 +10,7 @@ import ListItem from '../components/lists/ListItem';
 import ListItemSeparator from '../components/lists/ListItemSeparator';
 import ProfileListItem from '../components/ProfileListItem';
 import Screen from '../components/Screen';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 //Data displayed on flatlist
 const menuItems = [
@@ -80,13 +81,15 @@ function AccountScreen({navigation}) {
   }, [user]);
   return (
     <Screen style={styles.screen}>
-      <View style={styles.container}>
-        <ListItem
-          // title={'Joy Kirii'}
-          title={user ? user.username : ''}
-          image={require('../../assets/Profile.png')}
-        />
-      </View>
+      <TouchableOpacity onPress={() => navigation.navigate()}>
+        <View style={styles.container}>
+          <ListItem
+            // title={'Joy Kirii'}
+            title={user ? user.username : ''}
+            image={require('../../assets/Profile.png')}
+          />
+        </View>
+      </TouchableOpacity>
       <View style={styles.container}>
         <FlatList
           data={menuItems}
@@ -101,7 +104,6 @@ function AccountScreen({navigation}) {
                   backgroundColor={item.icon.backgroundColor}
                 />
               }
-              //onPress={() => navigation.navigate(item.targetScreen)}
             />
           )}
         />

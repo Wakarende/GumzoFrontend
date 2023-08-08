@@ -1,28 +1,33 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useContext} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 //Local Imports
 import AppText from '../../components/AppText';
-// import {proficiencyLevels} from '../../utils/constants';
 import colors from '../../config/colors';
 import PrimaryButton from '../../components/PrimaryButton';
 import {proficiencyLevels} from '../../utils/proficiency';
-
-const FluencyCard = ({title, onPress, isSelected}) => (
-  <TouchableOpacity
-    style={[styles.card, isSelected ? styles.cardSelected : null]}
-    onPress={onPress}>
-    <View style={styles.cardInfo}>
-      <AppText color={isSelected ? 'white' : colors.darkGray}>{title}</AppText>
-    </View>
-  </TouchableOpacity>
-);
+import {FormContext} from '../../components/FormContext';
+import FluencyCard from '../../components/FluencyCard';
+//Reusable Fluency Card component for displaying proficiency level options
+// const FluencyCard = ({title, onPress, isSelected}) => (
+//   <TouchableOpacity
+//     style={[styles.card, isSelected ? styles.cardSelected : null]}
+//     onPress={onPress}>
+//     <View style={styles.cardInfo}>
+//       <AppText color={isSelected ? 'white' : colors.darkGray}>{title}</AppText>
+//     </View>
+//   </TouchableOpacity>
+// );
 
 console.log(proficiencyLevels);
-function LanguageProficiencyScreen({navigation}) {
-  const [selectedProficiency, setSelectedProficiency] = useState([]);
+function LanguageProficiencyScreen({navigation, route}) {
+  const {uid} = route.params;
+  console.log('Route Params:', route.params);
+
+  // const [selectedProficiency, setSelectedProficiency] = useState([]);
+  const {state, dispatch} = useContext(FormContext);
+  const selectedProficiency = state.selectedProficiency;
   useEffect(() => {
     console.log('Current selected proficiency:', selectedProficiency);
   }, [selectedProficiency]);
@@ -51,11 +56,13 @@ function LanguageProficiencyScreen({navigation}) {
       //if proficiency is not selected, add it
       newSelectedProficiency = [...selectedProficiency, proficiencyItem];
     }
-    //update the state of the new array
-    setSelectedProficiency(newSelectedProficiency);
 
-    console.log(`Selected: ${proficiencyItem}`);
+    dispatch({
+      type: 'UPDATE_FIELD',
+      payload: {field: 'selectedProficiency', value: newSelectedProficiency},
+    });
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.textContainer}>
@@ -79,7 +86,7 @@ function LanguageProficiencyScreen({navigation}) {
       <View style={styles.buttonContainer}>
         <PrimaryButton
           label="Continue"
-          onPress={() => navigation.navigate('UserBio')}
+          onPress={() => navigation.navigate('UserBio', {uid})}
           style={styles.button}
         />
       </View>

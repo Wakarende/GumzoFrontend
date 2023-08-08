@@ -9,8 +9,10 @@ import ProfileBackground from '../../components/artworks/ProfileBackground';
 import PrimaryButton from '../../components/PrimaryButton';
 import colors from '../../config/colors';
 
-function CreateProfileScreen({navigation}) {
-  console.log(navigation);
+function CreateProfileScreen({navigation, route}) {
+  // User ID is extracted from navigation parameters
+  const {uid} = route.params;
+
   return (
     <SafeAreaView style={styles.container}>
       <ProfileBackground />
@@ -24,7 +26,7 @@ function CreateProfileScreen({navigation}) {
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('UserInfo');
+            navigation.navigate('UserInfo', {uid});
           }}>
           <PrimaryButton label="Get Started" style={styles.button} />
         </TouchableOpacity>
@@ -33,6 +35,7 @@ function CreateProfileScreen({navigation}) {
   );
 }
 
+//stylesheet
 const styles = StyleSheet.create({
   container: {
     flex: 1,

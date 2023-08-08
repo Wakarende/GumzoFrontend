@@ -86,7 +86,11 @@ function RegisterScreen({navigation}) {
       console.log('User added to Firestore with ID: ', docRef.id);
 
       //navigate to createprofile screen
-      navigation.navigate('CreateProfile');
+      // navigation.navigate('CreateProfile', {uid: response.user.uid});
+      navigation.navigate('ProfileSetup', {
+        screen: 'CreateProfile',
+        params: {uid: response.user.uid},
+      });
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
         console.log('That email address is already in use!');

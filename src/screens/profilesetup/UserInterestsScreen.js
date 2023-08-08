@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import AppText from '../../components/AppText';
 import {View, StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -7,6 +7,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {interests} from '../../utils/interests';
 import colors from '../../config/colors';
 import PrimaryButton from '../../components/PrimaryButton';
+import {FormContext} from '../../components/FormContext';
 
 const InterestCard = ({interest, iconName, onPress, isSelected}) => (
   <TouchableOpacity
@@ -23,8 +24,13 @@ const InterestCard = ({interest, iconName, onPress, isSelected}) => (
   </TouchableOpacity>
 );
 
-function UserInterestsScreen({navigation}) {
-  const [selectedInterests, setSelectedInterests] = useState([]);
+function UserInterestsScreen({navigation, route}) {
+  //user id
+  const {uid} = route.params;
+
+  const {state, dispatch} = useContext(FormContext);
+  const selectedInterests = state.selectedInterests;
+  //   const [selectedInterests, setSelectedInterests] = useState([]);
   useEffect(() => {
     console.log('Current selected interests:', selectedInterests);
   }, [selectedInterests]);
@@ -53,8 +59,13 @@ function UserInterestsScreen({navigation}) {
       //if interest is not selected, add it
       newSelectedInterests = [...selectedInterests, interestItem];
     }
+    // Dispatch the updated interests to the context
+    dispatch({
+      type: 'UPDATE_FIELD',
+      payload: {field: 'selectedInterests', value: newSelectedInterests},
+    });
     //update the state of the new array
-    setSelectedInterests(newSelectedInterests);
+    // setSelectedInterests(newSelectedInterests);
 
     console.log(`Selected: ${interestItem}`);
   };
@@ -81,7 +92,7 @@ function UserInterestsScreen({navigation}) {
       <View style={styles.buttonContainer}>
         <PrimaryButton
           label="Continue"
-          onPress={() => navigation.navigate('LanguageProficiency')}
+          onPress={() => navigation.navigate('LanguageProficiency', {uid})}
         />
       </View>
     </SafeAreaView>

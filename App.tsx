@@ -20,6 +20,8 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import ProfileSetupNavigators from './navigators/ProfileSetupNavigators';
 import DatePicker from 'react-native-date-picker';
 import {Picker} from 'react-native-wheel-pick';
+// import { FormProvider } from 'react-hook-form';
+import {FormProvider} from './src/components/FormContext';
 
 //Remove default theme colour of react native navigation
 const MyTheme = {
@@ -66,7 +68,9 @@ function App(): JSX.Element {
     // </SafeAreaView>
     <GestureHandlerRootView style={styles.container}>
       <NavigationContainer theme={MyTheme}>
-        <ProfileSetupNavigators />
+        <FormProvider>
+          <RootNavigator />
+        </FormProvider>
       </NavigationContainer>
     </GestureHandlerRootView>
     // <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
@@ -78,41 +82,6 @@ function App(): JSX.Element {
   );
 }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-
-//     padding: 10,
-
-//     justifyContent: 'center',
-
-//     alignItems: 'center',
-
-//     backgroundColor: '#A8E9CA',
-//   },
-
-//   title: {
-//     textAlign: 'left',
-
-//     fontSize: 20,
-
-//     fontWeight: 'bold',
-//   },
-
-//   datePickerStyle: {
-//     width: 230,
-//   },
-
-//   text: {
-//     textAlign: 'left',
-
-//     width: 230,
-
-//     fontSize: 16,
-
-//     color: '#000',
-//   },
-// });
 const styles = StyleSheet.create({
   container: {
     flex: 1,
