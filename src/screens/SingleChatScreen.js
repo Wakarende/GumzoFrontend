@@ -14,6 +14,7 @@ import customInputToolbar from '../components/customInputToolbar';
 //local imports
 import AppText from '../components/AppText';
 import CustomChatInput from '../components/CustomChatInput';
+import AudioMessagePlayer from '../components/AudioMessagePlayer';
 
 function SingleChatScreen({navigation}) {
   //Instantiate a new Recording
@@ -22,7 +23,7 @@ function SingleChatScreen({navigation}) {
   const [audioURI, setAudioURI] = useState(null); //save recording
   //State to track if audio message is ready to send
   const [isAudioReadyToSend, setIsAudioReadyToSend] = useState(false);
-
+  const [isUnloaded, setIsUnloaded] = useState(false);
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
@@ -42,11 +43,13 @@ function SingleChatScreen({navigation}) {
 
     return () => {
       //stop and unload the recording when the component unmounts if it's currently recording
-      if (isRecording && recording) {
-        recording.stopAndUnloadAsync();
+      if (isRecording && recording && !isUnloaded) {
+        recording.stopAndUnloadAsync().then(() => {
+          setIsUnloaded(true);
+        });
       }
     };
-  }, [isRecording, recording]); //Include dependencies
+  }, [isRecording, recording, isUnloaded]); //Include dependencies
 
   //Function to handle sending messages
   //
@@ -110,10 +113,11 @@ function SingleChatScreen({navigation}) {
 
   //Function to stop recording
   const stopRecording = async () => {
-    if (!isRecording) return;
+    // if (!isRecording) return;
     try {
-      if (recording) {
+      if (recording && !isUnloaded) {
         await recording.stopAndUnloadAsync();
+        setIsUnloaded(true);
         const uri = recording.getURI();
         setAudioURI(uri);
         setIsAudioReadyToSend(true);
@@ -183,7 +187,6 @@ function SingleChatScreen({navigation}) {
         user={{
           _id: 1,
         }}
-        renderActions={renderActions}
         renderInputToolbar={props => (
           <CustomChatInput
             {...props}
@@ -191,6 +194,9 @@ function SingleChatScreen({navigation}) {
             startRecording={startRecording}
             stopRecording={stopRecording}
           />
+        )}
+        renderMessageAudio={message => (
+          <AudioMessagePlayer audioURL={message.currentMessage.audio} />
         )}
       />
     </View>

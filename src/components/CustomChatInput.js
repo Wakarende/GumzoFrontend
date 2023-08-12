@@ -38,7 +38,7 @@ function CustomChatInput({onSendMessage, startRecording, stopRecording}) {
             onSendMessage({
               text: message,
               createdAt: new Date(),
-              user: {},
+              user: {id: 1},
             });
             setMessage('');
           }
