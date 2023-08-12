@@ -198,6 +198,7 @@ function SingleChatScreen({navigation}) {
         renderMessageAudio={message => (
           <AudioMessagePlayer audioURL={message.currentMessage.audio} />
         )}
+        style={styles.giftedChat}
       />
     </View>
   );
@@ -207,6 +208,14 @@ function SingleChatScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingVertical: 30,
+    justifyContent: 'center',
+    // alignItems: 'center',
+  },
+  giftedChat: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   header: {
     paddingHorizontal: 15,

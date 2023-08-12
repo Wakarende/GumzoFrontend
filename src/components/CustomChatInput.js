@@ -59,8 +59,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 10,
     alignItems: 'center',
+    justifyContent: 'center',
     // borderTopWidth: 1,
     borderColor: 'lightgray',
+    paddingBottom: 200,
   },
   input: {
     flex: 1,
@@ -68,6 +70,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'lightgray',
     borderRadius: 20,
+  },
+  icon: {
+    marginLeft: 10,
   },
 });
 export default CustomChatInput;
