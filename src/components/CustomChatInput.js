@@ -5,10 +5,26 @@ import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import colors from '../config/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-function CustomChatInput({onSendMessage}) {
+function CustomChatInput({onSendMessage, startRecording, stopRecording}) {
   const [message, setMessage] = useState('');
   return (
-    <View>
+    <View style={styles.container}>
+      <TouchableOpacity onPress={startRecording}>
+        <MaterialCommunityIcons
+          name="microphone"
+          size={24}
+          color={colors.lightGray}
+          style={styles.icon}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={stopRecording}>
+        <MaterialCommunityIcons
+          name="stop"
+          size={24}
+          color={colors.lightGray}
+          style={styles.icon}
+        />
+      </TouchableOpacity>
       <TextInput
         style={styles.input}
         value={message}
@@ -22,12 +38,17 @@ function CustomChatInput({onSendMessage}) {
             onSendMessage({
               text: message,
               createdAt: new Date(),
-              user: {_id: 1},
+              user: {},
             });
             setMessage('');
           }
         }}>
-        <MaterialCommunityIcons name="send" size={24} color={colors.darkGray} />
+        <MaterialCommunityIcons
+          name="send"
+          size={24}
+          color={colors.lightGray}
+          style={styles.icon}
+        />
       </TouchableOpacity>
     </View>
   );
@@ -38,7 +59,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 10,
     alignItems: 'center',
-    borderTopWidth: 1,
+    // borderTopWidth: 1,
     borderColor: 'lightgray',
   },
   input: {

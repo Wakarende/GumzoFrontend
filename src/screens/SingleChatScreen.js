@@ -185,16 +185,13 @@ function SingleChatScreen({navigation}) {
         }}
         renderActions={renderActions}
         renderInputToolbar={props => (
-          <CustomChatInput {...props} onSendMessage={onSend} />
+          <CustomChatInput
+            {...props}
+            onSendMessage={onSend}
+            startRecording={startRecording}
+            stopRecording={stopRecording}
+          />
         )}
-        // renderInputToolbar={props =>
-        //   customInputToolbar({
-        //     ...props,
-        //     onSendAudio: sendAudioMessage,
-        //     audioURI,
-        //     isAudioReadyToSend,
-        //   })
-        // }
       />
     </View>
   );
