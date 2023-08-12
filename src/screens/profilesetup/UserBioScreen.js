@@ -54,8 +54,8 @@ function UserBioScreen({navigation, route}) {
     <SafeAreaView style={styles.container}>
       <AppText style={styles.title}>Bio</AppText>
       <AppText style={styles.text}>
-        Tell us a bit more about yourself. Your background, Your learning goals.
-        Anything you feel is important for us to know about you!
+        Tell us a bit more about yourself. What is your background? What are
+        your language learning goals? What do you like to talk about?
       </AppText>
       <View>
         <TextInput

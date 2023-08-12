@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
   icon: {
     position: 'absolute',
     left: 12,
-    top: 12,
+    top: 22,
     opacity: 0.5,
   },
   registerLink: {

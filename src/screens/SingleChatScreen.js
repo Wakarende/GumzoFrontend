@@ -13,11 +13,16 @@ import customInputToolbar from '../components/customInputToolbar';
 
 //local imports
 import AppText from '../components/AppText';
-
-//Instantiate a new Recording
-const recording = new Audio.Recording();
+import CustomChatInput from '../components/CustomChatInput';
 
 function SingleChatScreen({navigation}) {
+  //Instantiate a new Recording
+  const [recording, setRecording] = useState(null); // New state for recording
+  const [isRecording, setIsRecording] = useState(false); //State to track if currently recording
+  const [audioURI, setAudioURI] = useState(null); //save recording
+  //State to track if audio message is ready to send
+  const [isAudioReadyToSend, setIsAudioReadyToSend] = useState(false);
+
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
@@ -30,23 +35,30 @@ function SingleChatScreen({navigation}) {
         user: {
           _id: 2,
           name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
+          avatar: require('../../assets/Profile.png'),
         },
       },
     ]);
 
     return () => {
-      //stop and unload the recording when the component unmounts
-      recording.stopAndUnloadAsync();
+      //stop and unload the recording when the component unmounts if it's currently recording
+      if (isRecording && recording) {
+        recording.stopAndUnloadAsync();
+      }
     };
-  }, []);
+  }, [isRecording, recording]); //Include dependencies
 
   //Function to handle sending messages
-  const onSend = useCallback((messages = []) => {
-    setMessages(previousMessages =>
-      GiftedChat.append(previousMessages, messages),
-    );
-  }, []);
+  //
+  function onSend(messages = []) {
+    if (audioURI) {
+      sendAudioMessage();
+    } else {
+      setMessages(previousMessages =>
+        GiftedChat.append(previousMessages, messages),
+      );
+    }
+  }
 
   //Function to check and request permissions
   const checkPermission = async () => {
@@ -68,6 +80,9 @@ function SingleChatScreen({navigation}) {
 
   //Function to start recording
   const startRecording = async () => {
+    //Check if it is already recording
+    if (isRecording) return;
+
     //Check if app has necessary permissions
     const hasPermission = await checkPermission();
 
@@ -77,10 +92,17 @@ function SingleChatScreen({navigation}) {
     }
 
     try {
-      await recording.prepareToRecordAsync(
+      //Create a new recording instance
+      const newRecording = new Audio.Recording();
+      //Set the new recording instance to state
+      setRecording(newRecording);
+      await newRecording.prepareToRecordAsync(
         Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY,
-      ); // <----- PREPARE FOR RECORDING
-      await recording.startAsync(); // <----- START RECORDING
+      );
+      //  PREPARE FOR RECORDING
+      await newRecording.startAsync();
+      // START RECORDING
+      setIsRecording(true);
     } catch (error) {
       console.error(error);
     }
@@ -88,14 +110,41 @@ function SingleChatScreen({navigation}) {
 
   //Function to stop recording
   const stopRecording = async () => {
+    if (!isRecording) return;
     try {
-      await recording.stopAndUnloadAsync(); // <----- STOP RECORDING
+      if (recording) {
+        await recording.stopAndUnloadAsync();
+        const uri = recording.getURI();
+        setAudioURI(uri);
+        setIsAudioReadyToSend(true);
+        setIsRecording(false);
+      }
     } catch (error) {
       console.error(error);
     }
   };
 
-  //Function to render action buttons
+  //Function to send audio message to chat
+  const sendAudioMessage = () => {
+    if (audioURI) {
+      const audioMessage = {
+        _id: Math.random().toString(),
+        text: '',
+        createdAt: new Date(),
+        user: {
+          _id: 1,
+          avatar: require('../../assets/Profile.png'),
+        },
+        audio: audioURI,
+      };
+      setMessages(previousMessages =>
+        GiftedChat.append(previousMessages, [audioMessage]),
+      );
+      setIsAudioReadyToSend(false);
+    }
+  };
+
+  //Function to render record, stopRecording and send buttons
   const renderActions = () => {
     return (
       <View style={styles.iconContainer}>
@@ -135,7 +184,17 @@ function SingleChatScreen({navigation}) {
           _id: 1,
         }}
         renderActions={renderActions}
-        renderInputToolbar={props => customInputToolbar(props)}
+        renderInputToolbar={props => (
+          <CustomChatInput {...props} onSendMessage={onSend} />
+        )}
+        // renderInputToolbar={props =>
+        //   customInputToolbar({
+        //     ...props,
+        //     onSendAudio: sendAudioMessage,
+        //     audioURI,
+        //     isAudioReadyToSend,
+        //   })
+        // }
       />
     </View>
   );

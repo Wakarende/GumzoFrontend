@@ -109,6 +109,7 @@ function RegisterScreen({navigation}) {
           name="arrow-left"
           size={24}
           color={colors.lightGray}
+          style={styles.backArrow}
         />
       </TouchableOpacity>
       <AppText style={styles.title}>Register</AppText>
@@ -171,6 +172,10 @@ function RegisterScreen({navigation}) {
 }
 
 const styles = StyleSheet.create({
+  backArrow: {
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+  },
   container: {
     padding: 20,
     alignItems: 'center',

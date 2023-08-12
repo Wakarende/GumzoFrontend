@@ -22,6 +22,7 @@ import DatePicker from 'react-native-date-picker';
 import {Picker} from 'react-native-wheel-pick';
 // import { FormProvider } from 'react-hook-form';
 import {FormProvider} from './src/components/FormContext';
+import UserBioScreen from './src/screens/profilesetup/UserBioScreen';
 
 //Remove default theme colour of react native navigation
 const MyTheme = {
@@ -53,19 +54,6 @@ function App(): JSX.Element {
   const [date, setDate] = useState(new Date('09-10-2021'));
   const [open, setOpen] = useState(false);
   return (
-    // <SafeAreaView style={styles.container}>
-    //   <View style={styles.container}>
-    //     <Text style={styles.text}>Birth Date :</Text>
-    //     <DatePicker
-    //       style={styles.datePickerStyle}
-    //       date={date}
-    //       mode="date"
-    //       onDateChange={date => {
-    //         setDate(date);
-    //       }}
-    //     />
-    //   </View>
-    // </SafeAreaView>
     <GestureHandlerRootView style={styles.container}>
       <NavigationContainer theme={MyTheme}>
         <FormProvider>
@@ -73,12 +61,6 @@ function App(): JSX.Element {
         </FormProvider>
       </NavigationContainer>
     </GestureHandlerRootView>
-    // <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-    //   <Button title="Pick an image from camera roll" onPress={pickImage} />
-    //   {image && (
-    //     <Image source={{uri: image}} style={{width: 200, height: 200}} />
-    //   )}
-    // </View>
   );
 }
 

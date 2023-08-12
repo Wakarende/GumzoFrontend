@@ -10,6 +10,8 @@ const initialState = {
   selectedInterests: [],
   selectedProficiency: [],
   bio: '',
+  learningGoals: '',
+  talkingPoints: '',
 };
 
 const formReducer = (state, action) => {

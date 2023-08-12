@@ -3,16 +3,19 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {InputToolbar, Composer, Send} from 'react-native-gifted-chat';
 import colors from '../config/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import AudioRecorderPlayer from 'react-native-audio-recorder-player';
-import {View, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 
-const audioRecorderPlayer = new AudioRecorderPlayer();
-
-function customInputToolbar(props) {
+function customInputToolbar({
+  onSendAudio,
+  isAudioReadyToSend,
+  audioURI,
+  ...props
+}) {
   return (
     <InputToolbar
       {...props}
       containerStyle={{
+        flexDirection: 'row',
         backgroundColor: colors.white,
         borderTopColor: colors.input,
         borderTopWidth: 1,
@@ -20,7 +23,16 @@ function customInputToolbar(props) {
         padding: 5,
       }}>
       <Composer {...props} />
-      <Send {...props}>
+      {audioURI && (
+        <TouchableOpacity onPress={onSendAudio}>
+          <MaterialCommunityIcons
+            name="microphone"
+            size={24}
+            color={colors.darkGray}
+          />
+        </TouchableOpacity>
+      )}
+      <Send {...props} alwaysShowSend>
         <MaterialCommunityIcons name="send" size={24} color={colors.darkGray} />
       </Send>
     </InputToolbar>
