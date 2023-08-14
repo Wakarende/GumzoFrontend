@@ -10,6 +10,7 @@ import React, {useState} from 'react';
 import {Button, View, Text, Image} from 'react-native';
 import {SafeAreaView, StyleSheet, useColorScheme} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import 'react-native-get-random-values';
 
 // local imports
 import RootNavigator from './navigators/RootNavigator';

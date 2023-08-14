@@ -5,6 +5,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import colors from '../config/colors';
 import {Audio} from 'expo-av';
 import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
+import {v4 as uuidv4} from 'uuid';
 // import * as firebase from 'firebase';
 // import 'firebase/storage';
 
@@ -15,8 +16,11 @@ import customInputToolbar from '../components/customInputToolbar';
 import AppText from '../components/AppText';
 import CustomChatInput from '../components/CustomChatInput';
 import AudioMessagePlayer from '../components/AudioMessagePlayer';
+import {render} from '@testing-library/react-native';
 
 function SingleChatScreen({navigation}) {
+  //debugging
+  console.log('SingleChatScreen is rendering');
   //Instantiate a new Recording
   const [recording, setRecording] = useState(null); // New state for recording
   const [isRecording, setIsRecording] = useState(false); //State to track if currently recording
@@ -24,23 +28,24 @@ function SingleChatScreen({navigation}) {
   //State to track if audio message is ready to send
   const [isAudioReadyToSend, setIsAudioReadyToSend] = useState(false);
   const [isUnloaded, setIsUnloaded] = useState(false);
-  const [messages, setMessages] = useState([]);
+
+  //Set initial chat messages
+  const initialMessages = [
+    {
+      _id: uuidv4(),
+      text: 'Hello developer',
+      createdAt: new Date(),
+      user: {
+        _id: 2,
+        name: 'React Native',
+        avatar: require('../../assets/Profile.png'),
+      },
+    },
+  ];
+
+  const [messages, setMessages] = useState([initialMessages]);
 
   useEffect(() => {
-    //Set initial chat messages
-    setMessages([
-      {
-        _id: 1,
-        text: 'Hello developer',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'React Native',
-          avatar: require('../../assets/Profile.png'),
-        },
-      },
-    ]);
-
     return () => {
       //stop and unload the recording when the component unmounts if it's currently recording
       if (isRecording && recording && !isUnloaded) {
@@ -53,12 +58,27 @@ function SingleChatScreen({navigation}) {
 
   //Function to handle sending messages
   //
-  function onSend(messages = []) {
+  function onSend(newMessages = []) {
+    //Debugging
+    console.log(messages);
+    // if (!messages.length || !messages[0]) return;
+
+    // //Check for type of message to determine sending process
+    // const messageType = messages[0].type;
+    // if (messageType === 'text') {
+    //   setMessages(previousMessages =>
+    //     GiftedChat.append(previousMessages, messages),
+    //   );
+    // } else if (audioURI) {
+    //   sendAudioMessage();
+    // }
+
     if (audioURI) {
+      console.log('current audio path', audioURI);
       sendAudioMessage();
     } else {
       setMessages(previousMessages =>
-        GiftedChat.append(previousMessages, messages),
+        GiftedChat.append(previousMessages, newMessages),
       );
     }
   }
@@ -83,6 +103,7 @@ function SingleChatScreen({navigation}) {
 
   //Function to start recording
   const startRecording = async () => {
+    console.log('Start recording');
     //Check if it is already recording
     if (isRecording) return;
 
@@ -93,7 +114,8 @@ function SingleChatScreen({navigation}) {
       console.log('Permission not granted');
       return;
     }
-
+    //Reset audio URI before starting to record.
+    setAudioURI(null);
     try {
       //Create a new recording instance
       const newRecording = new Audio.Recording();
@@ -106,6 +128,8 @@ function SingleChatScreen({navigation}) {
       await newRecording.startAsync();
       // START RECORDING
       setIsRecording(true);
+      //Debugging
+      console.log('Recording Started');
     } catch (error) {
       console.error(error);
     }
@@ -113,7 +137,8 @@ function SingleChatScreen({navigation}) {
 
   //Function to stop recording
   const stopRecording = async () => {
-    // if (!isRecording) return;
+    if (!isRecording) return;
+    console.log('stop recording');
     try {
       if (recording && !isUnloaded) {
         await recording.stopAndUnloadAsync();
@@ -122,6 +147,7 @@ function SingleChatScreen({navigation}) {
         setAudioURI(uri);
         setIsAudioReadyToSend(true);
         setIsRecording(false);
+        console.log('Recording stopped. Audio path: ', uri);
       }
     } catch (error) {
       console.error(error);
@@ -133,7 +159,7 @@ function SingleChatScreen({navigation}) {
     if (audioURI) {
       const audioMessage = {
         _id: Math.random().toString(),
-        text: '',
+        // text: '',
         createdAt: new Date(),
         user: {
           _id: 1,
@@ -145,6 +171,11 @@ function SingleChatScreen({navigation}) {
         GiftedChat.append(previousMessages, [audioMessage]),
       );
       setIsAudioReadyToSend(false);
+      //Reset the audioURI after sending
+      setAudioURI(null);
+      setIsRecording(false);
+      setRecording(null);
+      setIsUnloaded(false);
     }
   };
 
@@ -183,6 +214,7 @@ function SingleChatScreen({navigation}) {
       </View>
       <GiftedChat
         messages={messages}
+        renderActions={renderActions}
         onSend={messages => onSend(messages)}
         user={{
           _id: 1,
@@ -193,6 +225,7 @@ function SingleChatScreen({navigation}) {
             onSendMessage={onSend}
             startRecording={startRecording}
             stopRecording={stopRecording}
+            isAudioReadyToSend={isAudioReadyToSend}
           />
         )}
         renderMessageAudio={message => (
