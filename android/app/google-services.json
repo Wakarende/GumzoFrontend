@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "766445832109",
+    "project_id": "gumzofrontend",
+    "storage_bucket": "gumzofrontend.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:766445832109:android:2288f4edd981dc3dd1c324",
+        "android_client_info": {
+          "package_name": "com.gumzo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "766445832109-mgi43u2mdns6lo0nmpgoiln4sjid2d8e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAq0iYY4kvvNyC8JFIcNcqbXlHEpisJudQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "766445832109-mgi43u2mdns6lo0nmpgoiln4sjid2d8e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
