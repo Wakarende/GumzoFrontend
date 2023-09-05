@@ -130,6 +130,9 @@ function UserMessagesScreen({navigation}) {
       <BackArrow onPress={() => navigation.navigate('Account')} />
       <View style={styles.container}>
         <AppText>Match Requests</AppText>
+        {matchRequests.length === 0 && currentUser && (
+          <AppText>No match requests</AppText>
+        )}
         <FlatList
           data={matches}
           keyExtractor={item => item.title}

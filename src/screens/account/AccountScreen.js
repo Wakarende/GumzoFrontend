@@ -11,6 +11,7 @@ import ListItemSeparator from '../../components/lists/ListItemSeparator';
 import Screen from '../../components/Screen';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import NotificationBadge from '../../components/NotificationBadge';
+import useMatchesCount from '../../utils/MatchesCount';
 
 //Data displayed on flatlist
 const menuItems = [
@@ -80,6 +81,9 @@ function AccountScreen({navigation}) {
       fetchUser();
     }
   }, [user]);
+
+  //Matches count
+  const matchesCount = useMatchesCount(user);
   return (
     <Screen style={styles.screen}>
       <TouchableOpacity>
@@ -105,8 +109,8 @@ function AccountScreen({navigation}) {
                     name={item.icon.name}
                     backgroundColor={item.icon.backgroundColor}
                   />
-                  {item.title === 'My Messages' && (
-                    <NotificationBadge count={3} />
+                  {item.title === 'My Messages' && matchesCount > 0 && (
+                    <NotificationBadge count={matchesCount} />
                   )}
                 </View>
               }
