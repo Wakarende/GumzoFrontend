@@ -4,6 +4,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import colors from '../../config/colors';
 import AppText from '../AppText';
+import Icon from '../icon/Icon';
 
 function ListItem({
   title,
@@ -12,6 +13,7 @@ function ListItem({
   IconComponent,
   onPress,
   renderRightActions,
+  endIcons = [],
   showArrow = true,
 }) {
   return (
@@ -29,13 +31,23 @@ function ListItem({
             </AppText>
           )}
         </View>
-        {showArrow && (
+        {endIcons.length ? (
+          endIcons.map((icon, index) => (
+            <MaterialCommunityIcons
+              key={index}
+              color={icon.color || colors.medium}
+              name={icon.name}
+              size={icon.size || 25}
+              style={{marginLeft: index > 0 ? 5 : 0}} // Add space between icons
+            />
+          ))
+        ) : showArrow ? (
           <MaterialCommunityIcons
             color={colors.grannySmithApple}
             name="chevron-right"
             size={25}
           />
-        )}
+        ) : null}
       </View>
     </TouchableHighlight>
   );

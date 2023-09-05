@@ -9,7 +9,6 @@ function Icon({
 }) {
   return (
     <View
-      // eslint-disable-next-line react-native/no-inline-styles
       style={{
         width: size,
         height: size,

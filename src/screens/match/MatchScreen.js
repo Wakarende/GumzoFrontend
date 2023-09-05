@@ -208,15 +208,6 @@ function MatchScreen({navigation, adjustsFontSizeToFit, numberOfLines}) {
                               style={styles.matchIcons}
                             />
                           </TouchableOpacity>
-                          <TouchableOpacity
-                            style={styles.denyMatch}
-                            onPress={() => console.log('Match Denied')}>
-                            <MaterialCommunityIcons
-                              name="account-remove-outline"
-                              size={30}
-                              style={styles.matchIcons}
-                            />
-                          </TouchableOpacity>
                         </View>
                         {/* Modal user info*/}
                         {/* Username & Age*/}
