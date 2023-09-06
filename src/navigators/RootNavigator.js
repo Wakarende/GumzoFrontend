@@ -10,7 +10,7 @@ import SingleChatScreen from '../screens/chats/SingleChatScreen';
 import ProfileSetupNavigators from './ProfileSetupNavigators';
 import UserMessagesScreen from '../screens/account/UserMessagesScreen';
 import AccountInfoScreen from '../screens/account/AccountInfoScreen';
-import MatchRequestUserInfoScreen from '../screens/account/MatchRequestUserInfoScreen';
+
 const RootStack = createNativeStackNavigator();
 
 const RootNavigator = () => {
@@ -34,10 +34,6 @@ const RootNavigator = () => {
         />
         <RootStack.Screen name="UserMessages" component={UserMessagesScreen} />
         <RootStack.Screen name="AccountInfo" component={AccountInfoScreen} />
-        <RootStack.Screen
-          name="MatchRequestUserInfo"
-          component={MatchRequestUserInfoScreen}
-        />
       </RootStack.Group>
     </RootStack.Navigator>
   );

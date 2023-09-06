@@ -20,6 +20,10 @@ type SectionProps = PropsWithChildren<{
 }>;
 import * as ImagePicker from 'expo-image-picker';
 //Remove default theme colour of react native navigation
+
+//local imports
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import firebaseApp from './firebaseConfig';
 const MyTheme = {
   ...DefaultTheme,
   colors: {

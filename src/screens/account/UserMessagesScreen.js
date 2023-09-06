@@ -165,6 +165,9 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
 
   //Logic to deny match request
   const denyMatchRequest = async (requestId, senderId) => {
+    console.log(
+      `Denying request with ID: ${requestId} from sender: ${senderId}`,
+    );
     try {
       //Update matchRequest in matchRequest collection
       const requestRef = doc(firestore, 'matchRequests', requestId);
@@ -213,18 +216,17 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
                     name: 'close',
                     color: colors.red,
                     size: 25,
-                    onPress: () => console.log('Denied!'),
+                    onPress: () => {
+                      console.log(
+                        'ID: ',
+                        item.requestId,
+                        'senderID: ',
+                        item.senderId,
+                      );
+                      denyMatchRequest(item.requestId, item.senderId);
+                    },
                   },
                 ]}
-                onPress={() => {
-                  console.log(
-                    'ID: ',
-                    item.requestId,
-                    'senderID: ',
-                    item.senderId,
-                  );
-                  denyMatchRequest(item.requestId, item.senderId);
-                }}
               />
             </View>
           )}

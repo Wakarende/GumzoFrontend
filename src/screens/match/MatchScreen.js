@@ -45,11 +45,11 @@ function MatchScreen({navigation, adjustsFontSizeToFit, numberOfLines}) {
     const fetchData = async () => {
       //fetch all users
       const fetchedUsers = await fetchUsers();
+      const auth = getAuth(firebaseApp);
+      // Get the current user's ID from Firebase Auth
+      const userId = auth.currentUser.uid;
       //Filter out the current user from the list of all users
       const filteredUsers = fetchedUsers.filter(user => user.uid !== userId);
-      // Get the current user's ID from Firebase Auth
-      const auth = getAuth(firebaseApp);
-      const userId = auth.currentUser.uid;
 
       //Fetch data for current user
       const fetchedCurrentUser = await fetchCurrentUser(userId);
@@ -119,7 +119,7 @@ function MatchScreen({navigation, adjustsFontSizeToFit, numberOfLines}) {
         currentUser.uid,
       );
       console.log('Selected User ID:', selectedUser.id);
-      console.log('Current User ID:', currentUser.id);
+      console.log('Current User ID:', currentUser.uid);
 
       const matchRequestsCollection = collection(db, 'matchRequests');
       await addDoc(matchRequestsCollection, {
@@ -159,6 +159,7 @@ function MatchScreen({navigation, adjustsFontSizeToFit, numberOfLines}) {
               renderItem={renderUserItem}
               style={styles.renderUsers}
               columnWrapperStyle={styles.columnWrapper}
+              scrollEnabled={false}
             />
             {/* Modal */}
             <View style={styles.modalContainer}>
