@@ -1,32 +1,79 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   FlatList,
   GestureHandlerRootView,
   TextInput,
 } from 'react-native-gesture-handler';
-
+import {
+  collection,
+  doc,
+  getFirestore,
+  serverTimestamp,
+  where,
+  query,
+  getDocs,
+  getDoc,
+} from '@firebase/firestore';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 //local imports
 import colors from '../../config/colors';
-import Screen from '../../components/Screen';
-
+import firebaseApp from '../../../firebaseConfig';
+import {fetchCurrentUser} from '../../utils/firebaseService';
 import ListItem from '../../components/lists/ListItem';
 import ListItemSeparator from '../../components/lists/ListItemSeparator';
-
-const chats = [
-  {
-    title: 'My John Doe',
-    image: require('../../../assets/Profile.png'),
-  },
-  {
-    title: 'My John Do',
-    image: require('../../../assets/Profile.png'),
-  },
-];
+import Screen from '../../components/Screen';
+import {getAuth} from '@firebase/auth';
+import AppText from '../../components/AppText';
 
 function ChatsScreen({navigation}) {
+  const [matches, setMatches] = useState([]);
+
+  const getMatches = async () => {
+    try {
+      const db = getFirestore(firebaseApp);
+      const auth = getAuth(firebaseApp);
+      // Get the current user's ID from Firebase Auth
+      const userId = auth.currentUser.uid;
+      const currentUser = await fetchCurrentUser(userId);
+
+      if (!currentUser || !currentUser.uid) return;
+
+      //Check if a match request from currentUser to selectedUser already exists
+      const matchRequestQuery = query(
+        collection(db, 'matches'),
+        where('user1', '==', currentUser.uid),
+      );
+
+      const querySnapshot = await getDocs(matchRequestQuery);
+
+      const matchPromises = querySnapshot.docs.map(async matchDoc => {
+        const matchedUserId = matchDoc.data().user2;
+
+        const userDoc = await getDoc(doc(db, 'users', matchedUserId));
+
+        if (userDoc.exists) {
+          return {
+            id: userDoc.id,
+            title: userDoc.data().username,
+            image: userDoc.data().selectedImage,
+          };
+        }
+        return null;
+      });
+      const resolvedMatches = await Promise.all(matchPromises);
+
+      setMatches(resolvedMatches.filter(match => match !== null));
+    } catch (error) {
+      console.log('Error displaying matches: ', error);
+    }
+  };
+
+  useEffect(() => {
+    getMatches();
+  }, []);
+
   return (
     <GestureHandlerRootView style={styles.rootView}>
       <Screen style={styles.screen}>
@@ -42,9 +89,10 @@ function ChatsScreen({navigation}) {
               />
             </TouchableOpacity>
           </View>
+          {matches.length === 0 && <AppText>No matches yet!</AppText>}
           <FlatList
-            data={chats}
-            keyExtractor={chat => chat.title}
+            data={matches}
+            keyExtractor={match => match.id}
             ItemSeparatorComponent={ListItemSeparator}
             renderItem={({item}) => (
               <ListItem

@@ -1643,7 +1643,7 @@
   resolved "https://registry.npmjs.org/@firebase/app-types/-/app-types-0.9.0.tgz"
   integrity sha512-AeweANOIo0Mb8GiYm3xhTEBVCmPwTYAu9Hcd2qSkLuga/6+j9b1Jskl5bpiSQWy9eJ/j5pavxj6eYogmnuzm+Q==
 
-"@firebase/app@0.9.18", "@firebase/app@0.x":
+"@firebase/app@^0.9.18", "@firebase/app@0.9.18", "@firebase/app@0.x":
   version "0.9.18"
   resolved "https://registry.npmjs.org/@firebase/app/-/app-0.9.18.tgz"
   integrity sha512-SIJi3B/LzNezaEgbFCFIem12+51khkA3iewYljPQPUArWGSAr1cO9NK8TvtJWax5GMKSmQbJPqgi6a+gxHrWGQ==
@@ -1676,7 +1676,7 @@
   resolved "https://registry.npmjs.org/@firebase/auth-types/-/auth-types-0.12.0.tgz"
   integrity sha512-pPwaZt+SPOshK8xNoiQlK5XIrS97kFYc3Rc7xmy373QsOJ9MmqXxLaYssP5Kcds4wd2qK//amx/c+A8O2fVeZA==
 
-"@firebase/auth@1.3.0":
+"@firebase/auth@^1.3.0", "@firebase/auth@1.3.0":
   version "1.3.0"
   resolved "https://registry.npmjs.org/@firebase/auth/-/auth-1.3.0.tgz"
   integrity sha512-vjK4CHbY9aWdiVOrKi6mpa8z6uxeaf7LB/MZTHuZOiGHMcUoTGB6TeMbRShyqk1uaMrxhhZ5Ar/dR0965E1qyA==
