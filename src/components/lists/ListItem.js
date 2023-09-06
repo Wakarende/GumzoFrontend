@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, StyleSheet, Image, TouchableHighlight} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Image,
+  TouchableHighlight,
+  TouchableOpacity,
+} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import colors from '../../config/colors';
@@ -33,13 +39,15 @@ function ListItem({
         </View>
         {endIcons.length ? (
           endIcons.map((icon, index) => (
-            <MaterialCommunityIcons
-              key={index}
-              color={icon.color || colors.medium}
-              name={icon.name}
-              size={icon.size || 25}
-              style={{marginLeft: index > 0 ? 5 : 0}} // Add space between icons
-            />
+            <TouchableOpacity key={index} onPress={icon.onPress}>
+              <MaterialCommunityIcons
+                key={index}
+                color={icon.color || colors.medium}
+                name={icon.name}
+                size={icon.size || 25}
+                style={{marginLeft: index > 0 ? 5 : 0}} // Add space between icons
+              />
+            </TouchableOpacity>
           ))
         ) : showArrow ? (
           <MaterialCommunityIcons

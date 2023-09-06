@@ -11,6 +11,7 @@ import {
 import {FlatList} from 'react-native-gesture-handler';
 import {getAuth} from 'firebase/auth';
 import {
+  addDoc,
   getDoc,
   doc,
   getFirestore,
@@ -18,8 +19,10 @@ import {
   query,
   where,
   onSnapshot,
+  updateDoc,
 } from '@firebase/firestore';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 //Local imports
 import AppText from '../../components/AppText';
 import BackArrow from '../../components/BackArrow';
@@ -132,17 +135,37 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
   const matches = matchRequests.map(request => ({
     title: `Match request from ${request.senderName}`,
     image: request.senderProfileImage,
+    senderId: request.senderId,
+    requestId: request.id,
   }));
 
   //modal
   //Local state to manage the modal for user details
   const [selectedUser, setSelectedUser] = useState(null);
 
+  //Logic to accept match request
+  const acceptMatch = async (requestId, senderId) => {
+    try {
+      //Create a new match in the matches collection
+      const matchRef = collection(firestore, 'matches');
+      await addDoc(matchRef, {
+        user1: currentUserId,
+        user2: senderId,
+      });
+      //Update the original request from matchRequests collection
+      const requestRef = doc(firestore, 'matchRequests', requestId);
+      await updateDoc(requestRef, {
+        status: 'accepted',
+      });
+      console.log('Match accepted and Document successfully update!');
+    } catch (error) {
+      console.error('Error handling match approval: ', error);
+    }
+  };
   return (
     <Screen>
       <BackArrow onPress={() => navigation.navigate('Account')} />
       <View style={styles.container}>
-        <AppText>Match Requests</AppText>
         {matchRequests.length === 0 && currentUser && (
           <AppText>No match requests</AppText>
         )}
@@ -158,8 +181,26 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
                 image={item.image}
                 showArrow={false}
                 endIcons={[
-                  {name: 'check', color: colors.grannySmithApple, size: 25},
-                  {name: 'close', color: colors.red, size: 25},
+                  {
+                    name: 'check',
+                    color: colors.grannySmithApple,
+                    size: 25,
+                    onPress: () => {
+                      console.log(
+                        'ID:',
+                        item.requestId,
+                        'SenderID:',
+                        item.senderId,
+                      );
+                      acceptMatch(item.requestId, item.senderId);
+                    },
+                  },
+                  {
+                    name: 'close',
+                    color: colors.red,
+                    size: 25,
+                    onPress: () => console.log('Denied!'),
+                  },
                 ]}
                 onPress={() => {
                   console.log('Selected User:', item);
