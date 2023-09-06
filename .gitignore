@@ -71,4 +71,4 @@ dist/
 web-build/
 
 #firebase config
-firebaseConfig/
+firebaseConfig.js
