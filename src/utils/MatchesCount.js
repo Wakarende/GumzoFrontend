@@ -9,6 +9,7 @@ import {
 //local imports
 import firebaseApp from '../../firebaseConfig';
 
+//Function to count how many machRequests a user has
 const useMatchesCount = user => {
   const [matchesCount, setMatchesCount] = useState(0);
   useEffect(() => {
@@ -18,6 +19,7 @@ const useMatchesCount = user => {
         const matchesQuery = query(
           collection(db, 'matchRequests'),
           where('recieverId', '==', user.uid),
+          where('status', '==', 'pending'),
         );
         const querySnapshot = await getDocs(matchesQuery);
         setMatchesCount(querySnapshot.size);

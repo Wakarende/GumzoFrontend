@@ -78,7 +78,6 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
             ? userData.selectedImage
             : DEFAULT_PROFILE_IMAGE_URL,
         };
-        // userSnap.data();
       } else {
         console.error('User not found: ', userId);
         return null;
@@ -151,6 +150,7 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
       await addDoc(matchRef, {
         user1: currentUserId,
         user2: senderId,
+        timestamp: new Date().toISOString(),
       });
       //Update the original request from matchRequests collection
       const requestRef = doc(firestore, 'matchRequests', requestId);
@@ -160,6 +160,20 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
       console.log('Match accepted and Document successfully update!');
     } catch (error) {
       console.error('Error handling match approval: ', error);
+    }
+  };
+
+  //Logic to deny match request
+  const denyMatchRequest = async (requestId, senderId) => {
+    try {
+      //Update matchRequest in matchRequest collection
+      const requestRef = doc(firestore, 'matchRequests', requestId);
+      await updateDoc(requestRef, {
+        status: 'denied',
+      });
+      console.log('Match request denied!');
+    } catch (error) {
+      console.log('Error handling match denial:', error);
     }
   };
   return (
@@ -203,7 +217,13 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
                   },
                 ]}
                 onPress={() => {
-                  console.log('Selected User:', item);
+                  console.log(
+                    'ID: ',
+                    item.requestId,
+                    'senderID: ',
+                    item.senderId,
+                  );
+                  denyMatchRequest(item.requestId, item.senderId);
                 }}
               />
             </View>
