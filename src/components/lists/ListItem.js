@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   StyleSheet,
@@ -10,23 +10,42 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import colors from '../../config/colors';
 import AppText from '../AppText';
-import Icon from '../icon/Icon';
 
+const DEFAULT_PROFILE_IMAGE = require('../../../assets/Profile.png');
 function ListItem({
   title,
   subTitle,
   image,
   IconComponent,
   onPress,
-  renderRightActions,
+  imageUrl,
   endIcons = [],
   showArrow = true,
 }) {
+  const [imageSrc, setImageSrc] = useState({uri: imageUrl});
+  const handleError = () => {
+    setImageSrc(DEFAULT_PROFILE_IMAGE);
+  };
+
+  useEffect(() => {
+    if (imageUrl) {
+      setImageSrc({uri: imageUrl});
+    } else {
+      setImageSrc(DEFAULT_PROFILE_IMAGE);
+    }
+  }, [imageUrl]);
+  console.log('ListItem imageUrl:', imageUrl);
   return (
     <TouchableHighlight underlayColor={colors.light} onPress={onPress}>
       <View style={styles.container}>
         {IconComponent}
-        {image && <Image style={styles.image} source={image} />}
+        {image && (
+          <Image
+            style={styles.image}
+            source="https://firebasestorage.googleapis.com/v0/b/gumzofrontend.appspot.com/o/user_images%2F1694096740535.jpg?alt=media&token=ff42ad6e-b4ad-411a-9b4b-879900e9232b"
+            onError={handleError}
+          />
+        )}
         <View style={styles.detailsContainer}>
           <AppText style={styles.title} numberOfLines={1}>
             {title}

@@ -15,7 +15,12 @@ export const fetchUsers = async () => {
   return users;
 };
 
-// This function fetches the data for specific user based on their UID.
+/**
+ * Fetches the data for a specific user based on the provided user ID from the Firestore database.
+ *
+ * @param {string} currentUserId - The user ID of the user whose data is to be fetched.
+ * @returns {Object} The data of the specified user or undefined if the user is not found.
+ */
 export const fetchCurrentUser = async currentUserId => {
   const db = getFirestore(firebaseApp);
   //Get the document of the user with provided ID

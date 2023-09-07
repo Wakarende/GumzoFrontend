@@ -81,6 +81,8 @@ function AccountScreen({navigation}) {
       fetchUser();
     }
   }, [user]);
+  const fetchedImageUrl = user?.selectedImage;
+  console.log('Fetched image URL:', fetchedImageUrl);
 
   //Matches count
   const matchesCount = useMatchesCount(user);
@@ -90,7 +92,7 @@ function AccountScreen({navigation}) {
         <View style={styles.container}>
           <ListItem
             title={user ? user.username : ''}
-            image={require('../../../assets/Profile.png')}
+            imageUrl={fetchedImageUrl}
             showArrow={false}
           />
         </View>

@@ -139,6 +139,7 @@ function MatchScreen({navigation, adjustsFontSizeToFit, numberOfLines}) {
       Alert.alert('Request Failed');
     }
   };
+
   //update state whenver match requests are retrieved :
   useEffect(() => {
     // ... fetching data ...

@@ -6,15 +6,25 @@ import colors from '../../config/colors';
 import {Audio} from 'expo-av';
 import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
 // import * as firebase from 'firebase';
-// import 'firebase/storage';
+import {
+  getFirestore,
+  collection,
+  doc,
+  query,
+  orderBy,
+  onSnapshot,
+} from '@firebase/firestore';
 
 //local imports
-
 import CustomChatInput from '../../components/inputs/CustomChatInput';
 import AudioMessagePlayer from '../../components/AudioMessagePlayer';
 import BackArrow from '../../components/BackArrow';
+import firebaseApp from '../../../firebaseConfig';
+import {generateChatId} from '../../utils/chatUtils';
+import {fetchCurrentUser} from '../../utils/firebaseService';
+import {getAuth} from '@firebase/auth';
 
-function SingleChatScreen({navigation}) {
+function SingleChatScreen({navigation, route}) {
   //debugging
   console.log('SingleChatScreen is rendering');
   //Instantiate a new Recording
@@ -26,6 +36,25 @@ function SingleChatScreen({navigation}) {
   const [isUnloaded, setIsUnloaded] = useState(false);
 
   const [messages, setMessages] = useState([]);
+  const [userId, setUserId] = useState(null);
+  // const [otherUserId, setOtherUserId] = useState(
+  //   navigation.getParam('otherUserId'),
+  // );
+  const otherUserId = route.params.otherUserId;
+  console.log('Other User ID:', otherUserId);
+
+  //Fetch current user
+  useEffect(() => {
+    const fetchUser = async () => {
+      const auth = getAuth(firebaseApp);
+      const currentUser = auth.currentUser;
+      console.log('current user', currentUser.uid);
+      if (currentUser) {
+        setUserId(currentUser.uid);
+      }
+    };
+    fetchUser();
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -38,23 +67,51 @@ function SingleChatScreen({navigation}) {
     };
   }, [isRecording, recording, isUnloaded]); //Include dependencies
 
-  //Function to handle sending messages
-  //
+  //Listener that listens to new messages in the chat room in real-time
+  useEffect(() => {
+    if (userId && otherUserId) {
+      const chatId = generateChatId(userId, otherUserId); // Implement this function
+      const db = getFirestore(firebaseApp);
+
+      const messagesQuery = query(
+        collection(db, `chats/${chatId}/messages`),
+        orderBy('createdAt', 'desc'),
+      );
+
+      // Listen for real-time updates
+      const unsubscribe = onSnapshot(messagesQuery, snapshot => {
+        let newMessages = [];
+        snapshot.docChanges().forEach(change => {
+          if (change.type === 'added') {
+            newMessages.push(change.doc.data());
+          }
+        });
+        setMessages(prevMessages =>
+          GiftedChat.append(prevMessages, newMessages),
+        );
+      });
+
+      // Clean up the listener
+      return () => unsubscribe();
+    }
+  }, [userId, otherUserId]);
+
   const onSend = useCallback(
     (newMessages = []) => {
-      //Debugging
-      console.log(messages);
+      const db = getFirestore(firebaseApp);
+      const chatId = generateChatId(userId, otherUserId);
 
-      if (audioURI) {
-        console.log('current audio path', audioURI);
-        sendAudioMessage();
-      } else {
-        setMessages(previousMessages =>
-          GiftedChat.append(previousMessages, newMessages),
-        );
-      }
+      newMessages.forEach(message => {
+        const {_id, text, createdAt, user} = message;
+        doc(db, `chats/${chatId}/messages`, _id).set({
+          _id,
+          text,
+          createdAt,
+          user,
+        });
+      });
     },
-    [audioURI, messages, sendAudioMessage],
+    [userId, otherUserId],
   );
 
   //Function to check and request permissions
