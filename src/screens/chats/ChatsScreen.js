@@ -9,7 +9,6 @@ import {
   collection,
   doc,
   getFirestore,
-  serverTimestamp,
   where,
   query,
   getDocs,
@@ -30,6 +29,7 @@ import AppText from '../../components/AppText';
 function ChatsScreen({navigation}) {
   const [matches, setMatches] = useState([]);
 
+  //Function to get and set chat matches for the current user
   const getMatches = async () => {
     try {
       const db = getFirestore(firebaseApp);
@@ -40,7 +40,7 @@ function ChatsScreen({navigation}) {
 
       if (!currentUser || !currentUser.uid) return;
 
-      //Check if a match request from currentUser to selectedUser already exists
+      //Query firestore for matches for the currentUser
       const matchRequestQuery = query(
         collection(db, 'matches'),
         where('user1', '==', currentUser.uid),
@@ -48,6 +48,7 @@ function ChatsScreen({navigation}) {
 
       const querySnapshot = await getDocs(matchRequestQuery);
 
+      //Map over query results and retrieve user details for each matched user
       const matchPromises = querySnapshot.docs.map(async matchDoc => {
         const matchedUserId = matchDoc.data().user2;
 
@@ -62,6 +63,8 @@ function ChatsScreen({navigation}) {
         }
         return null;
       });
+
+      //wait for all promises to resolve and update the state with matched users
       const resolvedMatches = await Promise.all(matchPromises);
 
       setMatches(resolvedMatches.filter(match => match !== null));
@@ -70,6 +73,7 @@ function ChatsScreen({navigation}) {
     }
   };
 
+  //execute getMatches function when component mounts
   useEffect(() => {
     getMatches();
   }, []);

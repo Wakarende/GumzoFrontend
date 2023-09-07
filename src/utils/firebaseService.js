@@ -1,5 +1,5 @@
-import {getFirestore, collection, getDocs} from 'firebase/firestore';
-import {doc, getDoc} from 'firebase/firestore';
+import {getFirestore, collection, getDocs} from '@firebase/firestore';
+import {doc, getDoc} from '@firebase/firestore';
 import firebaseApp from '../../firebaseConfig';
 
 //Function to fetch all users from the 'users' collection in Firestore
