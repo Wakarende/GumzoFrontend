@@ -23,7 +23,7 @@ import colors from '../../config/colors';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import {FormContext} from '../../components/FormContext';
 import {Timestamp} from 'firebase/firestore';
-
+import {uploadImageToCloudStorage} from '../../utils/UploadImageToCloudStorage';
 //Validation Schema for login form, validates first name, last name and date of birth
 const validationSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -110,12 +110,11 @@ function UserInfoScreen({navigation, route}) {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
+      const imageUrl = await uploadImageToCloudStorage(result.assets[0].uri);
       dispatch({
         type: 'UPDATE_FIELD',
-        payload: {field: 'selectedImage', value: result.assets[0].uri},
+        payload: {field: 'selectedImage', value: imageUrl},
       });
     }
   };
