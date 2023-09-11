@@ -256,8 +256,9 @@ function MatchScreen({navigation, adjustsFontSizeToFit, numberOfLines}) {
                             ? selectedUser.learningGoals
                             : 'No learning goals set'}
                         </AppText>
-                        {/* References*/}
+                        {/* References
                         <AppText style={styles.title}>References</AppText>
+                        */}
                       </View>
                     </ScrollView>
                   </View>

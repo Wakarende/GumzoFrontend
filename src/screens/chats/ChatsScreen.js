@@ -92,17 +92,6 @@ function ChatsScreen({navigation}) {
     <GestureHandlerRootView style={styles.rootView}>
       <Screen style={styles.screen}>
         <View style={styles.container}>
-          <View style={styles.searchBarContainer}>
-            <TextInput style={styles.searchBar} />
-            <TouchableOpacity onPress={() => console.log('search!')}>
-              <MaterialCommunityIcons
-                name="magnify"
-                color={colors.grannySmithApple}
-                size={30}
-                style={styles.searchIcon}
-              />
-            </TouchableOpacity>
-          </View>
           {matches.length === 0 && <AppText>No matches yet!</AppText>}
           <FlatList
             data={matches}

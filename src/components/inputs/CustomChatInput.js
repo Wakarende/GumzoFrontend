@@ -4,6 +4,8 @@ import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import colors from '../../config/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {generateChatId} from '../../utils/chatUtils';
+import firebaseApp from '../../../firebaseConfig';
+import {collection, addDoc, getFirestore} from '@firebase/firestore';
 
 function CustomChatInput({
   onSendMessage,
@@ -16,6 +18,33 @@ function CustomChatInput({
   otherUserId,
 }) {
   const [message, setMessage] = useState('');
+
+  const handleSend = async () => {
+    if (message.trim() !== '' || isAudioReadyToSend) {
+      let newMessage = {
+        createdAt: new Date(),
+        user: {_id: userId},
+      };
+
+      if (message.trim()) {
+        newMessage.text = message;
+      } else if (isAudioReadyToSend) {
+        newMessage.audio = audioPath;
+      }
+
+      const db = getFirestore(firebaseApp);
+      // Getting the chatId for the specific chat room between the two users
+      const chatId = generateChatId(userId, otherUserId);
+      const messagesCollection = collection(db, `chats/${chatId}/messages`);
+
+      // Using Firestore's .add() to add the message so it generates a unique ID for each message
+      await addDoc(messagesCollection, newMessage);
+
+      onSendMessage(newMessage);
+      setMessage('');
+    }
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={isRecording ? stopRecording : startRecording}>
@@ -43,6 +72,7 @@ function CustomChatInput({
         placeholder="Send a message..."
         autoFocus
       />
+      {/*
       <TouchableOpacity
         onPress={() => {
           if (message.trim() !== '' || isAudioReadyToSend) {
@@ -64,6 +94,15 @@ function CustomChatInput({
             setMessage('');
           }
         }}>
+        <MaterialCommunityIcons
+          name="send"
+          size={24}
+          color={colors.lightGray}
+          style={styles.icon}
+        />
+      </TouchableOpacity>
+      */}
+      <TouchableOpacity onPress={handleSend}>
         <MaterialCommunityIcons
           name="send"
           size={24}

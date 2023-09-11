@@ -161,14 +161,14 @@ function AccountInfoScreen({navigation, numberOfLines, adjustFontToFitSize}) {
               </AppText>
             )}
           </View>
-
-          {/* References*/}
+          {/* References
           <View>
             <AppText style={styles.title}>References</AppText>
           </View>
           <View>
             <AppText style={styles.text}>No Reviews yet</AppText>
           </View>
+          */}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -193,6 +193,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     alignContent: 'center',
+    marginTop: 10,
   },
   interests: {
     borderWidth: 1,
