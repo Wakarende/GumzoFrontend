@@ -6,6 +6,7 @@ import {getFirestore, doc, getDoc} from 'firebase/firestore';
 //local imports
 import colors from '../../config/colors';
 import Icon from '../../components/icon/Icon';
+import {initializeNotificationListener} from '../../utils/notificationsLogic';
 import ListItem from '../../components/lists/ListItem';
 import ListItemSeparator from '../../components/lists/ListItemSeparator';
 import Screen from '../../components/Screen';
@@ -52,6 +53,9 @@ function AccountScreen({navigation}) {
   const [initializing, setInitializing] = useState(true);
 
   const [user, setUser] = useState(null);
+
+  //State to store notification count
+  const [notifications, setNotifications] = useState(0);
 
   // Handle user state changes
   const onAuthStateChanged = useCallback(
@@ -102,8 +106,22 @@ function AccountScreen({navigation}) {
       }
     }
   };
-  //Matches count
-  const matchesCount = useMatchesCount(user);
+
+  useEffect(() => {
+    let unsubscribeFromUpdates;
+    if (user) {
+      unsubscribeFromUpdates = initializeNotificationListener(
+        getFirestore(firebaseApp),
+        user,
+        setNotifications,
+      );
+    }
+    return () => {
+      if (unsubscribeFromUpdates) {
+        unsubscribeFromUpdates();
+      }
+    };
+  }, [user]);
   return (
     <Screen style={styles.screen}>
       <TouchableOpacity>
@@ -136,8 +154,8 @@ function AccountScreen({navigation}) {
                     name={item.icon.name}
                     backgroundColor={item.icon.backgroundColor}
                   />
-                  {item.title === 'My Messages' && matchesCount > 0 && (
-                    <NotificationBadge count={matchesCount} />
+                  {item.title === 'My Messages' && notifications > 0 && (
+                    <NotificationBadge count={notifications} />
                   )}
                 </View>
               }

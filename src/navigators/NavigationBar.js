@@ -5,6 +5,7 @@ import {View} from 'react-native';
 import NotificationBadge from '../components/NotificationBadge';
 import {onAuthStateChanged} from '@firebase/auth';
 import {getAuth} from '@firebase/auth';
+import {getFirestore} from '@firebase/firestore';
 //local imports
 import AccountScreen from '../screens/account/AccountScreen';
 import ChatsScreen from '../screens/chats/ChatsScreen';
@@ -12,12 +13,15 @@ import firebaseApp from '../../firebaseConfig';
 import MatchScreen from '../screens/match/MatchScreen';
 // import colors from '../src/config/colors';
 import {StyleSheet} from 'react-native';
-import useMatchesCount from '../utils/MatchesCount';
+// import useMatchesCount from '../utils/MatchesCount';
+import {initializeNotificationListener} from '../utils/notificationsLogic';
+
 const Tab = createBottomTabNavigator();
 
 function AccountTabBarIcon({color, size}) {
   const [user, setUser] = useState(null);
-
+  //State to store notification count
+  const [notifications, setNotifications] = useState(0);
   useEffect(() => {
     const auth = getAuth(firebaseApp);
     const unsubscribe = onAuthStateChanged(auth, currentUser => {
@@ -27,14 +31,29 @@ function AccountTabBarIcon({color, size}) {
     return () => unsubscribe(); // Cleanup subscription on component unmount
   }, []);
 
-  const matchesCount = useMatchesCount(user);
+  useEffect(() => {
+    let unsubscribeFromUpdates;
+    if (user) {
+      unsubscribeFromUpdates = initializeNotificationListener(
+        getFirestore(firebaseApp),
+        user,
+        setNotifications,
+      );
+    }
+    return () => {
+      if (unsubscribeFromUpdates) {
+        unsubscribeFromUpdates();
+      }
+    };
+  }, [user]);
+  // const matchesCount = useMatchesCount(user);
 
   return (
     <View>
       <MaterialCommunityIcons name="account" color={color} size={size} />
-      {matchesCount > 0 && (
+      {notifications > 0 && (
         <View style={{position: 'absolute', right: 0, top: 0}}>
-          <NotificationBadge count={matchesCount} />
+          <NotificationBadge count={notifications} />
         </View>
       )}
     </View>
