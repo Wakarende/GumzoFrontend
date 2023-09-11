@@ -181,10 +181,13 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
   };
   return (
     <Screen>
-      <BackArrow onPress={() => navigation.navigate('Account')} />
+      <BackArrow
+        onPress={() => navigation.navigate('Account')}
+        style={styles.backArrow}
+      />
       <View style={styles.container}>
         {matchRequests.length === 0 && currentUser && (
-          <AppText>No match requests</AppText>
+          <AppText>No messages</AppText>
         )}
         <FlatList
           contentContainerStyle={{flexGrow: 1}}
@@ -231,116 +234,20 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
             </View>
           )}
         />
-        {/* Modal */}
-        {/*
-        <View style={styles.modalContainer}>
-          <Modal
-            style={styles.modal}
-            animationType="slide"
-            transparent={true}
-            visible={!!selectedUser}
-            onRequestClose={() => {
-              console.log('Modal has been closed');
-              setSelectedUser(null);
-            }}>
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <View style={styles.modalImageContainer}>
-                  <Image
-                    style={styles.modalImage}
-                    source={
-                      selectedUser && selectedUser.selectedImage
-                        ? {uri: selectedUser.selectedImage}
-                        : require('../../../assets/Profile.png')
-                    }
-                  />
-                </View>
-                */}
-        {/* Close Modal Icon*/}
-        {/*
-                <Pressable
-                  style={styles.closeModal}
-                  onPress={() => {
-                    setSelectedUser(null);
-                  }}>
-                  <MaterialCommunityIcons name="close-box-outline" size={30} />
-                </Pressable>
-                <ScrollView contentContainerStyle={{paddingHorizontal: 15}}>
-                  {/* Modal Text*/}
-        {/*
-                  <View style={styles.modalText}>
-                    {/* Modal user info*/}
-        {/* Username & Age
-
-                    <View style={styles.user}>
-                      <AppText style={styles.modalUsername}>
-                        {selectedUser ? selectedUser.username : 'username'}
-                      </AppText>
-                      <AppText style={styles.modalAge}>
-                        {selectedUser
-                          ? calculateAge(selectedUser.dob)
-                          : 'Age not available'}
-                      </AppText>
-                    </View>
-                    */}
-        {/* Native Languages 
-                    <AppText style={styles.title}>Native Languages</AppText>
-                    <AppText style={styles.userInfo}>
-                      {selectedUser
-                        ? selectedUser.nativeLanguage
-                        : 'No native language provided'}
-                    </AppText>
-                    */}
-        {/* Bio
-                    <AppText style={styles.title}>Bio</AppText>
-                    <AppText style={styles.modalBio}>
-                      {selectedUser ? selectedUser.bio : 'bio'}
-                    </AppText>
-                    */}
-        {/* User Interests
-                    <AppText style={styles.title}>Interests</AppText>
-                    <View style={styles.userInterestsFlex}>
-                      {selectedUser &&
-                        selectedUser.selectedInterests.map(
-                          (interestObj, index) => (
-                            <View key={index}>
-                              <AppText style={styles.userInterests}>
-                                {interestObj.interest}
-                              </AppText>
-                            </View>
-                          ),
-                        )}
-                    </View>
-                    */}
-        {/* Learning Goals
-                    <AppText style={styles.title}>Learning Goals</AppText>
-                    <AppText style={styles.userInfo}>
-                      {selectedUser
-                        ? selectedUser.learningGoals
-                        : 'No learning goals set'}
-                    </AppText>
-                    */}
-        {/* References
-                    <AppText style={styles.title}>References</AppText>
-                  </View>
-                </ScrollView>
-              </View>
-            </View>
-          </Modal>
-        </View>
-        */}
       </View>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  matchFlex: {
-    // flex: 1,
-    // // flexDirection: 'row',
-    // alignItems: 'center',
-    // justifyContent: 'space-between',
-    // padding: 10,
+  backArrow: {
+    position: 'absolute',
+    zIndex: 10,
+    top: 10,
+    left: 10,
+  },
+  container: {
+    marginTop: 20,
   },
 });
 

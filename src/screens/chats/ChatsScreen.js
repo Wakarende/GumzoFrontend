@@ -102,6 +102,7 @@ function ChatsScreen({navigation}) {
               <ListItem
                 title={item.title}
                 imageUrl={item.image}
+                isProfile={true}
                 onPress={() => {
                   navigation.navigate('SingleChat', {otherUserId: item.id});
                 }}

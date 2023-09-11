@@ -44,10 +44,14 @@ function SingleChatScreen({navigation, route}) {
     };
   }, [isRecording, recording, isUnloaded]);
 
+  console.log('Messages: ', messages);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <BackArrow onPress={() => navigation.navigate('Chats')} />
+        <BackArrow
+          onPress={() => navigation.navigate('Chats')}
+          style={styles.backArrow}
+        />
       </View>
       <GiftedChat
         messages={messages}
@@ -68,6 +72,8 @@ function SingleChatScreen({navigation, route}) {
             startRecording={startRecording}
             stopRecording={stopRecording}
             isAudioReadyToSend={isAudioReadyToSend}
+            userId={userId}
+            otherUserId={otherUserId}
           />
         )}
         renderMessageAudio={message => (
@@ -82,9 +88,17 @@ function SingleChatScreen({navigation, route}) {
 
 //Stylesheet
 const styles = StyleSheet.create({
+  backArrow: {
+    position: 'absolute',
+    zIndex: 10,
+    top: 10,
+    left: 10,
+    backgroundColor: 'rgba(255,255,255,0.6)',
+  },
   container: {
     flex: 1,
-    paddingVertical: 30,
+    // paddingVertical: 3
+    paddingBottom: 30,
     justifyContent: 'center',
     // alignItems: 'center',
   },

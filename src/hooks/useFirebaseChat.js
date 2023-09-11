@@ -54,26 +54,36 @@ export const useFirebaseChat = otherUserId => {
 
   const onSend = useCallback(
     async (newMessages = []) => {
+      //debugging
+      console.log('onSend called with newMessages:', newMessages);
       const db = getFirestore(firebaseApp);
       const chatId = generateChatId(userId, otherUserId);
+      console.log('chatId: ', chatId);
       for (const message of newMessages) {
+        console.log('Iterate through the message: ', message);
         const {_id, text, createdAt, user} = message;
         const messageRef = doc(db, `chats/${chatId}/messages`, _id);
         let audioURL = null;
         if (message.audio) {
           audioURL = await uploadAudioToStorage(message.audio);
         }
-        messageRef.set({
-          _id,
-          text,
-          createdAt: createdAt.toISOString(),
-          user,
-          audio: audioURL,
-        });
+        try {
+          await messageRef.set({
+            _id,
+            text,
+            createdAt: createdAt.toISOString(),
+            user,
+            audio: audioURL,
+          });
+          console.log('Message saved to Firestore:', message);
+        } catch (error) {
+          console.error('Error Saving message to Firestore: ', error);
+        }
       }
       setMessages(previousMessages =>
         GiftedChat.append(previousMessages, newMessages),
       );
+      console.log('Local state updated with newMessages');
     },
     [userId, otherUserId],
   );

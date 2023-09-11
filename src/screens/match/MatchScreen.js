@@ -80,7 +80,7 @@ function MatchScreen({navigation, adjustsFontSizeToFit, numberOfLines}) {
                 ? {uri: item.selectedImage}
                 : item.profilePicture
                 ? {uri: item.profilePicture}
-                : require('../../../assets/Profile.png')
+                : require('../../../assets/profileImg.jpg')
             }
           />
           <AppText
@@ -181,7 +181,7 @@ function MatchScreen({navigation, adjustsFontSizeToFit, numberOfLines}) {
                         source={
                           selectedUser && selectedUser.selectedImage
                             ? {uri: selectedUser.selectedImage}
-                            : require('../../../assets/Profile.png')
+                            : require('../../../assets/profileImg.jpg')
                         }
                       />
                     </View>

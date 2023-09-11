@@ -4896,6 +4896,11 @@ expo-modules-core@1.5.11:
     compare-versions "^3.4.0"
     invariant "^2.2.4"
 
+expo-permissions@^14.2.1:
+  version "14.2.1"
+  resolved "https://registry.npmjs.org/expo-permissions/-/expo-permissions-14.2.1.tgz"
+  integrity sha512-jXGnOODtDMFvK7cwo7wIRPcnA7m1bie80gJ5BdL6Vs5kgCU7+RCLOCp3sBw7TKRPIlVMmQDhZA62bGzoBV0hkA==
+
 expo@*, expo@^49.0.0, expo@>=47.0.0:
   version "49.0.9"
   resolved "https://registry.npmjs.org/expo/-/expo-49.0.9.tgz"
