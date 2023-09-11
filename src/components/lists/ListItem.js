@@ -11,16 +11,17 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import colors from '../../config/colors';
 import AppText from '../AppText';
 
-const DEFAULT_PROFILE_IMAGE = require('../../../assets/Profile.png');
+const DEFAULT_PROFILE_IMAGE = require('../../../assets/profileImg.jpg');
 function ListItem({
   title,
   subTitle,
-  image,
   IconComponent,
   onPress,
   imageUrl,
   endIcons = [],
+  endIcon = null,
   showArrow = true,
+  isProfile = false,
 }) {
   const [imageSrc, setImageSrc] = useState({uri: imageUrl});
   const handleError = () => {
@@ -34,17 +35,13 @@ function ListItem({
       setImageSrc(DEFAULT_PROFILE_IMAGE);
     }
   }, [imageUrl]);
-  console.log('ListItem imageUrl:', imageUrl);
+
   return (
     <TouchableHighlight underlayColor={colors.light} onPress={onPress}>
       <View style={styles.container}>
         {IconComponent}
-        {image && (
-          <Image
-            style={styles.image}
-            source="https://firebasestorage.googleapis.com/v0/b/gumzofrontend.appspot.com/o/user_images%2F1694096740535.jpg?alt=media&token=ff42ad6e-b4ad-411a-9b4b-879900e9232b"
-            onError={handleError}
-          />
+        {imageSrc && isProfile && (
+          <Image style={styles.image} source={imageSrc} onError={handleError} />
         )}
         <View style={styles.detailsContainer}>
           <AppText style={styles.title} numberOfLines={1}>
@@ -68,6 +65,14 @@ function ListItem({
               />
             </TouchableOpacity>
           ))
+        ) : endIcon ? ( // Check for the single icon prop
+          <TouchableOpacity onPress={endIcon.onPress}>
+            <MaterialCommunityIcons
+              color={endIcon.color || colors.medium}
+              name={endIcon.name}
+              size={endIcon.size || 25}
+            />
+          </TouchableOpacity>
         ) : showArrow ? (
           <MaterialCommunityIcons
             color={colors.grannySmithApple}

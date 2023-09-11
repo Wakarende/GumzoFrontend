@@ -13,8 +13,8 @@ function AppText({
     <Text
       style={[defaultStyles.text, style]}
       onPress={onPress}
-      numberOfLines={2}
-      adjustsFontSizeToFit={true}>
+      numberOfLines={numberOfLines}
+      adjustsFontSizeToFit={adjustsFontSizeToFit}>
       {children}
     </Text>
   );

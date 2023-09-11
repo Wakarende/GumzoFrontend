@@ -6,46 +6,56 @@ import {getFirestore, doc, getDoc} from 'firebase/firestore';
 //local imports
 import colors from '../../config/colors';
 import Icon from '../../components/icon/Icon';
+import {initializeNotificationListener} from '../../utils/notificationsLogic';
 import ListItem from '../../components/lists/ListItem';
 import ListItemSeparator from '../../components/lists/ListItemSeparator';
 import Screen from '../../components/Screen';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import NotificationBadge from '../../components/NotificationBadge';
 import useMatchesCount from '../../utils/MatchesCount';
-
-//Data displayed on flatlist
-const menuItems = [
-  {
-    title: 'Account Settings',
-    icon: {
-      name: 'format-list-bulleted',
-      backgroundColor: colors.grannySmithApple,
-    },
-    targetScreen: 'AccountInfo',
-  },
-  {
-    title: 'My Messages',
-    icon: {
-      name: 'email',
-      backgroundColor: colors.grannySmithApple,
-    },
-    targetScreen: 'UserMessages',
-  },
-  {
-    title: 'Log Out',
-    icon: {
-      name: 'logout',
-      backgroundColor: colors.grannySmithApple,
-    },
-  },
-];
+import {MaterialCommunityIcons} from '../../../mocks/@expo-vector-icon-mocks';
+import {logout} from '../../utils/authUtils';
+import {pickImage} from '../../utils/imagePicker';
+import {uploadImage} from '../../utils/uploadImage';
+import {updateUserProfile} from '../../utils/updateUserProfile';
 
 function AccountScreen({navigation}) {
+  //Data displayed on flatlist
+  const menuItems = [
+    {
+      title: 'Account Settings',
+      icon: {
+        name: 'format-list-bulleted',
+        backgroundColor: colors.grannySmithApple,
+      },
+      targetScreen: 'AccountInfo',
+    },
+    {
+      title: 'My Messages',
+      icon: {
+        name: 'email',
+        backgroundColor: colors.grannySmithApple,
+      },
+      targetScreen: 'UserMessages',
+    },
+    {
+      title: 'Log Out',
+      icon: {
+        name: 'logout',
+        backgroundColor: colors.grannySmithApple,
+      },
+      onPress: () => logout(() => navigation.navigate('LogInScreen')),
+    },
+  ];
+
   // initializing state variable, this will be used to track if Firebase
   // is done checking if a user session exists
   const [initializing, setInitializing] = useState(true);
 
   const [user, setUser] = useState(null);
+
+  //State to store notification count
+  const [notifications, setNotifications] = useState(0);
 
   // Handle user state changes
   const onAuthStateChanged = useCallback(
@@ -82,10 +92,36 @@ function AccountScreen({navigation}) {
     }
   }, [user]);
   const fetchedImageUrl = user?.selectedImage;
-  console.log('Fetched image URL:', fetchedImageUrl);
 
-  //Matches count
-  const matchesCount = useMatchesCount(user);
+  //Edit profile image:
+  const handleProfileImageEdit = async () => {
+    const uri = await pickImage();
+    if (uri) {
+      try {
+        const downloadURL = await uploadImage(uri, user.uid);
+        await updateUserProfile(user.uid, {selectedImage: downloadURL});
+        setUser(prevState => ({...prevState, selectedImage: downloadURL}));
+      } catch (error) {
+        console.error('Error updating profile image: ', error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    let unsubscribeFromUpdates;
+    if (user) {
+      unsubscribeFromUpdates = initializeNotificationListener(
+        getFirestore(firebaseApp),
+        user,
+        setNotifications,
+      );
+    }
+    return () => {
+      if (unsubscribeFromUpdates) {
+        unsubscribeFromUpdates();
+      }
+    };
+  }, [user]);
   return (
     <Screen style={styles.screen}>
       <TouchableOpacity>
@@ -94,6 +130,13 @@ function AccountScreen({navigation}) {
             title={user ? user.username : ''}
             imageUrl={fetchedImageUrl}
             showArrow={false}
+            isProfile={true}
+            endIcon={{
+              name: 'square-edit-outline',
+              size: 30,
+              color: colors.grannySmithApple,
+              onPress: handleProfileImageEdit,
+            }}
           />
         </View>
       </TouchableOpacity>
@@ -111,12 +154,18 @@ function AccountScreen({navigation}) {
                     name={item.icon.name}
                     backgroundColor={item.icon.backgroundColor}
                   />
-                  {item.title === 'My Messages' && matchesCount > 0 && (
-                    <NotificationBadge count={matchesCount} />
+                  {item.title === 'My Messages' && notifications > 0 && (
+                    <NotificationBadge count={notifications} />
                   )}
                 </View>
               }
-              onPress={() => navigation.navigate(item.targetScreen)}
+              onPress={() => {
+                if (item.targetScreen) {
+                  navigation.navigate(item.targetScreen);
+                } else if (item.onPress && typeof item.onPress === 'function') {
+                  item.onPress();
+                }
+              }}
             />
           )}
         />

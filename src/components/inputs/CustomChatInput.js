@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
 import colors from '../../config/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {v4 as uuidv4} from 'uuid';
+import {generateChatId} from '../../utils/chatUtils';
 
 function CustomChatInput({
   onSendMessage,
@@ -12,6 +12,8 @@ function CustomChatInput({
   isRecording,
   audioPath,
   isAudioReadyToSend,
+  userId,
+  otherUserId,
 }) {
   const [message, setMessage] = useState('');
   return (
@@ -45,13 +47,14 @@ function CustomChatInput({
         onPress={() => {
           if (message.trim() !== '' || isAudioReadyToSend) {
             let newMessage = {
-              _id: uuidv4(),
+              _id: generateChatId(userId, otherUserId),
               createdAt: new Date(),
-              user: {_id: 1},
+              user: {_id: userId},
             };
 
             if (message.trim()) {
               newMessage.text = message;
+              console.log('Sending message:', newMessage);
             } else if (isAudioReadyToSend) {
               // assuming you'd have the URI or the path for the audio ready
               newMessage.audio = audioPath;
