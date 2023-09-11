@@ -110,10 +110,11 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
                 ...request,
                 senderName: senderDetails.username,
                 senderProfileImage: senderDetails.selectedImage,
-                // senderAge: senderDetails.dob,
-                // senderNativeLanguage: senderDetails.nativeLanguage,
-                // senderInterests: senderDetails.selectedInterests,
-                // senderLearningGoals: senderDetails.learningGoals,
+                senderAge: senderDetails.dob,
+                senderNativeLanguage: senderDetails.nativeLanguage,
+                senderInterests: senderDetails.selectedInterests,
+                senderBio: senderDetails.bio,
+                senderLearningGoals: senderDetails.learningGoals,
               });
             }
           }
@@ -148,8 +149,6 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
               augmentedAcceptedRequests.push({
                 ...request,
                 senderName: senderDetails.username,
-                senderProfileImage: senderDetails.profileImage,
-                // ... any other fields you might want ...
               });
             }
           }
@@ -160,7 +159,7 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
 
     const deniedMatchRequestRef = query(
       collection(firestore, 'matchRequests'),
-      where('recieverId', '==', currentUser.uid),
+      where('senderId', '==', currentUser.uid),
       where('status', '==', 'denied'),
     );
     const unsubscribeDenied = onSnapshot(
@@ -178,8 +177,6 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
               augmentedDeniedRequests.push({
                 ...request,
                 senderName: senderDetails.username,
-                senderProfileImage: senderDetails.profileImage,
-                // ... any other fields you might want ...
               });
             }
           }

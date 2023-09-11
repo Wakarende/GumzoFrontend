@@ -46,11 +46,21 @@ function ChatsScreen({navigation}) {
         where('user1', '==', currentUser.uid),
       );
 
-      const querySnapshot = await getDocs(matchRequestQuery);
+      const matchRequestQuery2 = query(
+        collection(db, 'matches'),
+        where('user2', '==', currentUser.uid),
+      );
+      const querySnapshot1 = await getDocs(matchRequestQuery);
+      const querySnapshot2 = await getDocs(matchRequestQuery2);
 
+      const allMatches = [...querySnapshot1.docs, ...querySnapshot2.docs];
       //Map over query results and retrieve user details for each matched user
-      const matchPromises = querySnapshot.docs.map(async matchDoc => {
-        const matchedUserId = matchDoc.data().user2;
+      const matchPromises = allMatches.map(async matchDoc => {
+        const matchData = matchDoc.data();
+        const matchedUserId =
+          matchData.user1 === currentUser.uid
+            ? matchData.user2
+            : matchData.user1;
 
         const userDoc = await getDoc(doc(db, 'users', matchedUserId));
 
