@@ -18,7 +18,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 //Local imports
 import AppInput from '../../components/inputs/AppInput';
-import AppText from '../../components/AppText';
+import AppText from '../../components/text/AppText';
 import colors from '../../config/colors';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import {FormContext} from '../../components/FormContext';

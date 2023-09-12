@@ -1,6 +1,13 @@
 import {addDoc, doc, collection, updateDoc} from '@firebase/firestore';
 
-//Logic to accept match request
+/**
+ * Accepts a match request.
+ *
+ * @param {string} requestId - The ID of the match request.
+ * @param {string} senderId - The ID of the user who sent the match request.
+ * @param {Object} firestore - The Firestore instance.
+ * @param {string} currentUserId - The ID of the currently authenticated user.
+ */
 export const acceptMatch = async (
   requestId,
   senderId,

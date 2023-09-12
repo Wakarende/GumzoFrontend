@@ -11,7 +11,7 @@ import ListItem from '../../components/lists/ListItem';
 import ListItemSeparator from '../../components/lists/ListItemSeparator';
 import Screen from '../../components/Screen';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import NotificationBadge from '../../components/NotificationBadge';
+import NotificationBadge from '../../components/badge/NotificationBadge';
 import useMatchesCount from '../../utils/MatchesCount';
 import {MaterialCommunityIcons} from '../../../mocks/@expo-vector-icon-mocks';
 import {logout} from '../../utils/authUtils';

@@ -4,8 +4,13 @@ import colors from '../../config/colors';
 
 const PrimaryButton = ({onPress, label, style, labelStyle}) => {
   return (
-    <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
-      <Text style={[styles.text, labelStyle]}>{label}</Text>
+    <TouchableOpacity
+      style={[styles.button, style]}
+      onPress={onPress}
+      testID="primary-button">
+      <Text style={[styles.text, labelStyle]} testID="primary-button-label">
+        {label}
+      </Text>
     </TouchableOpacity>
   );
 };

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {TouchableOpacity} from 'react-native';
 import {Audio} from 'expo-av';
-import AppText from './AppText';
+import AppText from './text/AppText';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '../config/colors';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import CreateProfile from '../../components/artworks/CreateProfile';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import AppText from '../../components/AppText';
+import AppText from '../../components/text/AppText';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import ProfileBackground from '../../components/artworks/ProfileBackground';
 import PrimaryButton from '../../components/button/PrimaryButton';

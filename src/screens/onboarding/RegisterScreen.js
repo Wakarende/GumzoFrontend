@@ -15,9 +15,9 @@ import firebaseApp from '../../../firebaseConfig';
 import {View} from 'react-native';
 //Local imports
 import AppInput from '../../components/inputs/AppInput';
-import AppText from '../../components/AppText';
+import AppText from '../../components/text/AppText';
 import colors from '../../config/colors';
-import BackArrow from '../../components/BackArrow';
+import BackArrow from '../../components/arrow/BackArrow';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import SignIn from '../../components/artworks/SignIn';
 

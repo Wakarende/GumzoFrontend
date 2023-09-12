@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 import {Modal, View, TextInput, StyleSheet} from 'react-native';
 
 //local imports
-import AppText from './AppText';
-import colors from '../config/colors';
-import PrimaryButton from './button/PrimaryButton';
+import AppText from '../text/AppText';
+import colors from '../../config/colors';
+import PrimaryButton from '../button/PrimaryButton';
 
 function EditModal({
   isVisible,

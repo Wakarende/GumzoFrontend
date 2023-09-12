@@ -1,5 +1,5 @@
 import React, {useEffect, useContext} from 'react';
-import AppText from '../../components/AppText';
+import AppText from '../../components/text/AppText';
 import {View, StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -8,21 +8,21 @@ import {interests} from '../../utils/interests';
 import colors from '../../config/colors';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import {FormContext} from '../../components/FormContext';
-
-const InterestCard = ({interest, iconName, onPress, isSelected}) => (
-  <TouchableOpacity
-    style={[styles.card, isSelected ? styles.cardSelected : null]}
-    onPress={onPress}>
-    <View style={styles.cardInfo}>
-      <MaterialCommunityIcons
-        name={iconName}
-        size={24}
-        color={isSelected ? 'white' : colors.grannySmithApple}
-      />
-      <AppText>{interest}</AppText>
-    </View>
-  </TouchableOpacity>
-);
+import InterestCard from '../../components/cards/InterestCard';
+// const InterestCard = ({interest, iconName, onPress, isSelected}) => (
+//   <TouchableOpacity
+//     style={[styles.card, isSelected ? styles.cardSelected : null]}
+//     onPress={onPress}>
+//     <View style={styles.cardInfo}>
+//       <MaterialCommunityIcons
+//         name={iconName}
+//         size={24}
+//         color={isSelected ? 'white' : colors.grannySmithApple}
+//       />
+//       <AppText>{interest}</AppText>
+//     </View>
+//   </TouchableOpacity>
+// );
 
 function UserInterestsScreen({navigation, route}) {
   //user id

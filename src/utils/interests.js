@@ -1,3 +1,12 @@
+/**
+ * This array contains a list of interests, each represented by an object.
+ * Each object has two properties:
+ *   - `interest`: which denotes the name of the interest.
+ *   - `iconName`: a string that represents the icon associated with that interest.
+ *
+ *
+ */
+
 export const interests = [
   {interest: 'Music', iconName: 'music'},
   {interest: 'Film', iconName: 'filmstrip'},

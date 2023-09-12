@@ -9,7 +9,7 @@ import Animated, {FadeInDown, FadeInUp} from 'react-native-reanimated';
 //Local imports
 import Artwork04 from '../../components/artworks/Artwork04';
 import colors from '../../config/colors';
-import BackArrow from '../../components/BackArrow';
+import BackArrow from '../../components/arrow/BackArrow';
 
 const IntroScreen02 = ({navigation}) => {
   const theme = useTheme();

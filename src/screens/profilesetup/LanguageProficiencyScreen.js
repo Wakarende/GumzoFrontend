@@ -3,12 +3,12 @@ import {StyleSheet, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 //Local Imports
-import AppText from '../../components/AppText';
+import AppText from '../../components/text/AppText';
 import colors from '../../config/colors';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import {proficiencyLevels} from '../../utils/proficiency';
 import {FormContext} from '../../components/FormContext';
-import FluencyCard from '../../components/FluencyCard';
+import FluencyCard from '../../components/cards/FluencyCard';
 
 console.log(proficiencyLevels);
 function LanguageProficiencyScreen({navigation, route}) {

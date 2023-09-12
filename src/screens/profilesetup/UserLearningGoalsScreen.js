@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {StyleSheet, SafeAreaView, View, TextInput} from 'react-native';
 
 //Local imports
-import AppText from '../../components/AppText';
+import AppText from '../../components/text/AppText';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import FormContext from '../../components/FormContext';
 

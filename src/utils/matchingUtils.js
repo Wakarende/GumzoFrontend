@@ -1,13 +1,25 @@
 import {proficiencyLevels} from './proficiency';
 
-//Function to determine potential matches for the current user based on interests and proficiency
+/**
+ * Function to find potential matches for the current user based on shared interests and proficiency level.
+ *
+ * @param {Object} currentUser - The currently authenticated user object, containing interests and proficiency details.
+ * @param {Array} allUsers - An array containing user objects to be filtered as potential matches.
+ * @returns {Array} An array of user objects that match the criteria for potential connections.
+ */
 export const getPotentialMatches = (currentUser, allUsers) => {
   return allUsers.filter(user => {
-    //Don't include current user as a potential match
+    //Ensure current user is not included as a potential match
     if (user.id === currentUser.uid) {
       return false;
     }
-    //Function to fetch numeric value given to each proficiency
+
+    /**
+     * Helper function to fetch the numeric representation of a given proficiency level.
+     *
+     * @param {string} proficiency - The string representation of a proficiency level.
+     * @returns {number} The numeric value associated with the provided proficiency level. If not found, it defaults to 0.
+     */
     function getProficiencyValue(proficiency) {
       const level = proficiencyLevels.find(
         level => level.proficiency === proficiency,
@@ -15,7 +27,9 @@ export const getPotentialMatches = (currentUser, allUsers) => {
       return level ? level.value : 0;
     }
 
-    //Function to check if user and current user share any common interests
+    /**
+     * Check if the user and the current user share any common interests.
+     */
     const hasCommonInterests =
       user.selectedInterests?.some(interestObj =>
         currentUser.selectedInterests?.some(
@@ -24,7 +38,7 @@ export const getPotentialMatches = (currentUser, allUsers) => {
         ),
       ) || false;
 
-    //Map proficiency descriptions to their corresponding numeric values
+    // Convert the proficiency descriptions of both users to their corresponding numeric values
     const currentUserProficiencyValue = getProficiencyValue(
       currentUser.selectedProficiency[0]?.proficiency,
     );
@@ -32,13 +46,17 @@ export const getPotentialMatches = (currentUser, allUsers) => {
       user.selectedProficiency[0]?.proficiency,
     );
 
-    //Function to check if the proficiency meets the requirements for matching
+    /**
+     * Determine if the proficiency level of the potential match meets the requirements.
+     * A user with the highest proficiency value (4) is compatible with all users.
+     * Otherwise, only users with a proficiency value greater than or equal to the current user are considered.
+     */
     const proficiencyMeetsNeeds =
       currentUserProficiencyValue === 4
         ? true
         : userProficiencyValue >= currentUserProficiencyValue;
 
-    //Return true if  conditions are met
+    // Only return potential matches that share common interests and meet the proficiency requirements
     return hasCommonInterests && proficiencyMeetsNeeds;
   });
 };

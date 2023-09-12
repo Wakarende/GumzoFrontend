@@ -140,7 +140,7 @@ import {
 //local imports
 import CustomChatInput from '../../components/inputs/CustomChatInput';
 import AudioMessagePlayer from '../../components/AudioMessagePlayer';
-import BackArrow from '../../components/BackArrow';
+import BackArrow from '../../components/arrow/BackArrow';
 import firebaseApp from '../../../firebaseConfig';
 import {generateChatId} from '../../utils/chatUtils';
 import {fetchCurrentUser} from '../../utils/firebaseService';

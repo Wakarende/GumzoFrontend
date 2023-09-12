@@ -9,7 +9,7 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import colors from '../../config/colors';
-import AppText from '../AppText';
+import AppText from '../text/AppText';
 
 const DEFAULT_PROFILE_IMAGE = require('../../../assets/profileImg.jpg');
 function ListItem({
@@ -41,7 +41,12 @@ function ListItem({
       <View style={styles.container}>
         {IconComponent}
         {imageSrc && isProfile && (
-          <Image style={styles.image} source={imageSrc} onError={handleError} />
+          <Image
+            style={styles.image}
+            source={imageSrc}
+            onError={handleError}
+            testID="profile-image"
+          />
         )}
         <View style={styles.detailsContainer}>
           <AppText style={styles.title} numberOfLines={1}>
@@ -55,7 +60,10 @@ function ListItem({
         </View>
         {endIcons.length ? (
           endIcons.map((icon, index) => (
-            <TouchableOpacity key={index} onPress={icon.onPress}>
+            <TouchableOpacity
+              key={index}
+              onPress={icon.onPress}
+              testID="end-multi-icon">
               <MaterialCommunityIcons
                 key={index}
                 color={icon.color || colors.medium}
@@ -66,7 +74,7 @@ function ListItem({
             </TouchableOpacity>
           ))
         ) : endIcon ? ( // Check for the single icon prop
-          <TouchableOpacity onPress={endIcon.onPress}>
+          <TouchableOpacity onPress={endIcon.onPress} testID="end-single-icon">
             <MaterialCommunityIcons
               color={endIcon.color || colors.medium}
               name={endIcon.name}
@@ -75,6 +83,7 @@ function ListItem({
           </TouchableOpacity>
         ) : showArrow ? (
           <MaterialCommunityIcons
+            testID="default-arrow-icon"
             color={colors.grannySmithApple}
             name="chevron-right"
             size={25}

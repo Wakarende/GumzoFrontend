@@ -2,8 +2,8 @@ import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 //local imports
-import AppText from './AppText';
-import colors from '../config/colors';
+import AppText from '../text/AppText';
+import colors from '../../config/colors';
 
 function FluencyCard({title, onPress, isSelected}) {
   return (

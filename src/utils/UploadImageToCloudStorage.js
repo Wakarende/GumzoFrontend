@@ -7,11 +7,18 @@ import {
 
 //local imports
 import firebaseApp from '../../firebaseConfig';
-
+/**
+ * Uploads an image to Firebase Cloud Storage.
+ *
+ * @param {string} uri - The local URI of the image to be uploaded.
+ * @return {Promise<string>} - A promise that resolves with the download URL of the uploaded image.
+ */
 export async function uploadImageToCloudStorage(uri) {
+  //Convert the image URL to a blob for upload
   const response = await fetch(uri);
   const blob = await response.blob();
 
+  //Initialize Firebase Storage and set a unique storage reference path for the image
   const storage = getStorage(firebaseApp);
   const storageRef = ref(
     storage,
@@ -24,7 +31,7 @@ export async function uploadImageToCloudStorage(uri) {
     uploadTask.on(
       'state_changed',
       snapshot => {
-        //upon successful upload
+        //calculate the log and upload progress
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log(`Upload is ${progress}% done`);
@@ -34,6 +41,7 @@ export async function uploadImageToCloudStorage(uri) {
         reject(error);
       },
       async () => {
+        //Once uploaded, retrieve and return the donwload URL
         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
         resolve(downloadURL);
       },

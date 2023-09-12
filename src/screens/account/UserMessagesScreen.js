@@ -24,9 +24,9 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 //Local imports
-import AppText from '../../components/AppText';
+import AppText from '../../components/text/AppText';
 import {acceptMatch, denyMatchRequest} from '../../utils/matchUtils';
-import BackArrow from '../../components/BackArrow';
+import BackArrow from '../../components/arrow/BackArrow';
 import colors from '../../config/colors';
 import Screen from '../../components/Screen';
 import firebaseApp from '../../../firebaseConfig';

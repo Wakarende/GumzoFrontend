@@ -29,10 +29,10 @@ import {useForm} from 'react-hook-form';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 //Local imports
-import AppText from '../../components/AppText';
+import AppText from '../../components/text/AppText';
 import AppInput from '../../components/inputs/AppInput';
 import colors from '../../config/colors';
-import BackArrow from '../../components/BackArrow';
+import BackArrow from '../../components/arrow/BackArrow';
 //Validation Schema for login form, validates email and password
 const validationSchema = Yup.object().shape({
   email: Yup.string().required().email().label('Email'),

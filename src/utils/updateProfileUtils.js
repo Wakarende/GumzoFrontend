@@ -1,6 +1,11 @@
 import firebaseApp from '../../firebaseConfig';
 import {getAuth} from '@firebase/auth';
 
+/**
+ * Updates the biography information for the currently authenticated user in Firestore.
+ *
+ * @param {string} updatedBio - The updated biography information.
+ */
 export const updateBio = async updatedBio => {
   try {
     const auth = getAuth(firebaseApp);

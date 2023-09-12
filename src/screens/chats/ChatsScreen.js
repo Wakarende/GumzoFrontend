@@ -1,10 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {
-  FlatList,
-  GestureHandlerRootView,
-  TextInput,
-} from 'react-native-gesture-handler';
+import {StyleSheet, View} from 'react-native';
+import {FlatList, GestureHandlerRootView} from 'react-native-gesture-handler';
 import {
   collection,
   doc,
@@ -14,7 +10,6 @@ import {
   getDocs,
   getDoc,
 } from '@firebase/firestore';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 //local imports
 import colors from '../../config/colors';
@@ -24,7 +19,7 @@ import ListItem from '../../components/lists/ListItem';
 import ListItemSeparator from '../../components/lists/ListItemSeparator';
 import Screen from '../../components/Screen';
 import {getAuth} from '@firebase/auth';
-import AppText from '../../components/AppText';
+import AppText from '../../components/text/AppText';
 
 function ChatsScreen({navigation}) {
   const [matches, setMatches] = useState([]);

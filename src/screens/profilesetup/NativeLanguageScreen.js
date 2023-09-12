@@ -2,7 +2,7 @@ import React, {useState, useContext} from 'react';
 import {SafeAreaView, StyleSheet, View, TextInput, Text} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 //local imports
-import AppText from '../../components/AppText';
+import AppText from '../../components/text/AppText';
 import colors from '../../config/colors';
 import FormContext from '../../components/FormContext';
 import PrimaryButton from '../../components/button/PrimaryButton';

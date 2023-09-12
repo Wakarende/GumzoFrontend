@@ -2,7 +2,7 @@ import React from 'react';
 import {Bubble} from 'react-native-gifted-chat';
 
 //Local Imports
-import colors from '../config/colors';
+import colors from '../../config/colors';
 
 const ChatBubble = props => {
   return (

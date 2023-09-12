@@ -3,11 +3,11 @@ import {View, TouchableOpacity, StyleSheet} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 //Local imports
-import colors from '../config/colors';
+import colors from '../../config/colors';
 
 const ChatActions = ({onStartRecording, onStopRecording}) => {
   return (
-    <View style={styles.iconContainer}>
+    <View style={styles.iconContainer} testID="icon-container">
       <TouchableOpacity onPress={onStartRecording}>
         <MaterialCommunityIcons
           name="microphone"

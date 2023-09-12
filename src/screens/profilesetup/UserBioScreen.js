@@ -4,7 +4,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {getFirestore, doc, setDoc} from 'firebase/firestore';
 
 //local imports
-import AppText from '../../components/AppText';
+import AppText from '../../components/text/AppText';
 import {TextInput} from 'react-native-gesture-handler';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import {FormContext} from '../../components/FormContext';

@@ -9,6 +9,7 @@ function Icon({
 }) {
   return (
     <View
+      testID="icon-wrapper"
       style={{
         width: size,
         height: size,
@@ -17,11 +18,18 @@ function Icon({
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <MaterialCommunityIcons name={name} color={iconColor} size={size * 0.5} />
+      <MaterialCommunityIcons
+        name={name}
+        color={iconColor}
+        size={size * 0.5}
+        testID="material-icon"
+      />
     </View>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  iconContainer: {},
+});
 
 export default Icon;

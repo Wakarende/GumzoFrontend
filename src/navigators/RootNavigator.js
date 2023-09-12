@@ -1,18 +1,30 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
+//Onboarding Screens imports
 import IntroScreen from '../screens/onboarding/IntroScreen';
 import IntroScreen01 from '../screens/onboarding/IntroScreen01';
 import IntroScreen02 from '../screens/onboarding/IntroScreen02';
 import LogInScreen from '../screens/onboarding/LogInScreen';
-import NavigationBar from './NavigationBar';
 import RegisterScreen from '../screens/onboarding/RegisterScreen';
-import SingleChatScreen from '../screens/chats/SingleChatScreen';
-import ProfileSetupNavigators from './ProfileSetupNavigators';
-import UserMessagesScreen from '../screens/account/UserMessagesScreen';
-import AccountInfoScreen from '../screens/account/AccountInfoScreen';
 
+//Main app screen imports
+import NavigationBar from './NavigationBar';
+import SingleChatScreen from '../screens/chats/SingleChatScreen';
+import AccountInfoScreen from '../screens/account/AccountInfoScreen';
+import UserMessagesScreen from '../screens/account/UserMessagesScreen';
+
+import ProfileSetupNavigators from './ProfileSetupNavigators';
+
+//Create a native stack navigator instance for the root navigator
 const RootStack = createNativeStackNavigator();
 
+/**
+ * Represents the root navigator for the application.
+ * Contains routes to onboarding screens, main app screens, and profile setup.
+ *
+ * @return {React.Component} - Returns the root navigator component.
+ */
 const RootNavigator = () => {
   return (
     <RootStack.Navigator>

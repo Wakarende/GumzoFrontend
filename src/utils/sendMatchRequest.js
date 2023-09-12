@@ -1,5 +1,12 @@
 import firestore from '@react-native-firebase/firestore';
 
+/**
+ * Sends a match request notification to a recipient user.
+ *
+ * @param {string} recipientUserId - The ID of the user to whom the notification should be sent.
+ * @param {string} senderUserId - The ID of the user sending the match request.
+ * @return {boolean} - True if the notification was sent successfully, false otherwise.
+ */
 export const sendMatchRequestNotification = async (
   recipientUserId,
   senderUserId,

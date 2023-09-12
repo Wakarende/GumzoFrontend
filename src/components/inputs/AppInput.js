@@ -9,6 +9,7 @@ function AppInput({name, control, rules, icon, ...otherProps}) {
     <View style={styles.container}>
       {icon && (
         <MaterialCommunityIcons
+          testID="icon"
           name={icon}
           size={20}
           color={colors.lightGray}
@@ -18,6 +19,7 @@ function AppInput({name, control, rules, icon, ...otherProps}) {
         control={control}
         render={({field: {onChange, onBlur, value}}) => (
           <TextInput
+            testID="text-input"
             style={styles.input}
             onBlur={onBlur}
             onChangeText={value => onChange(value)}
@@ -46,9 +48,8 @@ const styles = StyleSheet.create({
     height: 70,
   },
   input: {
-    // height: 67,
     flex: 1,
-    paddingHorizontal: 10, // Some horizontal padding to ensure text doesn't touch the edges
+    paddingHorizontal: 10,
     paddingVertical: 0,
     alignItems: 'center',
   },

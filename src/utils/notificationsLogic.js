@@ -1,5 +1,13 @@
 import {query, collection, where, onSnapshot} from '@firebase/firestore';
 
+/**
+ * Initializes a listener for notifications related to match requests.
+ *
+ * @param {Object} firestore - The Firestore instance.
+ * @param {Object} currentUser - The currently authenticated user's data.
+ * @param {Function} setNotifications - Function to update the UI with the new notification count.
+ * @return {Function} - A function that, when called, will unsubscribe the listener.
+ */
 export const initializeNotificationListener = (
   firestore,
   currentUser,

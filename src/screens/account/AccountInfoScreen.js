@@ -4,12 +4,13 @@ import {View, StyleSheet, Image, Alert} from 'react-native';
 import {getAuth} from 'firebase/auth';
 
 //Local imports
-import AppText from '../../components/AppText';
-import BackArrow from '../../components/BackArrow';
+import AppText from '../../components/text/AppText';
+import BackArrow from '../../components/arrow/BackArrow';
 import {calculateAge} from '../../utils/calculateAge';
 import colors from '../../config/colors';
 import EditButton from '../../components/icon/editProfileIcon';
-import EditModal from '../../components/EditModal';
+import EditButtonIcon from '../../components/icon/EditButtonIcon';
+import EditModal from '../../components/modal/EditModal';
 import {fetchCurrentUser} from '../../utils/firebaseService';
 import firebaseApp from '../../../firebaseConfig';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -94,7 +95,7 @@ function AccountInfoScreen({navigation, numberOfLines, adjustFontToFitSize}) {
               <AppText style={styles.title}>Native Language</AppText>
             </View>
             <View style={styles.editProfileIcon}>
-              <EditButton onPress={() => setIsBioModalVisible(true)} />
+              <EditButtonIcon onPress={() => setIsBioModalVisible(true)} />
             </View>
           </View>
           <View>
@@ -111,7 +112,7 @@ function AccountInfoScreen({navigation, numberOfLines, adjustFontToFitSize}) {
               <AppText style={styles.title}>Bio</AppText>
             </View>
             <View style={styles.editProfileIcon}>
-              <EditButton onPress={() => setIsBioModalVisible(true)} />
+              <EditButtonIcon onPress={() => setIsBioModalVisible(true)} />
             </View>
           </View>
           <View>
@@ -134,7 +135,7 @@ function AccountInfoScreen({navigation, numberOfLines, adjustFontToFitSize}) {
               <AppText style={styles.title}>Interests</AppText>
             </View>
             <View style={styles.editProfileIcon}>
-              <EditButton onPress={() => setIsBioModalVisible(true)} />
+              <EditButtonIcon onPress={() => setIsBioModalVisible(true)} />
             </View>
           </View>
           <View style={styles.userInterests}>
@@ -151,7 +152,7 @@ function AccountInfoScreen({navigation, numberOfLines, adjustFontToFitSize}) {
               <AppText style={styles.title}>Learning Goals</AppText>
             </View>
             <View style={styles.editProfileIcon}>
-              <EditButton onPress={() => setIsBioModalVisible(true)} />
+              <EditButtonIcon onPress={() => setIsBioModalVisible(true)} />
             </View>
           </View>
           <View style={styles.text}>

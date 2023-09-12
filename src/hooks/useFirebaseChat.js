@@ -18,7 +18,7 @@ import {
 //local imports
 import CustomChatInput from '../components/inputs/CustomChatInput';
 import AudioMessagePlayer from '../components/AudioMessagePlayer';
-import BackArrow from '../components/BackArrow';
+import BackArrow from '../components/arrow/BackArrow';
 import firebaseApp from '../../firebaseConfig';
 import {generateChatId} from '../utils/chatUtils';
 import {fetchCurrentUser} from '../utils/firebaseService';
@@ -37,9 +37,7 @@ function SingleChatScreen({navigation, route}) {
 
   const [messages, setMessages] = useState([]);
   const [userId, setUserId] = useState(null);
-  // const [otherUserId, setOtherUserId] = useState(
-  //   navigation.getParam('otherUserId'),
-  // );
+
   const otherUserId = route.params.otherUserId;
   console.log('Other User ID:', otherUserId);
 
@@ -65,7 +63,7 @@ function SingleChatScreen({navigation, route}) {
         });
       }
     };
-  }, [isRecording, recording, isUnloaded]); //Include dependencies
+  }, [isRecording, recording, isUnloaded]);
 
   //Listener that listens to new messages in the chat room in real-time
   useEffect(() => {

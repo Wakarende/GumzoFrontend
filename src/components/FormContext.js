@@ -15,7 +15,7 @@ const initialState = {
   talkingPoints: '',
 };
 
-const formReducer = (state, action) => {
+export const formReducer = (state, action) => {
   switch (action.type) {
     case 'UPDATE_FIELD':
       return {

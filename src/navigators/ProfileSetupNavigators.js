@@ -7,8 +7,17 @@ import LanguageProficiencyScreen from '../screens/profilesetup/LanguageProficien
 import UserBioScreen from '../screens/profilesetup/UserBioScreen';
 import UserLearningGoalsScreen from '../screens/profilesetup/UserLearningGoalsScreen';
 import NativeLanguageScreen from '../screens/profilesetup/NativeLanguageScreen';
+
+// Creating a native stack navigator instance for the profile setup
 const Profile = createNativeStackNavigator();
 
+/**
+ * Represents the navigator for the profile setup flow.
+ * Contains routes to screens that allow users to set up their profile.
+ *
+ * @param {Object} props - Props passed to the component.
+ * @return {React.Component} - Returns the profile setup navigator component.
+ */
 function ProfileSetupNavigators(props) {
   return (
     <Profile.Navigator initialRouteName="CreateProfile">

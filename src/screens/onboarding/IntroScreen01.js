@@ -12,7 +12,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 //Local imports
 import colors from '../../config/colors';
 import {INTRO_SCREEN_01} from '../../utils/constants';
-import BackArrow from '../../components/BackArrow';
+import BackArrow from '../../components/arrow/BackArrow';
 
 const IntroScreen01 = ({navigation}) => {
   const theme = useTheme();
