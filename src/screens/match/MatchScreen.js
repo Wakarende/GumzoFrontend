@@ -30,42 +30,69 @@ import firebaseApp from '../../../firebaseConfig';
 import {getPotentialMatches} from '../../utils/matchingUtils';
 import {calculateAge} from '../../utils/calculateAge';
 import {sendMatchRequestNotification} from '../../utils/sendMatchRequest';
+import {sendMatchRequest} from '../../utils/matchRequestUtils';
+import {useUsersData} from '../../hooks/useUsersData';
 
 function MatchScreen({navigation, adjustsFontSizeToFit, numberOfLines}) {
   //local state to store all users and the current user's data
-  const [users, setUsers] = useState([]);
+  // const [users, setUsers] = useState([]);
 
   //Fetch all users and the current users data
-  const [currentUser, setCurrentUser] = useState(null);
+  // const [currentUser, setCurrentUser] = useState(null);
 
   //state to count notifications:
   const [notificationCount, setNotificationCount] = useState(0);
   const [matchRequests, setMatchRequests] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      //fetch all users
-      const fetchedUsers = await fetchUsers();
-      const auth = getAuth(firebaseApp);
-      // Get the current user's ID from Firebase Auth
-      const userId = auth.currentUser.uid;
-      //Filter out the current user from the list of all users
-      const filteredUsers = fetchedUsers.filter(user => user.uid !== userId);
+  // Before your existing code, use the hook
+  const {users, currentUser} = useUsersData();
 
-      //Fetch data for current user
-      const fetchedCurrentUser = await fetchCurrentUser(userId);
+  // This will replace the commented out useState declarations for users and currentUser.
 
-      //update the state of fetched data.
-      setCurrentUser(fetchedCurrentUser);
-      setUsers(filteredUsers);
-    };
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     //fetch all users
+  //     const fetchedUsers = await fetchUsers();
+  //     const auth = getAuth(firebaseApp);
+  //     // Get the current user's ID from Firebase Auth
+  //     const userId = auth.currentUser.uid;
+  //     //Filter out the current user from the list of all users
+  //     const filteredUsers = fetchedUsers.filter(user => user.uid !== userId);
+
+  //     //Fetch data for current user
+  //     const fetchedCurrentUser = await fetchCurrentUser(userId);
+
+  //     //update the state of fetched data.
+  //     setCurrentUser(fetchedCurrentUser);
+  //     setUsers(filteredUsers);
+  //   };
+  //   fetchData();
+  // }, []);
 
   //Compute potential matches for current user
   const potentialMatches = currentUser
     ? getPotentialMatches(currentUser, users)
     : [];
 
+  //handle send request
+  const handleSendRequest = async () => {
+    try {
+      const result = await sendMatchRequest(selectedUser, currentUser);
+      if (result.status === 'already_exists') {
+        Alert.alert('You have already sent a request to the user.');
+      } else if (result.status === 'success') {
+        Alert.alert('Match Request and Notification Sent!');
+      } else if (result.status === 'notification_failed') {
+        Alert.alert('Match Request Sent!');
+      }
+    } catch (error) {
+      console.error('Error sending match request: ', error);
+      Alert.alert('Request Failed');
+    }
+  };
+
+  useEffect(() => {
+    setNotificationCount(matchRequests.length);
+  }, [matchRequests]);
   //Local state to manage the modal for user details
   const [selectedUser, setSelectedUser] = useState(null);
 
@@ -95,56 +122,56 @@ function MatchScreen({navigation, adjustsFontSizeToFit, numberOfLines}) {
   );
 
   //Function handling sending match requests and match request notifications  for a request
-  const handleSendRequest = async () => {
-    try {
-      const db = getFirestore(firebaseApp);
+  // const handleSendRequest = async () => {
+  //   try {
+  //     const db = getFirestore(firebaseApp);
 
-      //Check if a match request from currentUser to selectedUser already exists
-      const matchRequestQuery = query(
-        collection(db, 'matchRequests'),
-        where('senderId', '==', currentUser.uid),
-        where('recieverId', '==', selectedUser.id),
-      );
+  //     //Check if a match request from currentUser to selectedUser already exists
+  //     const matchRequestQuery = query(
+  //       collection(db, 'matchRequests'),
+  //       where('senderId', '==', currentUser.uid),
+  //       where('recieverId', '==', selectedUser.id),
+  //     );
 
-      const querySnapshot = await getDocs(matchRequestQuery);
-      if (!querySnapshot.empty) {
-        //if there's any document that satisfies the criteria, request already exists
-        Alert.alert('You have already sent a request to the user.');
-        return; //exit function
-      }
+  //     const querySnapshot = await getDocs(matchRequestQuery);
+  //     if (!querySnapshot.empty) {
+  //       //if there's any document that satisfies the criteria, request already exists
+  //       Alert.alert('You have already sent a request to the user.');
+  //       return; //exit function
+  //     }
 
-      //send notification if no exisiting request is found
-      const success = await sendMatchRequestNotification(
-        selectedUser.id,
-        currentUser.uid,
-      );
-      console.log('Selected User ID:', selectedUser.id);
-      console.log('Current User ID:', currentUser.uid);
+  //     //send notification if no exisiting request is found
+  //     const success = await sendMatchRequestNotification(
+  //       selectedUser.id,
+  //       currentUser.uid,
+  //     );
+  //     console.log('Selected User ID:', selectedUser.id);
+  //     console.log('Current User ID:', currentUser.uid);
 
-      const matchRequestsCollection = collection(db, 'matchRequests');
-      await addDoc(matchRequestsCollection, {
-        senderId: currentUser.uid,
-        recieverId: selectedUser.id,
-        status: 'pending',
-        timestamp: serverTimestamp(),
-      });
-      //Store the match request in Firestore
-      if (success) {
-        Alert.alert('Match Request Sent!');
-      } else {
-        Alert.alert('Match Request Failed');
-      }
-    } catch (error) {
-      console.error('Error sending match request: ', error);
-      Alert.alert('Request Failed');
-    }
-  };
+  //     const matchRequestsCollection = collection(db, 'matchRequests');
+  //     await addDoc(matchRequestsCollection, {
+  //       senderId: currentUser.uid,
+  //       recieverId: selectedUser.id,
+  //       status: 'pending',
+  //       timestamp: serverTimestamp(),
+  //     });
+  //     //Store the match request in Firestore
+  //     if (success) {
+  //       Alert.alert('Match Request and Notification Sent!');
+  //     } else {
+  //       Alert.alert('Match Request Sent, but Notification Failed');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error sending match request: ', error);
+  //     Alert.alert('Request Failed');
+  //   }
+  // };
 
   //update state whenver match requests are retrieved :
-  useEffect(() => {
-    // ... fetching data ...
-    setNotificationCount(matchRequests.length);
-  }, [matchRequests]);
+  // useEffect(() => {
+  //   // ... fetching data ...
+  //   setNotificationCount(matchRequests.length);
+  // }, [matchRequests]);
   return (
     <GestureHandlerRootView style={styles.rootView}>
       <ScrollView>

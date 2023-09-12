@@ -1,11 +1,4 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import type {PropsWithChildren} from 'react';
 import {StyleSheet} from 'react-native';
 import {getAuth, onAuthStateChanged} from 'firebase/auth';
@@ -18,12 +11,12 @@ import {FormProvider} from './src/components/FormContext';
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
-import * as ImagePicker from 'expo-image-picker';
-//Remove default theme colour of react native navigation
 
 //local imports
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 import firebaseApp from './firebaseConfig';
+
+//Override React Native Theme
 const MyTheme = {
   ...DefaultTheme,
   colors: {
@@ -32,26 +25,6 @@ const MyTheme = {
   },
 };
 function App(): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [image, setImage] = useState<string | null>(null);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
-
   //Setup auth listener
   useEffect(() => {
     const auth = getAuth(firebaseApp);

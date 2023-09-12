@@ -227,7 +227,8 @@ const styles = StyleSheet.create({
     bottom: 0,
     resizeMode: 'cover',
     marginBottom: 30,
-  }, // To make the image circular if you want
+  },
+  // To make the image circular if you want
   username: {
     fontWeight: 900,
     fontSize: 24,
