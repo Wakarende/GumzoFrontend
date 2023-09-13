@@ -20,28 +20,36 @@ function CustomChatInput({
   const [message, setMessage] = useState('');
 
   const handleSend = async () => {
-    if (message.trim() !== '' || isAudioReadyToSend) {
-      let newMessage = {
-        createdAt: new Date(),
-        user: {_id: userId},
-      };
+    try {
+      if (message.trim() !== '' || isAudioReadyToSend) {
+        if (!userId) {
+          console.error('User ID is not defined');
+        }
+        let newMessage = {
+          _id: new Date().getTime().toString(),
+          createdAt: new Date(),
+          user: {_id: userId},
+        };
 
-      if (message.trim()) {
-        newMessage.text = message;
-      } else if (isAudioReadyToSend) {
-        newMessage.audio = audioPath;
+        if (message.trim()) {
+          newMessage.text = message;
+        } else if (isAudioReadyToSend) {
+          newMessage.audio = audioPath;
+        }
+
+        const db = getFirestore(firebaseApp);
+        // Getting the chatId for the specific chat room between the two users
+        const chatId = generateChatId(userId, otherUserId);
+        const messagesCollection = collection(db, `chats/${chatId}/messages`);
+
+        // Using Firestore's .add() to add the message so it generates a unique ID for each message
+        await addDoc(messagesCollection, newMessage);
+
+        onSendMessage(newMessage);
+        setMessage('');
       }
-
-      const db = getFirestore(firebaseApp);
-      // Getting the chatId for the specific chat room between the two users
-      const chatId = generateChatId(userId, otherUserId);
-      const messagesCollection = collection(db, `chats/${chatId}/messages`);
-
-      // Using Firestore's .add() to add the message so it generates a unique ID for each message
-      await addDoc(messagesCollection, newMessage);
-
-      onSendMessage(newMessage);
-      setMessage('');
+    } catch (error) {
+      console.error('Error sending messages: ', error);
     }
   };
 
