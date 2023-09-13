@@ -1,11 +1,15 @@
 import React, {useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {TextInput, TouchableOpacity} from 'react-native-gesture-handler';
-import colors from '../../config/colors';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+//Local imports
+import colors from '../../config/colors';
 import {generateChatId} from '../../utils/chatUtils';
 import firebaseApp from '../../../firebaseConfig';
 import {collection, addDoc, getFirestore} from '@firebase/firestore';
+import {uploadAudioAndGetURL} from '../../utils/chatUtils';
+import {uploadAudioToStorage} from '../../utils/audioUtils';
 
 function CustomChatInput({
   onSendMessage,
@@ -24,19 +28,45 @@ function CustomChatInput({
       if (message.trim() !== '' || isAudioReadyToSend) {
         if (!userId) {
           console.error('User ID is not defined');
+          return;
         }
+
+        // Check the value of audioPath when isAudioReadyToSend is true
+        if (isAudioReadyToSend) {
+          console.log('Audio path to be sent:', audioPath);
+        }
+
         let newMessage = {
           _id: new Date().getTime().toString(),
           createdAt: new Date(),
           user: {_id: userId},
         };
 
+        // Only add the text field if message is defined and non-empty
         if (message.trim()) {
-          newMessage.text = message;
-        } else if (isAudioReadyToSend) {
-          newMessage.audio = audioPath;
+          newMessage.text = message.trim();
         }
 
+        // Check the value of audioPath when isAudioReadyToSend is true
+        if (isAudioReadyToSend && audioPath) {
+          const audioURL = await uploadAudioToStorage(audioPath);
+          console.log('Audio path to be sent:', audioURL);
+          newMessage.audio = audioURL;
+        }
+
+        // if (message.trim()) {
+        //   newMessage.text = message;
+        // } else if (isAudioReadyToSend && audioPath) {
+        //   const audioURL = await uploadAudioAndGetURL(audioPath);
+        //   console.log('Audio path to be sent:', audioURL);
+        //   newMessage.audio = audioURL;
+        // }
+
+        // Ensure that either text or audio fields exist in the newMessage object before proceeding
+        if (!newMessage.text && !newMessage.audio) {
+          console.error('Both text and audio fields are undefined');
+          return; // Exit the function as there's nothing to send
+        }
         const db = getFirestore(firebaseApp);
         // Getting the chatId for the specific chat room between the two users
         const chatId = generateChatId(userId, otherUserId);
@@ -52,7 +82,6 @@ function CustomChatInput({
       console.error('Error sending messages: ', error);
     }
   };
-
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={isRecording ? stopRecording : startRecording}>
@@ -63,7 +92,6 @@ function CustomChatInput({
           style={styles.icon}
         />
       </TouchableOpacity>
-
       <TouchableOpacity onPress={stopRecording}>
         <MaterialCommunityIcons
           name="stop"
@@ -72,7 +100,6 @@ function CustomChatInput({
           style={styles.icon}
         />
       </TouchableOpacity>
-
       <TextInput
         style={styles.input}
         value={message}
@@ -80,36 +107,6 @@ function CustomChatInput({
         placeholder="Send a message..."
         autoFocus
       />
-      {/*
-      <TouchableOpacity
-        onPress={() => {
-          if (message.trim() !== '' || isAudioReadyToSend) {
-            let newMessage = {
-              _id: generateChatId(userId, otherUserId),
-              createdAt: new Date(),
-              user: {_id: userId},
-            };
-
-            if (message.trim()) {
-              newMessage.text = message;
-              console.log('Sending message:', newMessage);
-            } else if (isAudioReadyToSend) {
-              // assuming you'd have the URI or the path for the audio ready
-              newMessage.audio = audioPath;
-            }
-
-            onSendMessage(newMessage);
-            setMessage('');
-          }
-        }}>
-        <MaterialCommunityIcons
-          name="send"
-          size={24}
-          color={colors.lightGray}
-          style={styles.icon}
-        />
-      </TouchableOpacity>
-      */}
       <TouchableOpacity onPress={handleSend}>
         <MaterialCommunityIcons
           name="send"
