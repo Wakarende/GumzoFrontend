@@ -132,6 +132,7 @@ import {
   getFirestore,
   collection,
   doc,
+  addDoc,
   query,
   orderBy,
   onSnapshot,
@@ -173,6 +174,7 @@ function SingleChatScreen({navigation, route}) {
       console.log('current user', currentUser.uid);
       if (currentUser) {
         setUserId(currentUser.uid);
+        console.log('Fetched User ID:', currentUser.uid);
       }
     };
     fetchUser();
@@ -230,14 +232,20 @@ function SingleChatScreen({navigation, route}) {
         : [newMessages];
 
       console.log('new messages array:', messagesArray);
-      messagesArray.forEach(message => {
+      messagesArray.forEach(async message => {
         const {_id, text, createdAt, user} = message;
-        messagesCollection.add({
-          _id,
-          text,
-          createdAt,
-          user,
-        });
+        //Debugging
+        console.log('checking iD:', _id);
+        try {
+          await addDoc(messagesCollection, {
+            _id,
+            text,
+            createdAt,
+            user,
+          });
+        } catch (e) {
+          console.error('Error adding document: ', e);
+        }
       });
     },
     [userId, otherUserId],
@@ -344,28 +352,6 @@ function SingleChatScreen({navigation, route}) {
     [audioURI],
   );
 
-  //Function to render record, stopRecording and send buttons
-  // const renderActions = () => {
-  //   return (
-  //     <View style={styles.iconContainer}>
-  //       <TouchableOpacity onPress={startRecording}>
-  //         <MaterialCommunityIcons
-  //           name="microphone"
-  //           size={24}
-  //           color={colors.lightGray}
-  //         />
-  //       </TouchableOpacity>
-  //       <TouchableOpacity onPress={stopRecording}>
-  //         <MaterialCommunityIcons
-  //           name="stop"
-  //           size={24}
-  //           color={colors.lightGray}
-  //         />
-  //       </TouchableOpacity>
-  //     </View>
-  //   );
-  // };
-
   //Function to change the colour of text bubbles
   const renderBubble = props => {
     return (
@@ -373,7 +359,7 @@ function SingleChatScreen({navigation, route}) {
         {...props}
         textStyle={{
           left: {color: colors.darkGray},
-          right: {color: colors.darkGray},
+          right: {color: colors.grannySmithApple},
         }}
         wrapperStyle={{
           right: {backgroundColor: colors.grannySmithApple},
@@ -400,6 +386,7 @@ function SingleChatScreen({navigation, route}) {
             startRecording={startRecording}
             stopRecording={stopRecording}
             isAudioReadyToSend={isAudioReadyToSend}
+            userId={userId}
           />
         )}
         renderMessageAudio={message => (
