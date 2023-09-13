@@ -26,7 +26,11 @@ function AudioMessagePlayer({audioURL}) {
     <TouchableOpacity onPress={playSound}>
       {/* You can put an icon or text here to indicate audio */}
       <MaterialCommunityIcons name="play" size={24} color={colors.lightGray} />
-      <AppText>Play Audio</AppText>
+      <MaterialCommunityIcons
+        name="waveform"
+        size={24}
+        color={colors.lightGray}
+      />
     </TouchableOpacity>
   );
 }

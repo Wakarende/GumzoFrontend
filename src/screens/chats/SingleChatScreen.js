@@ -1,7 +1,7 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import {GiftedChat, Bubble} from 'react-native-gifted-chat';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import colors from '../../config/colors';
 import {Audio} from 'expo-av';
 import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
@@ -9,7 +9,6 @@ import {check, PERMISSIONS, RESULTS, request} from 'react-native-permissions';
 import {
   getFirestore,
   collection,
-  doc,
   addDoc,
   query,
   orderBy,
@@ -22,12 +21,9 @@ import AudioMessagePlayer from '../../components/AudioMessagePlayer';
 import BackArrow from '../../components/arrow/BackArrow';
 import firebaseApp from '../../../firebaseConfig';
 import {generateChatId} from '../../utils/chatUtils';
-import {fetchCurrentUser} from '../../utils/firebaseService';
 import {getAuth} from '@firebase/auth';
 
 function SingleChatScreen({navigation, route}) {
-  //debugging
-  console.log('SingleChatScreen is rendering');
   //Instantiate a new Recording
   const [recording, setRecording] = useState(null); // New state for recording
   const [isRecording, setIsRecording] = useState(false); //State to track if currently recording
@@ -67,7 +63,7 @@ function SingleChatScreen({navigation, route}) {
         });
       }
     };
-  }, [isRecording, recording, isUnloaded]); //Include dependencies
+  }, [isRecording, recording, isUnloaded]);
 
   //Listener that listens to new messages in the chat room in real-time
   useEffect(() => {
@@ -99,6 +95,7 @@ function SingleChatScreen({navigation, route}) {
     }
   }, [userId, otherUserId]);
 
+  //Handler to send a new message
   const onSend = useCallback(
     (newMessages = []) => {
       const db = getFirestore(firebaseApp);
@@ -139,7 +136,7 @@ function SingleChatScreen({navigation, route}) {
     [userId, otherUserId],
   );
 
-  //Function to check and request permissions
+  //Function to check and request recording permissions
   const checkPermission = async () => {
     try {
       //Check if the recording permission is granted
@@ -160,6 +157,7 @@ function SingleChatScreen({navigation, route}) {
   //Function to start recording
   const startRecording = useCallback(async () => {
     console.log('Start recording');
+
     //Check if it is already recording
     if (isRecording) return;
 
@@ -195,7 +193,11 @@ function SingleChatScreen({navigation, route}) {
   //Function to stop recording
   const stopRecording = useCallback(async () => {
     console.log('Stop recording function called');
-    if (!isRecording) return;
+    if (!isRecording) {
+      setAudioURI(null);
+      return;
+    }
+
     console.log('is recording');
     try {
       if (recording) {
@@ -217,7 +219,8 @@ function SingleChatScreen({navigation, route}) {
     }
   }, [isRecording, recording]);
 
-  //Function to change the colour of text bubbles
+  //Function to customize the  text bubbles
+
   const renderBubble = props => {
     return (
       <Bubble
