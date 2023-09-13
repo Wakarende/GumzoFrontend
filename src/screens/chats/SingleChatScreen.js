@@ -111,16 +111,26 @@ function SingleChatScreen({navigation, route}) {
 
       console.log('new messages array:', messagesArray);
       messagesArray.forEach(async message => {
-        const {_id, text, createdAt, user} = message;
-        //Debugging
-        console.log('checking iD:', _id);
+        const {_id, text, createdAt, user, audio} = message;
+        if (!text && !audio) {
+          console.error('Both text and audio fields are undefined');
+          return; // don't proceed with sending this particular message
+        }
+        const messageData = {
+          _id,
+          createdAt,
+          user,
+        };
+
+        if (text) {
+          messageData.text = text;
+        }
+
+        if (audio) {
+          messageData.audio = audio;
+        }
         try {
-          await addDoc(messagesCollection, {
-            _id,
-            text,
-            createdAt,
-            user,
-          });
+          await addDoc(messagesCollection, messageData);
         } catch (e) {
           console.error('Error adding document: ', e);
         }
@@ -188,7 +198,7 @@ function SingleChatScreen({navigation, route}) {
     if (!isRecording) return;
     console.log('is recording');
     try {
-      if (recording && !isUnloaded) {
+      if (recording) {
         console.log('Recording exists and not unloaded');
         await recording.stopAndUnloadAsync();
         console.log('Recording stopped and unloaded');
@@ -199,12 +209,13 @@ function SingleChatScreen({navigation, route}) {
 
         setIsAudioReadyToSend(true);
         setIsRecording(false);
+        setIsUnloaded(false);
         console.log('Recording stopped. Audio path: ', uri);
       }
     } catch (error) {
       console.error(error);
     }
-  }, [isRecording, recording, isUnloaded]);
+  }, [isRecording, recording]);
 
   //Function to change the colour of text bubbles
   const renderBubble = props => {
