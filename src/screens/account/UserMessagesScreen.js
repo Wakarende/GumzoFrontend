@@ -1,17 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  StyleSheet,
-  Modal,
-  Image,
-  Pressable,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import {View, StyleSheet, Modal, Image} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {getAuth} from 'firebase/auth';
 import {
-  addDoc,
   getDoc,
   doc,
   getFirestore,
@@ -19,9 +10,7 @@ import {
   query,
   where,
   onSnapshot,
-  updateDoc,
 } from '@firebase/firestore';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 //Local imports
 import AppText from '../../components/text/AppText';
@@ -45,6 +34,9 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
   const firestore = getFirestore(firebaseApp);
   console.log(firestore);
   const currentUserId = auth.currentUser?.uid;
+
+  //State to manage modal visibility
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
     // Check if currentUserId exists
@@ -79,6 +71,7 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
           profileImage: userData.selectedImage
             ? userData.selectedImage
             : DEFAULT_PROFILE_IMAGE_URL,
+          dob: userData.dob,
         };
       } else {
         console.error('User not found: ', userId);
@@ -223,24 +216,6 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
   const handleDeny = async (requestId, senderId) => {
     await denyMatchRequest(requestId, senderId, firestore);
   };
-  // //Logic to accept match request
-
-  // //Logic to deny match request
-  // const denyMatchRequest = async (requestId, senderId) => {
-  //   console.log(
-  //     `Denying request with ID: ${requestId} from sender: ${senderId}`,
-  //   );
-  //   try {
-  //     //Update matchRequest in matchRequest collection
-  //     const requestRef = doc(firestore, 'matchRequests', requestId);
-  //     await updateDoc(requestRef, {
-  //       status: 'denied',
-  //     });
-  //     console.log('Match request denied!');
-  //   } catch (error) {
-  //     console.log('Error handling match denial:', error);
-  //   }
-  // };
   return (
     <Screen>
       <BackArrow
@@ -292,6 +267,10 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
                     },
                   },
                 ]}
+                onPress={() => {
+                  setSelectedUser(item);
+                  setIsModalVisible(true);
+                }}
               />
             </View>
           )}

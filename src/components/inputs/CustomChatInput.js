@@ -38,10 +38,11 @@ function CustomChatInput({
 
         let newMessage = {
           _id: new Date().getTime().toString(),
-          createdAt: new Date(),
+          createdAt: new Date().toISOString(),
           user: {_id: userId},
         };
 
+        console.log('Date being sent:', newMessage.createdAt);
         // Only add the text field if message is defined and non-empty
         if (message.trim()) {
           newMessage.text = message.trim();

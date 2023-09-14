@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, StyleSheet} from 'react-native';
 import {Audio} from 'expo-av';
 import AppText from './text/AppText';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -28,11 +28,18 @@ function AudioMessagePlayer({audioURL}) {
       <MaterialCommunityIcons name="play" size={24} color={colors.lightGray} />
       <MaterialCommunityIcons
         name="waveform"
-        size={24}
+        size={30}
         color={colors.lightGray}
+        style={styles.wave}
       />
     </TouchableOpacity>
   );
 }
 
+const styles = StyleSheet.create({
+  wave: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 export default AudioMessagePlayer;

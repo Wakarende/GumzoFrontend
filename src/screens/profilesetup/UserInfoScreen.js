@@ -49,6 +49,7 @@ function UserInfoScreen({navigation, route}) {
   const {
     control,
     watch,
+    handleSubmit,
     formState: {errors},
   } = useForm({
     resolver: yupResolver(validationSchema),
@@ -83,14 +84,14 @@ function UserInfoScreen({navigation, route}) {
   const lastName = watch('lastName');
 
   // Function to update context state and navigate to the next screen
-  const handleContinue = () => {
+  const handleContinue = data => {
     dispatch({
       type: 'UPDATE_FIELD',
-      payload: {field: 'firstName', value: firstName},
+      payload: {field: 'firstName', value: data.firstName},
     });
     dispatch({
       type: 'UPDATE_FIELD',
-      payload: {field: 'lastName', value: lastName},
+      payload: {field: 'lastName', value: data.lastName},
     });
     navigation.navigate('NativeLanguage', {uid});
   };

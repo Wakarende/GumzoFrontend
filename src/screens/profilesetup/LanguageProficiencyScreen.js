@@ -53,6 +53,9 @@ function LanguageProficiencyScreen({navigation, route}) {
     });
   };
 
+  const showProficiencyAlert = () => {
+    alert('Please select your proficiency level before continuing.');
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.textContainer}>
@@ -77,7 +80,14 @@ function LanguageProficiencyScreen({navigation, route}) {
       <View style={styles.buttonContainer}>
         <PrimaryButton
           label="Continue"
-          onPress={() => navigation.navigate('UserLearningGoals', {uid})}
+          // onPress={() => navigation.navigate('UserLearningGoals', {uid})}
+          onPress={() => {
+            if (selectedProficiency.length === 0) {
+              showProficiencyAlert();
+            } else {
+              navigation.navigate('UserLearningGoals', {uid});
+            }
+          }}
           style={styles.button}
         />
       </View>

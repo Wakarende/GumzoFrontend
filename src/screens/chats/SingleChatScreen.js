@@ -75,7 +75,6 @@ function SingleChatScreen({navigation, route}) {
         collection(db, `chats/${chatId}/messages`),
         orderBy('createdAt', 'desc'),
       );
-
       // Listen for real-time updates
       const unsubscribe = onSnapshot(messagesQuery, snapshot => {
         let newMessages = [];
