@@ -32,6 +32,8 @@ import {fetchCurrentUser} from '../../utils/firebaseService';
 import ListItem from '../../components/lists/ListItem';
 import ListItemSeparator from '../../components/lists/ListItemSeparator';
 import {calculateAge} from '../../utils/calculateAge';
+
+//Default image for profiles if user image does not render
 const DEFAULT_PROFILE_IMAGE_URL = require('../../../assets/Profile.png');
 
 function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
@@ -51,6 +53,7 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
     // Check if currentUserId exists
     if (!currentUserId) return;
 
+    //Fetch user data from Firestore database
     const fetchUser = async () => {
       try {
         const user = await fetchCurrentUser(currentUserId);
@@ -69,13 +72,14 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
 
   //Fetches match Request
   useEffect(() => {
-    //Fetch user details using senderID
+    //Fetch user details using senderID(id of match request sender)
     async function fetchUserDetails(userId) {
       const userRef = doc(firestore, 'users', userId);
       const userSnap = await getDoc(userRef);
       if (userSnap.exists()) {
         const userData = userSnap.data();
         return {
+          //Return user details
           username: userData.username,
           image: userData.selectedImage
             ? userData.selectedImage
@@ -94,12 +98,14 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
     // Strengthening the guard clause
     if (!currentUser || !currentUser.uid) return;
 
-    console.log();
+    //Query match requests
     const matchRequestRef = query(
       collection(firestore, 'matchRequests'),
       where('recieverId', '==', currentUser.uid),
       where('status', '==', 'pending'),
     );
+
+    //Listen to real-time changes in match requests
     const unsubscribe = onSnapshot(
       matchRequestRef,
       async snapshot => {
@@ -135,9 +141,10 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
       },
     );
 
+    //Listen to real-time changes in for accepted match requests
     const acceptedMatchRequestsRef = query(
       collection(firestore, 'matchRequests'),
-      where('recieverId', '==', currentUser.uid),
+      where('senderId', '==', currentUser.uid),
       where('status', '==', 'accepted'),
     );
 
@@ -151,7 +158,7 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
           }));
           const augmentedAcceptedRequests = [];
           for (let request of requests) {
-            const senderDetails = await fetchUserDetails(request.senderId);
+            const senderDetails = await fetchUserDetails(request.recieverId);
             if (senderDetails) {
               augmentedAcceptedRequests.push({
                 ...request,
@@ -164,11 +171,14 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
       },
     );
 
+    //Listen for real time changes for denied match requests
     const deniedMatchRequestRef = query(
       collection(firestore, 'matchRequests'),
       where('senderId', '==', currentUser.uid),
       where('status', '==', 'denied'),
     );
+
+    //Cleanup: unsubscribe from Firestore listener
     const unsubscribeDenied = onSnapshot(
       deniedMatchRequestRef,
       async snapshot => {
@@ -179,7 +189,7 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
           }));
           const augmentedDeniedRequests = [];
           for (let request of requests) {
-            const senderDetails = await fetchUserDetails(request.senderId);
+            const senderDetails = await fetchUserDetails(request.recieverId);
             if (senderDetails) {
               augmentedDeniedRequests.push({
                 ...request,
@@ -229,6 +239,7 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
   //Local state to manage the modal for user details
   const [selectedUser, setSelectedUser] = useState(null);
 
+  //Handlers for accepting and denying match requests
   const handleAccept = async (requestId, senderId) => {
     await acceptMatch(requestId, senderId, firestore, currentUserId);
   };
@@ -322,6 +333,7 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
         onPress={() => navigation.navigate('Account')}
         style={styles.backArrow}
       />
+      {/* Match Requests notifications*/}
       <View style={styles.container}>
         {matchRequests.length === 0 && currentUser && (
           <AppText style={styles.matches}>No Request matches</AppText>
@@ -377,6 +389,7 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
           )}
         />
         <View>
+          {/* Accepted Match Requests Notifications*/}
           {acceptedMatchRequests.length > 0 && (
             <AppText style={styles.matches}>Accepted Matches</AppText>
           )}
