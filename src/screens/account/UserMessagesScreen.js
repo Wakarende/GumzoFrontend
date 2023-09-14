@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, Modal, Image} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Modal,
+  Image,
+  Pressable,
+  ScrollView,
+} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {getAuth} from 'firebase/auth';
 import {
@@ -11,6 +18,8 @@ import {
   where,
   onSnapshot,
 } from '@firebase/firestore';
+('react-native-gesture-handler');
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 //Local imports
 import AppText from '../../components/text/AppText';
@@ -68,10 +77,14 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
         const userData = userSnap.data();
         return {
           username: userData.username,
-          profileImage: userData.selectedImage
+          image: userData.selectedImage
             ? userData.selectedImage
             : DEFAULT_PROFILE_IMAGE_URL,
           dob: userData.dob,
+          nativeLanguage: userData.nativeLanguage,
+          selectedInterests: userData.selectedInterests,
+          bio: userData.bio,
+          learningGoals: userData.learningGoals,
         };
       } else {
         console.error('User not found: ', userId);
@@ -81,6 +94,7 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
     // Strengthening the guard clause
     if (!currentUser || !currentUser.uid) return;
 
+    console.log();
     const matchRequestRef = query(
       collection(firestore, 'matchRequests'),
       where('recieverId', '==', currentUser.uid),
@@ -102,12 +116,12 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
               augmentedRequests.push({
                 ...request,
                 senderName: senderDetails.username,
-                senderProfileImage: senderDetails.selectedImage,
+                image: senderDetails.selectedImage,
                 senderAge: senderDetails.dob,
-                senderNativeLanguage: senderDetails.nativeLanguage,
-                senderInterests: senderDetails.selectedInterests,
-                senderBio: senderDetails.bio,
-                senderLearningGoals: senderDetails.learningGoals,
+                nativeLanguage: senderDetails.nativeLanguage,
+                selectedInterests: senderDetails.selectedInterests,
+                bio: senderDetails.bio,
+                learningGoals: senderDetails.learningGoals,
               });
             }
           }
@@ -189,11 +203,17 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
   //List of matches
   const matches = matchRequests.map(request => ({
     title: `Match request from ${request.senderName}`,
-    image: request.senderProfileImage,
+    username: request.senderName,
+    image: request.image,
+    age: request.senderAge,
+    bio: request.bio,
+    nativeLanguage: request.nativeLanguage,
+    interests: request.selectedInterests,
+    learningGoals: request.learningGoals,
     senderId: request.senderId,
     requestId: request.id,
   }));
-
+  console.log('senderDetails:', matches);
   const acceptedMatches = acceptedMatchRequests.map(request => ({
     title: `${request.senderName} has accepted your match request`,
     senderId: request.senderId,
@@ -218,6 +238,86 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
   };
   return (
     <Screen>
+      {/* Modal */}
+      <View style={styles.modalContainer}>
+        <Modal
+          style={styles.modal}
+          animationType="slide"
+          transparent={true}
+          visible={!!selectedUser}
+          onRequestClose={() => {
+            console.log('Modal has been closed');
+            setSelectedUser(null);
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <View style={styles.modalImageContainer}>
+                <Image
+                  style={styles.modalImage}
+                  source={
+                    selectedUser && selectedUser.image
+                      ? {uri: selectedUser.image}
+                      : require('../../../assets/profileImg.jpg')
+                  }
+                />
+              </View>
+              {/* Close Modal Icon*/}
+              <Pressable
+                style={styles.closeModal}
+                onPress={() => {
+                  setSelectedUser(null);
+                }}>
+                <MaterialCommunityIcons name="close-box-outline" size={30} />
+              </Pressable>
+              <ScrollView contentContainerStyle={{paddingHorizontal: 15}}>
+                {/* Modal Text*/}
+                <View style={styles.modalText}>
+                  {/* Modal user info*/}
+                  {/* Username & Age*/}
+                  <View style={styles.user}>
+                    <AppText style={styles.modalUsername}>
+                      {selectedUser ? selectedUser.username : ''}
+                    </AppText>
+                    <AppText style={styles.modalAge}>
+                      {selectedUser ? calculateAge(selectedUser.age) : ''}
+                    </AppText>
+                  </View>
+                  {/* Native Languages */}
+                  <AppText style={styles.title}>Native Languages</AppText>
+                  <AppText style={styles.userInfo}>
+                    {selectedUser ? selectedUser.nativeLanguage : ''}
+                  </AppText>
+                  {/* Bio*/}
+                  <AppText style={styles.title}>Bio</AppText>
+                  <AppText style={styles.modalBio}>
+                    {selectedUser ? selectedUser.bio : ''}
+                  </AppText>
+                  {/* User Interests*/}
+                  <AppText style={styles.title}>Interests</AppText>
+                  <View style={styles.userInterestsFlex}>
+                    {selectedUser &&
+                      selectedUser.interests &&
+                      selectedUser.interests.map((interestObj, index) => (
+                        <View key={index}>
+                          <AppText style={styles.userInterests}>
+                            {interestObj.interest}
+                          </AppText>
+                        </View>
+                      ))}
+                  </View>
+                  {/* Learning Goals*/}
+                  <AppText style={styles.title}>Learning Goals</AppText>
+                  <AppText style={styles.userInfo}>
+                    {selectedUser
+                      ? selectedUser.learningGoals
+                      : 'No learning goals set'}
+                  </AppText>
+                </View>
+              </ScrollView>
+            </View>
+          </View>
+        </Modal>
+      </View>
       <BackArrow
         onPress={() => navigation.navigate('Account')}
         style={styles.backArrow}
@@ -268,6 +368,7 @@ function UserMessagesScreen({navigation, numberOfLines, adjustsFontSizeToFit}) {
                   },
                 ]}
                 onPress={() => {
+                  console.log('Selected User:', item);
                   setSelectedUser(item);
                   setIsModalVisible(true);
                 }}
@@ -322,6 +423,111 @@ const styles = StyleSheet.create({
     color: colors.darkGray,
     marginTop: 10,
     marginBottom: 10,
+  },
+  //  modal styles
+  addMatch: {
+    borderWidth: 1,
+    padding: 24,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginBottom: 20,
+    backgroundColor: colors.grannySmithApple,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  closeModal: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    color: colors.darkGray,
+    zIndex: 1,
+  },
+  denyMatch: {
+    borderWidth: 1,
+    padding: 24,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    marginBottom: 20,
+    backgroundColor: colors.red,
+    alignItems: 'center',
+  },
+  icons: {
+    flexDirection: 'row',
+    columnGap: 20,
+    justifyContent: 'space-evenly',
+    color: colors.darkGray,
+  },
+  matchIcons: {
+    color: colors.white,
+  },
+  modalImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  modalImageContainer: {
+    width: '100%',
+    height: '40%',
+    overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+  modalView: {
+    backgroundColor: 'white',
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+  },
+  modalText: {
+    marginTop: 10,
+  },
+
+  modalUsername: {
+    fontSize: 24,
+    fontWeight: 900,
+    color: colors.darkGray,
+    marginRight: 20,
+  },
+  modalBio: {
+    fontSize: 16,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  title: {
+    fontWeight: 900,
+    color: colors.darkGray,
+    fontSize: 18,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  user: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  userInfo: {
+    fontSize: 16,
+  },
+  userInterests: {
+    fontSize: 16,
+    marginRight: 20,
+    borderWidth: 1,
+    borderColor: colors.grannySmithApple,
+    paddingHorizontal: 8,
+    paddingVertical: 5,
+    borderRadius: 5,
+  },
+  userInterestsFlex: {
+    flexDirection: 'row',
   },
 });
 

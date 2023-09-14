@@ -28,15 +28,11 @@ function MatchScreen({navigation, adjustsFontSizeToFit, numberOfLines}) {
 
   // Fetch users anda the current user using a custom hook
   const {users, currentUser} = useUsersData();
-  //debugging
-  // console.log('users:', users);
-  // console.log('currentUser:', currentUser);
+
   //Calculate potential matches based on current user's profile
   const potentialMatches = currentUser
     ? getPotentialMatches(currentUser, users)
     : [];
-
-  console.log('potentialMatches:', potentialMatches);
 
   //Function to handle sending of match requests
   const handleSendRequest = async () => {
@@ -55,14 +51,11 @@ function MatchScreen({navigation, adjustsFontSizeToFit, numberOfLines}) {
     }
   };
 
-  console.log('matchRequests:', matchRequests);
-
   //  Update notification count when matchRequests changes
   useEffect(() => {
     setNotificationCount(matchRequests.length);
   }, [matchRequests]);
 
-  console.log('notificationCount:', notificationCount);
   //Local state to manage user details modal visibility
   const [selectedUser, setSelectedUser] = useState(null);
 
