@@ -2,27 +2,12 @@ import React, {useEffect, useContext} from 'react';
 import AppText from '../../components/text/AppText';
 import {View, StyleSheet} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import * as Yup from 'yup';
 import {interests} from '../../utils/interests';
 import colors from '../../config/colors';
 import PrimaryButton from '../../components/button/PrimaryButton';
 import {FormContext} from '../../components/FormContext';
 import InterestCard from '../../components/cards/InterestCard';
-// const InterestCard = ({interest, iconName, onPress, isSelected}) => (
-//   <TouchableOpacity
-//     style={[styles.card, isSelected ? styles.cardSelected : null]}
-//     onPress={onPress}>
-//     <View style={styles.cardInfo}>
-//       <MaterialCommunityIcons
-//         name={iconName}
-//         size={24}
-//         color={isSelected ? 'white' : colors.grannySmithApple}
-//       />
-//       <AppText>{interest}</AppText>
-//     </View>
-//   </TouchableOpacity>
-// );
 
 function UserInterestsScreen({navigation, route}) {
   //user id
@@ -32,6 +17,13 @@ function UserInterestsScreen({navigation, route}) {
   useEffect(() => {
     console.log('Current selected interests:', selectedInterests);
   }, [selectedInterests]);
+
+  //Validation schema
+  const interestSchema = Yup.object().shape({
+    selectedInterests: Yup.array()
+      .min(1, 'At least one interest must be selected')
+      .required(),
+  });
   //Handle array of interests
   const handleInterestSelect = interestItem => {
     //Check if interest is already selected
@@ -62,10 +54,18 @@ function UserInterestsScreen({navigation, route}) {
       type: 'UPDATE_FIELD',
       payload: {field: 'selectedInterests', value: newSelectedInterests},
     });
-    //update the state of the new array
-    // setSelectedInterests(newSelectedInterests);
-
     console.log(`Selected: ${interestItem}`);
+  };
+  //Handle continue
+  const handleContinue = () => {
+    interestSchema
+      .validate({selectedInterests})
+      .then(() => {
+        navigation.navigate('LanguageProficiency', {uid});
+      })
+      .catch(error => {
+        alert(error.message); // Notify user about the validation error
+      });
   };
   return (
     <SafeAreaView style={styles.container}>
@@ -88,10 +88,7 @@ function UserInterestsScreen({navigation, route}) {
         ))}
       </View>
       <View style={styles.buttonContainer}>
-        <PrimaryButton
-          label="Continue"
-          onPress={() => navigation.navigate('LanguageProficiency', {uid})}
-        />
+        <PrimaryButton label="Continue" onPress={handleContinue} />
       </View>
     </SafeAreaView>
   );

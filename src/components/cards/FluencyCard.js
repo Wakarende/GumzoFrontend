@@ -11,14 +11,13 @@ function FluencyCard({title, onPress, isSelected}) {
       style={[styles.card, isSelected ? styles.cardSelected : null]}
       onPress={onPress}>
       <View style={styles.cardInfo}>
-        <AppText color={isSelected ? 'white' : colors.darkGray}>
+        <AppText color={isSelected ? styles.cardSelected : null}>
           {title}
         </AppText>
       </View>
     </TouchableOpacity>
   );
 }
-
 const styles = StyleSheet.create({
   card: {
     width: 340,
@@ -33,6 +32,10 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginBottom: 10,
     marginTop: 32,
+  },
+  cardSelected: {
+    backgroundColor: colors.pastelGreen,
+    color: colors.white,
   },
 });
 export default FluencyCard;

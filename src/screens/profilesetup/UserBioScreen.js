@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {getFirestore, doc, setDoc} from 'firebase/firestore';
-
+import * as yup from 'yup';
 //local imports
 import AppText from '../../components/text/AppText';
 import {TextInput} from 'react-native-gesture-handler';
@@ -12,6 +12,13 @@ import firebaseApp from '../../../firebaseConfig';
 
 function UserBioScreen({navigation, route}) {
   const {state, dispatch} = useContext(FormContext);
+
+  const bioSchema = yup.object().shape({
+    bio: yup
+      .string()
+      .min(10, 'Your bio should be at least 10 characters long.')
+      .required('Bio is required.'),
+  });
   //user id
   const {uid} = route.params;
   console.log('UID:', uid);
@@ -26,6 +33,7 @@ function UserBioScreen({navigation, route}) {
   const handleSubmit = async () => {
     console.log('handleSubmit called');
     try {
+      await bioSchema.validate({bio: state.bio});
       const db = getFirestore(firebaseApp);
       //update the user document with uid
       const userRef = doc(db, 'users', uid);
@@ -47,7 +55,7 @@ function UserBioScreen({navigation, route}) {
 
       console.log('Form Submitted:', userProfile);
 
-      navigation.navigate('DashboardScreen');
+      navigation.navigate('LogInScreen');
     } catch (error) {
       console.error('Error updating user bio: ', error.message);
     }
@@ -68,12 +76,17 @@ function UserBioScreen({navigation, route}) {
         />
       </View>
       <View style={styles.buttonContainer}>
-        <PrimaryButton label="Submit" onPress={handleSubmit} />
+        <PrimaryButton
+          label="Submit"
+          onPress={handleSubmit}
+          disabled={state.bio.length < 10}
+        />
       </View>
     </SafeAreaView>
   );
 }
 
+//Stylesheet
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 30,

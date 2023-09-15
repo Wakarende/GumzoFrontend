@@ -10,14 +10,13 @@ import {proficiencyLevels} from '../../utils/proficiency';
 import {FormContext} from '../../components/FormContext';
 import FluencyCard from '../../components/cards/FluencyCard';
 
-console.log(proficiencyLevels);
 function LanguageProficiencyScreen({navigation, route}) {
   const {uid} = route.params;
   console.log('Route Params:', route.params);
 
-  // const [selectedProficiency, setSelectedProficiency] = useState([]);
   const {state, dispatch} = useContext(FormContext);
   const selectedProficiency = state.selectedProficiency;
+
   useEffect(() => {
     console.log('Current selected proficiency:', selectedProficiency);
   }, [selectedProficiency]);

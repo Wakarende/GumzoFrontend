@@ -34,7 +34,6 @@ const validationSchema = Yup.object().shape({
     .matches(/^[A-Za-z ]*$/, 'Please enter valid name')
     .required()
     .label('Last Name'),
-  dob: Yup.date().required().label('dob'),
 });
 
 //Using the useForm hook for form opeations and validation
@@ -208,7 +207,10 @@ function UserInfoScreen({navigation, route}) {
           </View>
         </View>
         <View style={styles.button}>
-          <PrimaryButton label="Continue" onPress={handleContinue} />
+          <PrimaryButton
+            label="Continue"
+            onPress={handleSubmit(handleContinue)}
+          />
         </View>
       </SafeAreaView>
     </KeyboardAvoidingView>

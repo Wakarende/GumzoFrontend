@@ -1,6 +1,8 @@
 import React, {useState, useContext} from 'react';
 import {SafeAreaView, StyleSheet, View, TextInput, Text} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as yup from 'yup';
+
 //local imports
 import AppText from '../../components/text/AppText';
 import colors from '../../config/colors';
@@ -11,7 +13,9 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 function NativeLanguageScreen({navigation, route}) {
   const [language, setLanguage] = useState(''); // Current input
   const [languages, setLanguages] = useState([]); // List of all languages added
-
+  const languageSchema = yup.object().shape({
+    languages: yup.string().required('Native Language is required'),
+  });
   // Use FormContext
   const {state, dispatch} = useContext(FormContext);
 
@@ -22,16 +26,23 @@ function NativeLanguageScreen({navigation, route}) {
       setLanguage(''); // Reset the input field
     }
   };
-  //user id is extracted from navigation parameters
+
   const {uid} = route.params;
   const handleContinue = () => {
-    dispatch({
-      type: 'UPDATE_FIELD',
-      payload: {field: 'nativeLanguage', value: languages.join(', ')}, // Storing languages as a comma-separated string
-    });
-    // If you want to use uid, it's available as route.params.uid
-    // navigation.navigate('NextScreen', { uid: route.params.uid });
-    navigation.navigate('UserInterests', {uid}); // Update 'NextScreen' to wherever you want to navigate after this.
+    const combinedLanguages = languages.join(', ');
+
+    languageSchema
+      .validate({languages: combinedLanguages})
+      .then(() => {
+        dispatch({
+          type: 'UPDATE_FIELD',
+          payload: {field: 'nativeLanguage', value: combinedLanguages},
+        });
+        navigation.navigate('UserInterests', {uid});
+      })
+      .catch(error => {
+        alert(error.message); // Notify user about the validation error
+      });
   };
 
   return (
@@ -59,7 +70,11 @@ function NativeLanguageScreen({navigation, route}) {
           </Text>
         ))}
       </View>
-      <PrimaryButton label="Continue" onPress={handleContinue} />
+      <PrimaryButton
+        label="Continue"
+        onPress={handleContinue}
+        disabled={languages.length === 0}
+      />
     </SafeAreaView>
   );
 }

@@ -14,6 +14,7 @@ import {
   orderBy,
   onSnapshot,
 } from '@firebase/firestore';
+import {getAuth} from '@firebase/auth';
 
 //local imports
 import CustomChatInput from '../../components/inputs/CustomChatInput';
@@ -21,7 +22,6 @@ import AudioMessagePlayer from '../../components/AudioMessagePlayer';
 import BackArrow from '../../components/arrow/BackArrow';
 import firebaseApp from '../../../firebaseConfig';
 import {generateChatId} from '../../utils/chatUtils';
-import {getAuth} from '@firebase/auth';
 
 function SingleChatScreen({navigation, route}) {
   //Instantiate a new Recording

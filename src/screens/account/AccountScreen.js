@@ -23,7 +23,7 @@ function AccountScreen({navigation}) {
   //Data displayed on flatlist
   const menuItems = [
     {
-      title: 'Account Settings',
+      title: 'Account Info',
       icon: {
         name: 'format-list-bulleted',
         backgroundColor: colors.grannySmithApple,
